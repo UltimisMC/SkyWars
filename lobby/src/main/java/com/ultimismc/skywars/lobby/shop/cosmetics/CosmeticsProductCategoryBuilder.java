@@ -11,6 +11,7 @@ import com.ultimismc.skywars.lobby.shop.cosmetics.killeffects.KillEffectsCategor
 import com.ultimismc.skywars.lobby.shop.cosmetics.killmessages.KillMessagesCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.cosmetics.sprays.SpraysCategory;
 import com.ultimismc.skywars.lobby.shop.cosmetics.trails.ProjectileTrailsCategoryBuilder;
+import com.ultimismc.skywars.lobby.shop.cosmetics.victorydances.VictoryDanceCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.cosmetics.victorydances.VictoryDancesCategory;
 import xyz.directplan.directlib.shop.ProductCategory;
 
@@ -32,7 +33,7 @@ public class CosmeticsProductCategoryBuilder implements UserProductCategoryBuild
 
         productCategory.buildProductCategory(new ProjectileTrailsCategoryBuilder(cosmeticManager));
         productCategory.buildProductCategory(new CagesProductCategoryBuilder(cosmeticManager));
-        productCategory.addProduct(new VictoryDancesCategory(14));
+        productCategory.buildProductCategory(new VictoryDanceCategoryBuilder(cosmeticManager));
         productCategory.buildProductCategory(new KillEffectsCategoryBuilder(cosmeticManager));
         productCategory.buildProductCategory(new DeathCriesCategoryBuilder(cosmeticManager));
         productCategory.addProduct(new BallonsCategory(30));

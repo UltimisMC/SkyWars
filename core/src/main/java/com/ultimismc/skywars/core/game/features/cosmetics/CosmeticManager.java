@@ -9,6 +9,7 @@ import com.ultimismc.skywars.core.game.features.cosmetics.deathcries.DeathCryHan
 import com.ultimismc.skywars.core.game.features.cosmetics.killeffects.KillEffectHandler;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageHandler;
 import com.ultimismc.skywars.core.game.features.cosmetics.projectiletrails.ProjectileTrailHandler;
+import com.ultimismc.skywars.core.game.features.cosmetics.victorydances.VictoryDanceHandler;
 import lombok.Getter;
 
 /**
@@ -25,6 +26,7 @@ public class CosmeticManager implements FeatureInitializer {
     private final KillEffectHandler killEffectHandler;
     private final ProjectileTrailHandler projectileTrailHandler;
     private final DeathCryHandler deathCryHandler;
+    private final VictoryDanceHandler victoryDanceHandler;
 
     public CosmeticManager(FeatureHandler featureHandler, SkyWarsPlugin plugin) {
         this.featureHandler = featureHandler;
@@ -33,12 +35,14 @@ public class CosmeticManager implements FeatureInitializer {
         killEffectHandler = new KillEffectHandler();
         projectileTrailHandler = new ProjectileTrailHandler();
         deathCryHandler = new DeathCryHandler();
+        victoryDanceHandler = new VictoryDanceHandler(plugin);
 
         registerCosmeticHandler(cageHandler);
         registerCosmeticHandler(killMessageHandler);
         registerCosmeticHandler(killEffectHandler);
         registerCosmeticHandler(projectileTrailHandler);
         registerCosmeticHandler(deathCryHandler);
+        registerCosmeticHandler(victoryDanceHandler);
     }
 
     @Override

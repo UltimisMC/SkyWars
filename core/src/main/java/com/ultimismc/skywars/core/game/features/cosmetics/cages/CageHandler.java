@@ -30,7 +30,7 @@ import java.util.Locale;
 @Getter
 public class CageHandler extends PurchasableRegistry<Cage> {
 
-    private final String name = "Cosmetics: Cage";
+    private final String name = "Cages";
 
     private final SkyWarsPlugin plugin;
     private SchematicAdapter schematicAdapter;

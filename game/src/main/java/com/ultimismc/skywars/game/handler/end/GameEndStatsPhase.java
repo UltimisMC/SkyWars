@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.handler.end;
 
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +48,7 @@ public class GameEndStatsPhase extends GameEndPhase {
             user.sendMessage(" ");
             user.sendMessage(ChatColor.GREEN + repeatLine);
         });
+        MessageConfigKeys.WON_MESSAGE.sendMessage(winner.getPlayer());
     }
 
     private String getKillerDisplayInfo(UserGameSession userGameSession) {

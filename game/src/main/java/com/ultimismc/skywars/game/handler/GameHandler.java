@@ -9,6 +9,7 @@ import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
+import com.ultimismc.skywars.core.game.features.cosmetics.victorydances.VictoryDanceHandler;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
@@ -182,7 +183,13 @@ public class GameHandler implements FeatureInitializer {
         String userDisplayName = user.getDisplayName();
         MessageConfigKeys.QUIT_MESSAGE.broadcastMessage(new Replacement("player", userDisplayName));
 
-        UserGameSession userGameSession = userSessionHandler.removeSession(user);
+        UserGameSession userGameSession;
+        if(hasStarted()) {
+            userGameSession = userSessionHandler.removeSession(user);
+        }else {
+            userGameSession = getSession(user);
+        }
+
         gameManager.removeScoreboard(user.getUuid());
         game.quitUser(userGameSession);
 
@@ -256,21 +263,31 @@ public class GameHandler implements FeatureInitializer {
         UserGameSession winner = getCurrentPlayers().getLast();
         winner.increaseWin();
 
-        winner.addCurrencyStat(Currency.SOUL_CURRENCY, (winner.getKills() * 2), "Win", true);
+        int expReward = (winner.getKills() * 3);
+        if(expReward < 10) {
+            expReward = 10;
+        }
+        VictoryDanceHandler victoryDanceHandler = cosmeticManager.getVictoryDanceHandler();
+        victoryDanceHandler.playVictoryDance(winner.getUser());
+
+        winner.addCurrencyStat(Currency.EXP_CURRENCY, expReward, "Win", true);
+        winner.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
+        PluginUtility.sendTitle(winner.getPlayer(), 0, 60, 0, "&6&lVICTORY!", "&7You were the last man standing!");
         for(UserGameSession everyone : getUserSessions()) {
-            everyone.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
+            if(everyone != winner && everyone.isOnline()) {
+                PluginUtility.sendTitle(everyone.getPlayer(), 0, 60, 0, "&c&lGAME END", "&7You weren't victorious this time");
+            }
         }
         plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(this, winner, getUserSessions()), 0, 20L);
     }
 
     public void terminateUser(UserGameSession userGameSession) {
         MessageConfigKeys.DEATH_MESSAGE.sendMessage(userGameSession.getPlayer());
-        System.out.println("bef-current players size: " + getCurrentPlayersSize());
-        addSpectator(userGameSession);
-        System.out.println("current players size: " + getCurrentPlayersSize());
-        if(getCurrentPlayersSize() <= 1) {
+        if(getCurrentPlayersSize() <= 1 && !hasEnded()) {
             endGame();
         }
+        addSpectator(userGameSession); // TODO: THIS SHOULDN'T BE HERE
+        userGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
     }
 
     public void addSpectator(UserGameSession userGameSession) {
@@ -286,6 +303,7 @@ public class GameHandler implements FeatureInitializer {
         player.setAllowFlight(true);
         player.setFlying(true);
 
+
         // spectators too
         menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, false);
 
@@ -294,12 +312,13 @@ public class GameHandler implements FeatureInitializer {
         for(UserGameSession session : getUserSessions()) {
             Player otherPlayer = session.getPlayer();
             if(session.isSpectator()) {
-                otherPlayer.showPlayer(player);
+                player.showPlayer(otherPlayer);
                 continue;
             }
             otherPlayer.hidePlayer(player);
         }
         // Set a gray name tag
+        teamHandler.setupTeamTag(userGameSession);
     }
 
     public void removeSpectator(UserGameSession user) {
@@ -382,6 +401,10 @@ public class GameHandler implements FeatureInitializer {
         return getCurrentPlayers().size();
     }
 
+    public void setGameState(GameState gameState) {
+        game.setGameState(gameState);
+    }
+
     public LinkedList<UserGameSession> getCurrentPlayers() {
         return game.getPlayers();
     }
@@ -397,6 +420,10 @@ public class GameHandler implements FeatureInitializer {
 
     public boolean hasEnded() {
         return game.hasEnded();
+    }
+
+    public boolean isRestarting() {
+        return game.isRestarting();
     }
 
     public boolean isOpen() {

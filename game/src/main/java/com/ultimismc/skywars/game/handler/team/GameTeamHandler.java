@@ -76,7 +76,7 @@ public class GameTeamHandler {
         return new GameTeam(alphabet, maximumTeam);
     }
 
-    private void setupTeamTag(UserGameSession user) {
+    public void setupTeamTag(UserGameSession user) {
         Player player = user.getPlayer();
         GameTeam gameTeam = user.getGameTeam();
         if(gameTeam == null) return;
@@ -85,7 +85,7 @@ public class GameTeamHandler {
         for(UserGameSession online : gameHandler.getUserSessions()) {
             Player other = online.getPlayer();
             if(user.isSpectator()) {
-                TagUtil.setTag(player, other, "SPECTATOR", ChatColor.GRAY + "");
+                TagUtil.setTag(player, other, "SPEC", ChatColor.GRAY + "");
                 continue;
             }
             ChatColor tagColor = ChatColor.RED;

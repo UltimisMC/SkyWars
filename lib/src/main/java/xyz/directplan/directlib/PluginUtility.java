@@ -177,7 +177,8 @@ public class PluginUtility {
     }
 
     public static int getPercentage(int current, int max) {
-        return (current / max) * 100;
+        double percentage = ((current * 1.0) / max) * 100.0;
+        return (int) percentage;
     }
 
     public static String formatDoubleDecimal(double d) {

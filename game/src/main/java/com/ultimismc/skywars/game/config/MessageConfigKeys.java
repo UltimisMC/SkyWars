@@ -56,6 +56,7 @@ public enum MessageConfigKeys implements ConfigEntry {
 
     GAME_STARTS_IN_MESSAGE("game-starts-in-message", "&eThe game starts in %time%&e seconds!"),
     DEATH_MESSAGE("death-message", "&cYou died! &eWant to play again?"),
+    WON_MESSAGE("won-message", "&aYou won! &eWant to play again?"),
 
     // SETUP MESSAGES
     SETUP_MODE_ENTERED("setup-mode.entered", "&aYou've entered setup mode for &eSkyWars %name%&a."),

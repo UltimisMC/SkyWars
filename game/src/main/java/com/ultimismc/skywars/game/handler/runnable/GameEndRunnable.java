@@ -32,15 +32,13 @@ public class GameEndRunnable implements Runnable {
 
     @Override
     public void run() {
-        GameEndPhase phase = endPhases.poll();
+        GameEndPhase phase = endPhases.getFirst();
         if(phase == null) return;
         int executeIn = phase.getExecuteIn();
         boolean timePassed = hasTimePassed(executeIn);
-        System.out.println("Has time passed: " + timePassed);
         if(!timePassed) return;
-
-        System.out.println("Executing phase: " + endPhases.indexOf(phase));
         phase.executePhase(winner, participators);
+        endPhases.removeFirst();
         currentTime = System.currentTimeMillis();
     }
 

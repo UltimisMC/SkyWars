@@ -10,16 +10,11 @@ import org.bukkit.Material;
  * @author DirectPlan
  */
 @Getter
-public class DefaultDeathCry extends DeathCry {
+public class SquealDeathCry extends DeathCry {
 
-    private final PurchasableDesign design = new PurchasableDesign(Material.BARRIER);
+    private final PurchasableDesign design = new PurchasableDesign(Material.RABBIT_FOOT);
 
-    public DefaultDeathCry() {
-        super("None", CosmeticRarity.COMMON, (String) null);
-    }
-
-    @Override
-    public boolean isDefault() {
-        return true;
+    public SquealDeathCry() {
+        super("Squeal", CosmeticRarity.RARE, "entity.rabbit.death");
     }
 }

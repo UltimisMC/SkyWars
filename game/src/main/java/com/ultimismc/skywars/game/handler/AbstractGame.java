@@ -69,11 +69,16 @@ public abstract class AbstractGame implements Game {
 
     @Override
     public boolean hasStarted() {
-        return gameState == GameState.STARTED;
+        return gameState != GameState.WAITING && gameState != GameState.STARTING;
     }
 
     @Override
     public boolean hasEnded() {
         return gameState == GameState.ENDED;
+    }
+
+    @Override
+    public boolean isRestarting() {
+        return gameState == GameState.RESTARTING;
     }
 }

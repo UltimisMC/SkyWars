@@ -10,7 +10,7 @@ import org.bukkit.scoreboard.Team;
  */
 public class TagUtil {
 
-    private final static String TAG_PREFIX = "_directlib_team";
+    private final static String TAG_PREFIX = "_dlib_team";
 
     public static void setTag(Player player, Player other, String group, String tag) {
         Scoreboard scoreboard = player.getScoreboard();

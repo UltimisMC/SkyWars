@@ -44,5 +44,7 @@ public interface Game {
 
     boolean hasEnded();
 
+    boolean isRestarting();
+
     int getMinimumPlayers();
 }

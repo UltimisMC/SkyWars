@@ -90,7 +90,7 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
 
         if(attackCause.isProjectile()) {
             double shootDistance = killerPlayer.getLocation().distanceSquared(player.getLocation());
-            if(shootDistance >= 30.0) {
+            if(shootDistance >= 15.0) {
                 PluginUtility.translateMessage(user.getDisplayName() + "&e got shot from " + PluginUtility.formatDoubleDecimal(shootDistance) + " blocks!");
             }
         }

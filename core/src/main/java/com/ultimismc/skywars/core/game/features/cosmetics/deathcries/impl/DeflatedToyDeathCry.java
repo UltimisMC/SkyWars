@@ -5,21 +5,18 @@ import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.deathcries.DeathCry;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 
 /**
  * @author DirectPlan
  */
 @Getter
-public class DefaultDeathCry extends DeathCry {
+public class DeflatedToyDeathCry extends DeathCry {
 
-    private final PurchasableDesign design = new PurchasableDesign(Material.BARRIER);
+    private final PurchasableDesign design = new PurchasableDesign(Material.RAW_FISH, 3);
 
-    public DefaultDeathCry() {
-        super("None", CosmeticRarity.COMMON, (String) null);
+    public DeflatedToyDeathCry() {
+        super("Deflated Toy", CosmeticRarity.COMMON, Sound.BAT_DEATH);
     }
 
-    @Override
-    public boolean isDefault() {
-        return true;
-    }
 }

@@ -1,7 +1,5 @@
 package com.ultimismc.skywars.game;
 
-import com.mysql.jdbc.ServerPreparedStatement;
-import com.ultimismc.skywars.game.chest.Chest;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
@@ -17,9 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import xyz.directplan.directlib.PluginUtility;
 
@@ -33,6 +28,11 @@ public class SkyWarsGameListener implements Listener {
 
     @EventHandler
     public void onPreJoin(AsyncPlayerPreLoginEvent event) {
+        if(gameHandler.isRestarting()) {
+            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);
+            event.setKickMessage(PluginUtility.translateMessage("&cServer is restarting..."));
+            return;
+        }
         if(gameHandler.isOpen()) return;
 
         event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);

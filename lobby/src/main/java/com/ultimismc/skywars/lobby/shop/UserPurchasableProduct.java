@@ -37,8 +37,13 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
         this.currency = currency;
     }
 
+    public UserPurchasableProduct(String name, int itemSlot, Purchasable purchasable) {
+        this(name, itemSlot, purchasable.getPrice(), purchasable.getCurrency());
+        this.purchasable = purchasable;
+    }
+
     public UserPurchasableProduct(int itemSlot, Purchasable purchasable) {
-        this(purchasable.getNameWithCategory(), itemSlot, purchasable.getPrice(), purchasable.getCurrency());
+        this(purchasable.getName(), itemSlot, purchasable.getPrice(), purchasable.getCurrency());
         this.purchasable = purchasable;
     }
 
