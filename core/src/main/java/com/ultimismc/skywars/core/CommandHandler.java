@@ -1,10 +1,8 @@
-package com.ultimismc.skywars.lobby.commands;
+package com.ultimismc.skywars.core;
 
 import co.aikar.commands.*;
-import com.ultimismc.skywars.lobby.LobbyManager;
-import com.ultimismc.skywars.lobby.SkyWarsLobbyPlugin;
-import com.ultimismc.skywars.lobby.user.User;
-import com.ultimismc.skywars.lobby.user.UserManager;
+import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.ConfigHandler;
@@ -16,16 +14,14 @@ public class CommandHandler {
 
     private final BukkitCommandManager commandManager;
 
-    public CommandHandler(SkyWarsLobbyPlugin plugin) {
+    public CommandHandler(SkyWarsPlugin plugin) {
         commandManager = new BukkitCommandManager(plugin);
 
         ConfigHandler configHandler = plugin.getConfigHandler();
         UserManager userManager = plugin.getUserManager();
-        LobbyManager lobbyManager = plugin.getLobbyManager();
 
-        commandManager.registerDependency(ConfigHandler.class, configHandler);
-        commandManager.registerDependency(LobbyManager.class, lobbyManager);
-        commandManager.registerDependency(UserManager.class, userManager);
+        registerDependency(ConfigHandler.class, configHandler);
+        registerDependency(UserManager.class, userManager);
 
         commandManager.enableUnstableAPI("help");
 
@@ -48,6 +44,10 @@ public class CommandHandler {
             Player player = commandIssuer.getPlayer();
             return userManager.getCachedUser(player);
         });
+    }
+
+    public <T> void registerDependency(Class<? extends T> clazz, T t) {
+        commandManager.registerDependency(clazz, t);
     }
 
     public void registerCommand(BaseCommand command) {

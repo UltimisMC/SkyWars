@@ -16,8 +16,6 @@ public interface Product<U> {
 
     boolean isEnabled();
 
-    ProductCategory<U> getProductCategory();
-
     boolean isCategory();
 
     ProductItemDesign designItem(U user);

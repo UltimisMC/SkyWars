@@ -1,4 +1,4 @@
-package com.ultimismc.skywars.lobby.user;
+package com.ultimismc.skywars.core.user;
 
 import xyz.directplan.directlib.inventory.PlayerInventoryUI;
 

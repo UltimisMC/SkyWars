@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.lobby;
 
 import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
-import com.ultimismc.skywars.lobby.user.User;
-import com.ultimismc.skywars.lobby.user.UserStatistics;
+import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserStatistics;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.replacement.Replacement;

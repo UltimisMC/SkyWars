@@ -38,4 +38,9 @@ public abstract class AbstractProductCategory<U> extends AbstractProduct<U> impl
     public void addProduct(Product<U> product) {
         products.add(product);
     }
+
+    public void buildProductCategory(ProductCategoryBuilder<U> productCategoryBuilder) {
+        ProductCategory<U> productCategory = productCategoryBuilder.buildCategory();
+        addProduct(productCategory);
+    }
 }

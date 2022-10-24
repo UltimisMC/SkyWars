@@ -1,4 +1,4 @@
-package com.ultimismc.skywars.lobby.game;
+package com.ultimismc.skywars.core.game;
 
 import lombok.Getter;
 import lombok.Setter;

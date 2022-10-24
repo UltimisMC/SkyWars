@@ -1,7 +1,7 @@
-package com.ultimismc.skywars.lobby.user;
+package com.ultimismc.skywars.core.user;
 
-import com.ultimismc.skywars.lobby.game.GameStatistics;
-import com.ultimismc.skywars.lobby.game.GameType;
+import com.ultimismc.skywars.core.game.GameStatistics;
+import com.ultimismc.skywars.core.game.GameType;
 import lombok.Getter;
 import lombok.Setter;
 

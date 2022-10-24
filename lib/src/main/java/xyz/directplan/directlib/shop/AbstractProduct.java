@@ -2,7 +2,6 @@ package xyz.directplan.directlib.shop;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 /**
  * @author DirectPlan
@@ -16,7 +15,6 @@ public abstract class AbstractProduct<U> implements Product<U> {
     private final String name;
     private final int itemSlot;
     private final boolean enabled;
-    @Setter private ProductCategory<U> productCategory;
 
     public AbstractProduct(String name, int itemSlot, boolean enabled) {
         this(ProductType.PRODUCT, name, itemSlot, enabled);
@@ -28,7 +26,7 @@ public abstract class AbstractProduct<U> implements Product<U> {
 
     @Override
     public boolean isCategory() {
-        return type.isCategory() && productCategory != null;
+        return type.isCategory();
     }
 
     @Override

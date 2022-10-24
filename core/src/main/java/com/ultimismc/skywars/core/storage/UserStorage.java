@@ -1,8 +1,8 @@
-package com.ultimismc.skywars.lobby.storage;
+package com.ultimismc.skywars.core.storage;
 
-import com.ultimismc.skywars.lobby.SkyWarsLobbyPlugin;
-import com.ultimismc.skywars.lobby.config.ConfigKeys;
-import com.ultimismc.skywars.lobby.user.User;
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.core.user.User;
 import xyz.directplan.directlib.storage.Storage;
 import xyz.directplan.directlib.storage.misc.ConnectionCredentials;
 
@@ -16,7 +16,7 @@ public class UserStorage {
     private final Storage storage;
     private final MongoStorageConnection mongoStorageConnection;
 
-    public UserStorage(SkyWarsLobbyPlugin plugin) {
+    public UserStorage(SkyWarsPlugin plugin) {
 
         String host = ConfigKeys.STORAGE_HOST.getStringValue();
         int port = ConfigKeys.STORAGE_PORT.getInteger();

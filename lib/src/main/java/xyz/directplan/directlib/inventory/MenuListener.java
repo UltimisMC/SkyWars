@@ -23,18 +23,17 @@ public class MenuListener implements Listener {
     public void onClick(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
 
-        // Player Currently Opened UI
-        InventoryUI inventoryUI = menuManager.getInventory(player.getUniqueId());
-        if(inventoryUI != null){
-            inventoryUI.onClick(event);
-            return;
-        }
-
         // Player Inventory UI
         InventoryUser inventoryUser = menuManager.getInventoryUser(player);
         if(inventoryUser != null) {
             PlayerInventoryUI playerInventoryUI = inventoryUser.getInventoryUi();
             playerInventoryUI.onClick(event);
+        }
+
+        // Player Currently Opened UI
+        InventoryUI inventoryUI = menuManager.getInventory(player.getUniqueId());
+        if(inventoryUI != null){
+            inventoryUI.onClick(event);
         }
     }
 

@@ -1,20 +1,26 @@
-package com.ultimismc.skywars.lobby.user;
+package com.ultimismc.skywars.core.user;
 
-import com.ultimismc.skywars.lobby.LobbyManager;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+
 /**
  * @author DirectPlan
  */
 @RequiredArgsConstructor
+@Getter
+@Setter
 public class UserListener implements Listener {
 
-    private final LobbyManager lobbyManager;
+    private UserLoadedListener userLoadedListener;
+    private UserSavedListener userSavedListener;
+
     private final UserManager userManager;
 
     @EventHandler
@@ -23,7 +29,7 @@ public class UserListener implements Listener {
         userManager.loadUserAsync(player.getUniqueId(), true, user -> {
             user.setPlayer(player);
             user.setOnline(true);
-            lobbyManager.handleJoin(user);
+            if(userLoadedListener != null) userLoadedListener.onUserLoaded(user);
         });
     }
 
@@ -33,7 +39,7 @@ public class UserListener implements Listener {
 
         userManager.saveUserAsync(player.getUniqueId(), true, user -> {
             user.setOnline(false);
-            lobbyManager.handleQuit(user);
+            if(userSavedListener != null) userSavedListener.onUserSaved(user);
         });
     }
 }

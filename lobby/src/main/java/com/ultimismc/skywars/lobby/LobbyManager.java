@@ -1,8 +1,9 @@
 package com.ultimismc.skywars.lobby;
 
-import com.ultimismc.skywars.lobby.config.ConfigKeys;
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.lobby.shop.SkyWarsShopHandler;
-import com.ultimismc.skywars.lobby.user.User;
+import com.ultimismc.skywars.core.user.User;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class LobbyManager {
     private final MenuManager menuManager;
     private final SkyWarsShopHandler shopHandler;
 
-    public LobbyManager(SkyWarsLobbyPlugin plugin) {
+    public LobbyManager(SkyWarsPlugin plugin) {
 
         menuManager = plugin.getMenuManager();
         shopHandler = new SkyWarsShopHandler(menuManager);
@@ -46,11 +47,12 @@ public class LobbyManager {
 
         lobbyScoreboard.updateGameScoreboard(user);
 
-        menuManager.openInventory(player, new LobbyPlayerInventoryUi(user));
+        menuManager.applyDesign(new LobbyPlayerInventoryUi(this, user));
     }
 
     public void handleQuit(User user) {
         lobbyScoreboard.removeScoreboard(user);
+
 
     }
 

@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.lobby.shop;
 
-import com.ultimismc.skywars.lobby.user.User;
+import com.ultimismc.skywars.core.user.User;
 import xyz.directplan.directlib.shop.AbstractProductCategory;
 
 /**
@@ -14,6 +14,9 @@ public abstract class UserProductCategory extends AbstractProductCategory<User> 
     }
 
     public UserProductCategory(String name, int itemSlot) {
-        this(name, itemSlot, 9);
+        this(name, itemSlot, 6);
     }
+
+    @Override
+    public void executeAction(User user) {}
 }

@@ -1,7 +1,7 @@
-package com.ultimismc.skywars.lobby.user;
+package com.ultimismc.skywars.core.user;
 
-import com.ultimismc.skywars.lobby.SkyWarsLobbyPlugin;
-import com.ultimismc.skywars.lobby.storage.UserStorage;
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.storage.UserStorage;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -20,12 +20,12 @@ public class UserManager {
 
     @Getter private final Map<UUID, User> users = new HashMap<>();
 
-    private final SkyWarsLobbyPlugin plugin;
+    private final SkyWarsPlugin plugin;
 
     private final UserStorage storage;
     private final ExecutorService executorService;
 
-    public UserManager(SkyWarsLobbyPlugin plugin) {
+    public UserManager(SkyWarsPlugin plugin) {
         this.plugin = plugin;
         storage = plugin.getStorage();
 

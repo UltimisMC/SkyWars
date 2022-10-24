@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.lobby.shop.main;
 
 import com.ultimismc.skywars.lobby.shop.UserProduct;
-import com.ultimismc.skywars.lobby.user.User;
+import com.ultimismc.skywars.core.user.User;
 import org.bukkit.Material;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -19,13 +19,11 @@ public class GayProduct extends UserProduct {
 
     @Override
     public ProductItemDesign designItem(User user) {
-        String displayName = getName();
-
         List<String> lore = Arrays.asList("&c&lWarning:",
                 "&7This product is very gay",
                 "&7if you click on this product,",
                 "&7you risk becoming gay too! BEWARE!!");
-        return new ProductItemDesign(Material.LEATHER_HELMET, displayName, lore);
+        return new ProductItemDesign(Material.LEATHER_HELMET, lore);
     }
 
     @Override

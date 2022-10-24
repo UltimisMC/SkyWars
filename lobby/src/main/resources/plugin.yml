@@ -1,6 +1,6 @@
 name: SkyWarsLobby
 version: ${project.version}
-main: com.ultimismc.skywars.lobby.SkyWarsLobbyPlugin
+main: com.ultimismc.skywars.lobby.LobbySkyWarsPlugin
 depend: [ PlaceholderAPI, LuckPerms ]
 authors: [ DirectPlan ]
 description: A custom skywars lobby plugin developed for the UltimisMC Network

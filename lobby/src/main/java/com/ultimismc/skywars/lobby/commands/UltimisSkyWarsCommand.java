@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.lobby.LobbyManager;
-import com.ultimismc.skywars.lobby.SkyWarsLobbyPlugin;
+import com.ultimismc.skywars.lobby.LobbySkyWarsPlugin;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ import xyz.directplan.directlib.config.ConfigHandler;
 public class UltimisSkyWarsCommand extends BaseCommand {
 
     @Dependency
-    private SkyWarsLobbyPlugin plugin;
+    private LobbySkyWarsPlugin plugin;
 
     @Dependency
     private ConfigHandler configHandler;

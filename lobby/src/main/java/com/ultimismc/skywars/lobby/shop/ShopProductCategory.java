@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.lobby.shop;
 
-import com.ultimismc.skywars.lobby.user.User;
+import com.ultimismc.skywars.core.user.User;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 /**
