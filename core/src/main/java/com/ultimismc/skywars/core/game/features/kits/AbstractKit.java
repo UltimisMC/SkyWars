@@ -1,4 +1,4 @@
-package com.ultimismc.skywars.core.game.kits;
+package com.ultimismc.skywars.core.game.features.kits;
 
 import lombok.Getter;
 

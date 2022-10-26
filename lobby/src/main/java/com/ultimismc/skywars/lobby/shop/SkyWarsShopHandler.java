@@ -1,5 +1,7 @@
 package com.ultimismc.skywars.lobby.shop;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.lobby.LobbyManager;
 import com.ultimismc.skywars.lobby.shop.main.MainProductCategoryBuilder;
 import com.ultimismc.skywars.core.user.User;
@@ -16,15 +18,17 @@ import xyz.directplan.directlib.shop.ShopHandler;
 public class SkyWarsShopHandler {
 
     private final ShopHandler<User> shopHandler;
+    private final FeatureHandler featureHandler;
 
     private ShopProductCategory mainShopCategory;
 
-    public SkyWarsShopHandler(MenuManager menuManager) {
-        this.shopHandler = new ShopHandler<>(menuManager);
+    public SkyWarsShopHandler(SkyWarsPlugin plugin) {
+        shopHandler = new ShopHandler<>(plugin.getMenuManager());
+        featureHandler = plugin.getFeatureHandler();
     }
 
     public void initializeShop() {
-        mainShopCategory = (ShopProductCategory) buildCategory(new MainProductCategoryBuilder(this));
+        mainShopCategory = (ShopProductCategory) buildCategory(new MainProductCategoryBuilder(featureHandler));
     }
 
     public void openShopMenu(User user) {

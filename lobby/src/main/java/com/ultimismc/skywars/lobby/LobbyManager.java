@@ -17,6 +17,8 @@ import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 @RequiredArgsConstructor
 public class LobbyManager {
 
+    private final SkyWarsPlugin plugin;
+
     private Location spawnLocation;
 
     private final LobbyScoreboard lobbyScoreboard;
@@ -24,9 +26,10 @@ public class LobbyManager {
     private final SkyWarsShopHandler shopHandler;
 
     public LobbyManager(SkyWarsPlugin plugin) {
+        this.plugin = plugin;
 
         menuManager = plugin.getMenuManager();
-        shopHandler = new SkyWarsShopHandler(menuManager);
+        shopHandler = new SkyWarsShopHandler(plugin);
 
         ScoreboardManager scoreboardManager = new ScoreboardManager(plugin, "Ultimis Skywars - Scoreboard Thread");
         lobbyScoreboard = new LobbyScoreboard(scoreboardManager);
@@ -35,6 +38,7 @@ public class LobbyManager {
     }
 
     public void initializeLobby() {
+        plugin.registerListeners(new LobbyListener());
 
         shopHandler.initializeShop();
     }

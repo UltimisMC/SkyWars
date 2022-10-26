@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.core.user;
 
 import com.ultimismc.skywars.core.game.GameStatistics;
-import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.TeamType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,18 +18,18 @@ public class UserStatistics {
     private int level;
     private int coins, souls, tokens;
 
-    private final Map<GameType, GameStatistics> gameStats = new HashMap<>();
+    private final Map<TeamType, GameStatistics> gameStats = new HashMap<>();
 
-    public GameStatistics getStatistics(GameType gameType) {
+    public GameStatistics getStatistics(TeamType gameType) {
         return gameStats.get(gameType);
     }
 
     public GameStatistics getSoloStatistics() {
-        return getStatistics(GameType.SOLO);
+        return getStatistics(TeamType.SOLO);
     }
 
     public GameStatistics getDoublesStatistics() {
-        return getStatistics(GameType.DOUBLES);
+        return getStatistics(TeamType.DOUBLES);
     }
 
     public int getSoloWins() {

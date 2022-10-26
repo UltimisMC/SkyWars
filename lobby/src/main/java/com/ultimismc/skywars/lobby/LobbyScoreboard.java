@@ -4,6 +4,7 @@ import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import lombok.RequiredArgsConstructor;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.scoreboard.ScoreboardManager;
@@ -46,7 +47,7 @@ public class LobbyScoreboard {
                         new Replacement("souls", souls), new Replacement("maximum-souls", 250),
                         new Replacement("tokens", tokens),
                         new Replacement("loot-chests", 0));
-
+        scoreboardLines = PlaceholderAPI.setPlaceholders(player, scoreboardLines);
         scoreboardManager.sendScoreboard(player, gameDisplayName, scoreboardLines);
     }
 

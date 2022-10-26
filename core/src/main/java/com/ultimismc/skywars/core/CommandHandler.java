@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core;
 
 import co.aikar.commands.*;
+import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import org.bukkit.ChatColor;

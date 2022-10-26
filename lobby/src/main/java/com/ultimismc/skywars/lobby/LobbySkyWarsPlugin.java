@@ -32,6 +32,7 @@ public class LobbySkyWarsPlugin extends SkyWarsPlugin {
 
         userListener.setUserLoadedListener(new LobbyUserLoadedListener(lobbyManager));
         userListener.setUserSavedListener(new LobbyUserSavedListener(lobbyManager));
+
     }
 
 

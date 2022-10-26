@@ -26,6 +26,7 @@ public class UserListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        event.setJoinMessage(null);
         userManager.loadUserAsync(player.getUniqueId(), true, user -> {
             user.setPlayer(player);
             user.setOnline(true);
@@ -36,7 +37,7 @@ public class UserListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-
+        event.setQuitMessage(null);
         userManager.saveUserAsync(player.getUniqueId(), true, user -> {
             user.setOnline(false);
             if(userSavedListener != null) userSavedListener.onUserSaved(user);

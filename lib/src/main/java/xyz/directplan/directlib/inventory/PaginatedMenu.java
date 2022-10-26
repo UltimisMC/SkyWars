@@ -17,10 +17,16 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
 
     private int page = 1;
     private final int pageSize;
+    private final PaginatedModel paginatedModel;
 
-    public PaginatedMenu(String title, int rows, int pageSize) {
+    public PaginatedMenu(String title, int rows, PaginatedModel paginatedModel) {
         super(title, rows);
-        this.pageSize = pageSize;
+        this.pageSize = paginatedModel.getPageSize();
+        this.paginatedModel = paginatedModel;
+    }
+
+    public PaginatedMenu(String title, int rows) {
+        this(title, rows, PaginatedModel.DEFAULT_MODEL);
     }
 
     public void nextPage(Player player){
@@ -50,8 +56,8 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
 
     @Override
     public void build(Player player) {
-        int nextPageSlot = 8;
-        int previousPageSlot = 0;
+        int nextPageSlot = paginatedModel.getNextPageSlot();
+        int previousPageSlot = paginatedModel.getPreviousPageSlot();
         int totalPages = this.getTotalPages();
 
         // Building the page here before
@@ -63,19 +69,27 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
 
         if(this.page < totalPages){
             int currentPage = (page + 1);
-            String nextPageDisplayName = "&bNext Page &7("+currentPage+"/" + totalPages + ")";
+            String nextPageDisplayName = "&aNext Page &7("+currentPage+"/" + totalPages + ")";
 
             MenuItem nextPageItem = new MenuItem(Material.ARROW, nextPageDisplayName, (item, clicker, clickType) -> this.nextPage(clicker));
             this.setSlot(nextPageSlot, nextPageItem);
         }
         if(this.page > 1) {
             int previousPage = (page - 1);
-            String previousPageDisplayName = "&bPrevious page &7(" + previousPage + "/"+ totalPages +")";
+            String previousPageDisplayName = "&aPrevious page &7(" + previousPage + "/"+ totalPages +")";
 
             MenuItem previousPageItem = new MenuItem(Material.ARROW, previousPageDisplayName, (item, clicker, clickType) -> this.previousPage(clicker));
             this.setSlot(previousPageSlot, previousPageItem);
         }
-        buildPage(player, currentPageContents);
+
+        int startSlotIndex = 0;
+        for(T pageContent : currentPageContents) {
+            int modelSlot = paginatedModel.modelSlot(startSlotIndex);
+
+            MenuItem menuItem = buildContent(player, pageContent);
+            setSlot(modelSlot, menuItem);
+            startSlotIndex++;
+        }
     }
 
     public List<T> getCurrentPageList(){
@@ -100,5 +114,5 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
 
     public abstract Collection<T> getList();
 
-    public abstract void buildPage(Player player, List<T> pageContents);
+    public abstract MenuItem buildContent(Player player, T content);
 }

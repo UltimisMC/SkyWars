@@ -8,9 +8,16 @@ import xyz.directplan.directlib.shop.AbstractProductCategory;
  */
 public abstract class UserProductCategory extends AbstractProductCategory<User> {
 
+    public UserProductCategory(String name, int itemSlot, int inventoryRows, boolean paginated, boolean enabled) {
+        super(name, itemSlot, inventoryRows, paginated, enabled);
+    }
+
+    public UserProductCategory(String name, int itemSlot, int inventoryRows, boolean paginated) {
+        super(name, itemSlot, inventoryRows, paginated);
+    }
 
     public UserProductCategory(String name, int itemSlot, int inventoryRows) {
-        super(name, itemSlot, inventoryRows);
+        this(name, itemSlot, inventoryRows, false);
     }
 
     public UserProductCategory(String name, int itemSlot) {
