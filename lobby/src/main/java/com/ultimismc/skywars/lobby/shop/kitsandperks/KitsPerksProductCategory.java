@@ -21,7 +21,7 @@ public class KitsPerksProductCategory extends UserProductCategory {
     @Override
     public ProductItemDesign designCategory(User user) {
 
-        List<String> lore = ShopMessageKeys.MY_COSMETICS_CATEGORY_LORE.getStringList();
+        List<String> lore = ShopMessageKeys.KITS_PERKS_CATEGORY_LORE.getStringList();
         return new ProductItemDesign(Material.EYE_OF_ENDER, ChatColor.GREEN, lore);
     }
 }

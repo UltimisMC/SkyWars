@@ -13,16 +13,18 @@ public abstract class PaginatedModel {
 
     private final int pageSize, nextPageSlot, previousPageSlot;
     private final int[] modelMatrix;
+    private final boolean header;
 
-    public PaginatedModel(int pageSize, int nextPageSlot, int previousPageSlot, int[] modelMatrix) {
+    public PaginatedModel(int pageSize, int nextPageSlot, int previousPageSlot, boolean header, int[] modelMatrix) {
         this.pageSize = pageSize;
         this.nextPageSlot = nextPageSlot;
         this.previousPageSlot = previousPageSlot;
+        this.header = header;
         this.modelMatrix = modelMatrix;
     }
 
-    public PaginatedModel(int pageSize, int nextPageSlot, int previousPageSlot) {
-        this(pageSize, nextPageSlot, previousPageSlot, null);
+    public PaginatedModel(int pageSize, int nextPageSlot, int previousPageSlot, boolean header) {
+        this(pageSize, nextPageSlot, previousPageSlot, header, null);
     }
 
     public int modelSlot(int slot) {

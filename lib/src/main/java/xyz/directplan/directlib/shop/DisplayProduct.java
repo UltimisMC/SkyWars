@@ -1,17 +1,33 @@
 package xyz.directplan.directlib.shop;
 
+import org.bukkit.Material;
+
+import java.util.List;
+
 /**
  * @author DirectPlan
  */
-public abstract class DisplayProduct<U> extends AbstractProduct<U> {
+public class DisplayProduct<U> extends AbstractProduct<U> {
 
+    private final Material displayMaterial;
+    private final List<String> lore;
 
-    public DisplayProduct(String name, int itemSlot) {
+    public DisplayProduct(Material displayMaterial, String name, List<String> lore, int itemSlot) {
         super(name, itemSlot);
+        this.displayMaterial = displayMaterial;
+        this.lore = lore;
     }
 
     @Override
     public boolean isDisplay() {
         return true;
     }
+
+    @Override
+    public ProductItemDesign designProduct(U unused) {
+        return new ProductItemDesign(displayMaterial, lore);
+    }
+
+    @Override
+    public void executeAction(U unused) {}
 }

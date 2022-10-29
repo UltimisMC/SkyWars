@@ -63,7 +63,7 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
         // Building the page here before
         List<T> currentPageContents = this.getCurrentPageList();
 
-        this.buildHeader();
+        if(paginatedModel.isHeader()) buildHeader();
 
         this.setTitle(getTitle().replace("current_page", String.valueOf(page)));
 
@@ -87,6 +87,7 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
             int modelSlot = paginatedModel.modelSlot(startSlotIndex);
 
             MenuItem menuItem = buildContent(player, pageContent);
+            if(menuItem == null) continue;
             setSlot(modelSlot, menuItem);
             startSlotIndex++;
         }

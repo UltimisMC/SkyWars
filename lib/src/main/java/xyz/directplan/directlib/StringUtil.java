@@ -119,6 +119,6 @@ public class StringUtil {
     }
 
     public static String getReadableNumber(int number) {
-        return readableNumberPattern.format(number);
+        return String.format("%,d", number);
     }
 }

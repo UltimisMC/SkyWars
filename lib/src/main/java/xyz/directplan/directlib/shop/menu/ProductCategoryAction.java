@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.inventory.ActionableItem;
+import xyz.directplan.directlib.inventory.ConfirmableActionMenu;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.MenuItem;
+import xyz.directplan.directlib.shop.ConfirmableProduct;
 import xyz.directplan.directlib.shop.Product;
 import xyz.directplan.directlib.shop.ProductCategory;
 import xyz.directplan.directlib.shop.ShopHandler;
@@ -31,6 +33,16 @@ public class ProductCategoryAction<U> implements ActionableItem {
             return;
         }
 
+        ProductCategory<U> productPath = product.getProductPath();
+        if(productPath != null) {
+            shopHandler.openProductCategory(clicker, user, currentMenu, productPath);
+            return;
+        }
+
+        if(product instanceof ConfirmableProduct) {
+            shopHandler.openInventory(clicker, new ConfirmableActionMenu(item, () -> product.executeAction(user)));
+            return;
+        }
         product.executeAction(user);
     }
 }

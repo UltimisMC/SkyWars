@@ -2,7 +2,9 @@ package xyz.directplan.directlib;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -261,4 +263,12 @@ public class DateUtil
         }
         return !found ? 1L : totalTime * 1000L;
     }
+
+
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+
+    public static String getFormattedDate(long date) {
+        return simpleDateFormat.format(new Date(date));
+    }
+
 }

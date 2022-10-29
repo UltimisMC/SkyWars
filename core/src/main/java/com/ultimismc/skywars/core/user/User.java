@@ -1,5 +1,7 @@
 package com.ultimismc.skywars.core.user;
 
+import com.ultimismc.skywars.core.game.currency.Currency;
+import com.ultimismc.skywars.core.game.features.Purchasable;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +10,8 @@ import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.InventoryUser;
 
+import javax.print.attribute.standard.PrinterURI;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -25,6 +29,7 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
     private boolean online;
 
     private UserStatistics statistics = new UserStatistics();
+    private UserAssetsHandler userAssetsHandler = new UserAssetsHandler();
 
     private UserPlayerInventoryUi currentInventoryUi;
 
@@ -40,6 +45,28 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
 
     public void sendMessage(String message) {
         if(player != null) player.sendMessage(PluginUtility.translateMessage(message));
+    }
+
+    public Collection<UserAsset> getAssets() {
+        return userAssetsHandler.getAssets();
+    }
+
+    public UserAsset getAsset(Purchasable purchasable) {
+        return userAssetsHandler.getAsset(purchasable);
+    }
+
+    public void addAsset(UserAsset asset) {
+        userAssetsHandler.addAsset(asset);
+    }
+
+    public void purchaseAsset(Purchasable purchasable) {
+        userAssetsHandler.purchaseAsset(this, purchasable);
+    }
+
+    public boolean canAfford(Purchasable purchasable) {
+        if(purchasable == null) return false;
+        Currency currency = purchasable.getCurrency();
+        return currency.canAfford(this, purchasable);
     }
 
     @Override

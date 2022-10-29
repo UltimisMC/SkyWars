@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class GameStatistics {
 
-    private int wins, loses;
+    private int wins, losses;
 
     private int kills, deaths;
     private int bowKills, voidKills;

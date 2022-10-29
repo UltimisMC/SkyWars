@@ -10,7 +10,7 @@ public enum TeamType {
 
 
     SOLO("Solo", 1),
-    DOUBLES("Solo",2),
+    DOUBLES("Doubles",2),
     ;
 
     private final String name;

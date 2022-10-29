@@ -18,7 +18,9 @@ public interface Product<U> {
 
     boolean isCategory();
 
-    ProductItemDesign designItem(U user);
+    ProductCategory<U> getProductPath();
+
+    ProductItemDesign designProduct(U user);
 
     void executeAction(U user);
 }

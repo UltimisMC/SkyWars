@@ -2,6 +2,8 @@ package com.ultimismc.skywars.core;
 
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.placeholders.PlaceholderExpansionHandler;
+import com.ultimismc.skywars.core.placeholders.SkyWarsPlaceholderExpansion;
 import com.ultimismc.skywars.core.storage.UserStorage;
 import com.ultimismc.skywars.core.user.UserListener;
 import com.ultimismc.skywars.core.user.UserManager;
@@ -30,6 +32,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     protected CommandHandler commandHandler;
     protected UserListener userListener;
     protected FeatureHandler featureHandler;
+    protected PlaceholderExpansionHandler placeholderExpansionHandler;
 
     public abstract void enable();
 
@@ -47,7 +50,11 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         menuManager = new MenuManager();
         featureHandler = new FeatureHandler(this);
         commandHandler = new CommandHandler(this);
+        placeholderExpansionHandler = new PlaceholderExpansionHandler();
 
+        featureHandler.initializeFeatures();
+
+        placeholderExpansionHandler.registerPlaceholderExpansion(new SkyWarsPlaceholderExpansion(this));
         registerListeners(new MenuListener(menuManager), userListener = new UserListener(userManager));
 
         enable();

@@ -1,6 +1,8 @@
 package xyz.directplan.directlib.shop.menu;
 
+import org.bukkit.entity.Player;
 import xyz.directplan.directlib.inventory.InventoryUI;
+import xyz.directplan.directlib.inventory.MenuItem;
 import xyz.directplan.directlib.inventory.PaginatedMenu;
 import xyz.directplan.directlib.inventory.PaginatedModel;
 import xyz.directplan.directlib.shop.Product;
@@ -12,13 +14,14 @@ import java.util.Collection;
 /**
  * @author DirectPlan
  */
-public abstract class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Product<U>> {
+public class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Product<U>> {
 
     protected final ShopHandler<U> shopHandler;
 
     private final ProductCategory<U> productCategory;
     protected final InventoryUI previousMenu;
     protected final U user;
+    private final ProductMenuBuilder<U> productMenuBuilder;
 
     public PaginatedProductCategoryMenu(ShopHandler<U> shopHandler, U user, InventoryUI previousMenu, ProductCategory<U> productCategory, PaginatedModel paginatedModel) {
         super(productCategory.getName(), productCategory.getInventoryRows(), paginatedModel);
@@ -27,6 +30,8 @@ public abstract class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Prod
         this.productCategory = productCategory;
         this.previousMenu = previousMenu;
         this.user = user;
+
+        productMenuBuilder = new ProductMenuBuilder<>(shopHandler, user, this);
     }
 
     public PaginatedProductCategoryMenu(ShopHandler<U> shopHandler, U user, ProductCategory<U> productCategory) {
@@ -35,5 +40,18 @@ public abstract class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Prod
     @Override
     public Collection<Product<U>> getList() {
         return productCategory.getProducts();
+    }
+
+    @Override
+    public MenuItem buildContent(Player player, Product<U> product) {
+        return productMenuBuilder.buildProduct(product);
+    }
+
+    @Override
+    public void build(Player player) {
+        super.build(player);
+        if(previousMenu == null) return;
+
+        productMenuBuilder.addGoBackButton(player, this, previousMenu);
     }
 }

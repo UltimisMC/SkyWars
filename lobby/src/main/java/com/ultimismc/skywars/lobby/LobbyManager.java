@@ -2,6 +2,8 @@ package com.ultimismc.skywars.lobby;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.lobby.menu.PurchasesMenu;
+import com.ultimismc.skywars.lobby.menu.UserStatsMenu;
 import com.ultimismc.skywars.lobby.shop.SkyWarsShopHandler;
 import com.ultimismc.skywars.core.user.User;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +64,18 @@ public class LobbyManager {
 
     public void openShopMenu(User user) {
         shopHandler.openShopMenu(user);
+    }
+
+    public void openStatsMenu(User user) {
+        menuManager.openInventory(user.getPlayer(), new UserStatsMenu(user));
+    }
+
+    public void openPurchasesMenu(Player player, User user) {
+        menuManager.openInventory(player, new PurchasesMenu(user));
+    }
+
+    public void openPurchasesMenu(User user) {
+        openPurchasesMenu(user.getPlayer(), user);
     }
 
     public void setSpawnLocation(Location location) {

@@ -17,7 +17,7 @@ import java.util.Map;
 @Getter
 public enum MessageConfigKeys implements ConfigEntry {
 
-    SKYWARS_LOBBY_SCOREBOARD_DISPLAYNAME("skywars.lobby.scoreboard.display-name", "&b&lSKYWARS"),
+    SKYWARS_LOBBY_SCOREBOARD_DISPLAYNAME("skywars-lobby.scoreboard.display-name", "&b&lSKYWARS"),
     SKYWARS_LOBBY_SCOREBOARD_LINES("skywars-lobby.scoreboard.lines",
             Arrays.asList(" %servertime_MMM dd, yyyy% &8L21G",
                     " ",
@@ -30,8 +30,6 @@ public enum MessageConfigKeys implements ConfigEntry {
                     " ",
                     "&fCoins: &6%coins%",
                     "&fSouls: &b%souls%&7/%maximum-souls%",
-                    "&fTokens: &2%tokens%",
-                    "&fLoot Chests: &e%loot-chests%",
                     " ",
                     "&3play.ultimismc.com"))
 
@@ -43,6 +41,20 @@ public enum MessageConfigKeys implements ConfigEntry {
     SKYWARS_LOBBY_SHOP_ITEM_LORE("skywars-lobby.shop-item.lore",
             Arrays.asList("&7Coins: &6%coins%")),
 
+
+    SKYWARS_STATISTICS_LORE("skywars-lobby.statistics-lore",
+            Arrays.asList("&7Wins: &a%wins%",
+                    "&7Losses: &a%losses%",
+                    " ",
+                    "&7Kills: &a%kills%",
+                    "&7Deaths: &a%deaths%",
+                    " ",
+                    "&7Bow Kills: &a%bow-kills%",
+                    "&7Void Kills: &a%void-kills%",
+                    " ",
+                    "&7Arrows Shot: &a%arrows-shot%",
+                    "&7Arrows Hit: &a%arrows-hit%",
+                    "&7Chests Opened: &a%chests-opened%")),
     ;
 
     private final String key;

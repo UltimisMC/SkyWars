@@ -1,10 +1,6 @@
 package xyz.directplan.directlib.shop;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.bukkit.Material;
-import xyz.directplan.directlib.inventory.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +32,7 @@ public abstract class AbstractProductCategory<U> extends AbstractProduct<U> impl
     public abstract ProductItemDesign designCategory(U user);
 
     @Override
-    public ProductItemDesign designItem(U user) {
+    public ProductItemDesign designProduct(U user) {
         return designCategory(user);
     }
 

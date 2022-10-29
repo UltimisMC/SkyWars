@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 
 import java.util.UUID;
@@ -24,8 +26,9 @@ public class MenuListener implements Listener {
         Player player = (Player) event.getWhoClicked();
 
         // Player Inventory UI
+        Inventory inventory = event.getClickedInventory();
         InventoryUser inventoryUser = menuManager.getInventoryUser(player);
-        if(inventoryUser != null) {
+        if(inventory instanceof PlayerInventory && inventoryUser != null) {
             PlayerInventoryUI playerInventoryUI = inventoryUser.getInventoryUi();
             playerInventoryUI.onClick(event);
         }

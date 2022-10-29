@@ -16,6 +16,10 @@ public abstract class UserProductCategory extends AbstractProductCategory<User> 
         super(name, itemSlot, inventoryRows, paginated);
     }
 
+    public UserProductCategory(String name, int itemSlot, boolean paginated) {
+        super(name, itemSlot, 6, paginated);
+    }
+
     public UserProductCategory(String name, int itemSlot, int inventoryRows) {
         this(name, itemSlot, inventoryRows, false);
     }

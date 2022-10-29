@@ -35,7 +35,6 @@ public class LobbyScoreboard {
 
         int coins = userStatistics.getCoins();
         int souls = userStatistics.getSouls();
-        int tokens = userStatistics.getTokens();
 
         List<String> scoreboardLines = MessageConfigKeys.SKYWARS_LOBBY_SCOREBOARD_LINES
                 .getStringList(new Replacement("level", level),
@@ -44,9 +43,7 @@ public class LobbyScoreboard {
                         new Replacement("doubles-kills", doublesKills),
                         new Replacement("doubles-wins", doublesWins),
                         new Replacement("coins", coins),
-                        new Replacement("souls", souls), new Replacement("maximum-souls", 250),
-                        new Replacement("tokens", tokens),
-                        new Replacement("loot-chests", 0));
+                        new Replacement("souls", souls), new Replacement("maximum-souls", 250));
         scoreboardLines = PlaceholderAPI.setPlaceholders(player, scoreboardLines);
         scoreboardManager.sendScoreboard(player, gameDisplayName, scoreboardLines);
     }

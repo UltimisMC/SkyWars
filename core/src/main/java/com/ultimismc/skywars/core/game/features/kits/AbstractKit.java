@@ -1,6 +1,8 @@
 package com.ultimismc.skywars.core.game.features.kits;
 
+import com.ultimismc.skywars.core.game.currency.Currency;
 import lombok.Getter;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,20 +13,48 @@ import java.util.List;
 @Getter
 public abstract class AbstractKit implements Kit {
 
-    private final KitRarity rarity;
+    private final Currency currency = Currency.COIN_CURRENCY;
+
+    private final String category = "Kit";
+    private final Material displayMaterial;
+    private final short durability;
     private final String name;
-    private final int price;
+    private final KitRarity rarity;
+    private final boolean soulWellKit;
 
     private final List<KitItem> items = new ArrayList<>();
 
-
-    public AbstractKit(KitRarity rarity, String name, int price) {
-        this.rarity = rarity;
+    public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity, boolean soulWellKit) {
+        this.displayMaterial = displayMaterial;
+        this.durability = (short) durability;
         this.name = name;
-        this.price = price;
+        this.rarity = rarity;
+        this.soulWellKit = soulWellKit;
+    }
+
+    public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity) {
+        this(displayMaterial, durability, name, rarity, false);
+    }
+
+    public AbstractKit(Material displayMaterial, String name, KitRarity rarity, boolean soulWellKit) {
+        this(displayMaterial, 0, name, rarity, soulWellKit);
+    }
+
+    public AbstractKit(Material material, String name, KitRarity rarity) {
+        this(material, name, rarity, false);
+    }
+
+    @Override
+    public int getPrice() {
+        return rarity.getPrice();
     }
 
     public void addKitItem(KitItem item) {
         items.add(item);
+    }
+
+    @Override
+    public short getDisplayDurability() {
+        return durability;
     }
 }

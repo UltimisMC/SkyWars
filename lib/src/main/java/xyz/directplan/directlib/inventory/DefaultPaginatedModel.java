@@ -7,7 +7,7 @@ public class DefaultPaginatedModel extends PaginatedModel {
 
 
     public DefaultPaginatedModel() {
-        super(18, 8, 0);
+        super(18, 8, 0, true);
     }
 
     @Override

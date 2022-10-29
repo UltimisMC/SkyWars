@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import xyz.directplan.directlib.inventory.ItemEnchantment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,8 @@ public class KitItem {
     private final List<String> lore;
     private final int amount;
 
+    private final List<ItemEnchantment> enchantments = new ArrayList<>();
+
     @Setter private ItemAbility ability;
 
 
@@ -33,5 +38,13 @@ public class KitItem {
 
     public KitItem(Material material, String displayName) {
         this(material, displayName, null);
+    }
+
+    public void addItemEnchantment(ItemEnchantment enchantment) {
+        enchantments.add(enchantment);
+    }
+
+    public void addItemEnchantment(Enchantment enchantment, String name, int level) {
+        addItemEnchantment(new ItemEnchantment(enchantment, name, level));
     }
 }

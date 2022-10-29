@@ -1,0 +1,44 @@
+package com.ultimismc.skywars.lobby.menu;
+
+import com.ultimismc.skywars.core.game.features.Purchasable;
+import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserAsset;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import xyz.directplan.directlib.DateUtil;
+import xyz.directplan.directlib.inventory.MenuItem;
+import xyz.directplan.directlib.inventory.PaginatedMenu;
+import xyz.directplan.directlib.inventory.PaginatedModel;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+/**
+ * @author DirectPlan
+ */
+public class PurchasesMenu extends PaginatedMenu<UserAsset> {
+
+    private final User user;
+
+    public PurchasesMenu(User user) {
+        super(user.getName() + " Purchases", 3, PaginatedModel.DEFAULT_MODEL);
+
+        this.user = user;
+    }
+
+    @Override
+    public Collection<UserAsset> getList() {
+        return user.getAssets();
+    }
+
+    @Override
+    public MenuItem buildContent(Player player, UserAsset asset) {
+
+        Purchasable purchasable = asset.getPurchasable();
+        String name = asset.getName();
+        MenuItem menuItem = new MenuItem(purchasable.getDisplayMaterial(), ChatColor.GREEN + name);
+        menuItem.setLore(Arrays.asList("&7Purchased Price: " + asset.getDisplayPrice(),
+                "&7Purchased Date: &b" + DateUtil.getFormattedDate(asset.getAcquiredAt())));
+        return menuItem;
+    }
+}

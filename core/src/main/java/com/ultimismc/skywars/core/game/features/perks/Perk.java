@@ -1,9 +1,15 @@
 package com.ultimismc.skywars.core.game.features.perks;
 
+import com.ultimismc.skywars.core.game.features.Purchasable;
+
 /**
  * @author DirectPlan
  */
-public interface Perk {
+public interface Perk extends Purchasable {
 
-    String getName();
+    PerkRarity getRarity();
+
+    String getDescription();
+
+    boolean isSoulWellPerk();
 }
