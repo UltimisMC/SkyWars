@@ -2,6 +2,7 @@ package com.ultimismc.skywars.core.game.features;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
+import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.perks.PerkManager;
 import lombok.Getter;
 
@@ -19,6 +20,7 @@ public class FeatureHandler {
 
     private final KitManager kitManager;
     private final PerkManager perkManager;
+    private final LevelManager levelManager;
 
     private final List<FeatureInitializer> featureInitializers = new ArrayList<>();
 
@@ -27,8 +29,9 @@ public class FeatureHandler {
 
         kitManager = new KitManager(plugin);
         perkManager = new PerkManager(plugin);
+        levelManager = new LevelManager(plugin);
 
-        addInitializers(kitManager,perkManager);
+        addInitializers(kitManager, perkManager, levelManager);
     }
 
     public void initializeFeatures() {
