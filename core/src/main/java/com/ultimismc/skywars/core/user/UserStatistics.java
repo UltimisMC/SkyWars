@@ -2,6 +2,7 @@ package com.ultimismc.skywars.core.user;
 
 import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.game.features.level.Level;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,8 @@ import java.util.Map;
 @Setter
 public class UserStatistics {
 
-    private int level;
+    private Level level;
+    private int totalExp = 185000;
     private int coins, souls;
 
     private final Map<TeamType, GameStatistics> gameStats = new HashMap<>();
@@ -36,6 +38,10 @@ public class UserStatistics {
 
     public GameStatistics getDoublesStatistics() {
         return getStatistics(TeamType.DOUBLES);
+    }
+
+    public void increaseExp(int increase) {
+        totalExp += increase;
     }
 
     public void increaseCoins(int coins) {
