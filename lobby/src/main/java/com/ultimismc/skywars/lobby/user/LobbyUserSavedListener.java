@@ -9,12 +9,13 @@ import lombok.RequiredArgsConstructor;
  * @author DirectPlan
  */
 @RequiredArgsConstructor
-public class LobbyUserSavedListener implements UserSavedListener {
+public class LobbyUserSavedListener extends UserSavedListener {
 
     private final LobbyManager lobbyManager;
 
     @Override
     public void onUserSaved(User user) {
+        super.onUserSaved(user);
         lobbyManager.handleQuit(user);
     }
 }
