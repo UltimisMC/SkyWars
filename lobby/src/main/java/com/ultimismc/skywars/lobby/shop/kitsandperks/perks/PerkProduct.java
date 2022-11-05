@@ -3,8 +3,6 @@ package com.ultimismc.skywars.lobby.shop.kitsandperks.perks;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserAsset;
-import com.ultimismc.skywars.lobby.shop.UserProduct;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import xyz.directplan.directlib.StringUtil;
@@ -16,25 +14,20 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-public class PerkProduct extends UserProduct {
+public class PerkProduct {
 
     protected final Perk perk;
 
     public PerkProduct(Perk perk) {
-        super(perk.getName(), 0);
         this.perk = perk;
     }
 
-    @Override
     public ProductItemDesign designProduct(User user) {
-        UserAsset asset = user.getAsset(perk);
-        if(asset != null) return null;
-
         Material displayMaterial = perk.getDisplayMaterial();
         short displayDurability = perk.getDisplayDurability();
         String description = perk.getDescription();
         PerkRarity rarity = perk.getRarity();
-        boolean soulWellPerk = perk.isSoulWellPerk();
+        boolean soulWellPerk = perk.isSoulWell();
 
         List<String> lore = new ArrayList<>(StringUtil.getCorrectDescription(ChatColor.GRAY, description, 31));
         lore.add(" ");
@@ -45,10 +38,5 @@ public class PerkProduct extends UserProduct {
             lore.add("&bAlso found in the Soul Well!");
         }
         return new ProductItemDesign(displayMaterial, displayDurability, null, lore);
-    }
-
-    @Override
-    public void executeAction(User user) {
-
     }
 }
