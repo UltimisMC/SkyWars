@@ -2,7 +2,7 @@ package com.ultimismc.skywars.lobby.menu;
 
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserAsset;
+import com.ultimismc.skywars.core.user.asset.UserAsset;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.DateUtil;
