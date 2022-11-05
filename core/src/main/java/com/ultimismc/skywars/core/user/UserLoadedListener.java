@@ -1,9 +1,20 @@
 package com.ultimismc.skywars.core.user;
 
+import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.game.features.level.LevelManager;
+
 /**
  * @author DirectPlan
  */
-public interface UserLoadedListener {
+public class UserLoadedListener {
 
-    void onUserLoaded(User user);
+    private final LevelManager levelManager;
+
+    public UserLoadedListener(FeatureHandler featureHandler) {
+        levelManager = featureHandler.getLevelManager();
+    }
+
+    public void onUserLoaded(User user) {
+        levelManager.calculateUserLevel(user);
+    }
 }
