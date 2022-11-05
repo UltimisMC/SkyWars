@@ -18,7 +18,7 @@ public abstract class AbstractPerk implements Perk {
     private final short durability;
     private final String name;
     private final PerkRarity rarity;
-    private final boolean soulWellPerk;
+    private final boolean soulWell;
     private final String description;
 
     public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, boolean soulWellPerk, String description) {
@@ -26,7 +26,7 @@ public abstract class AbstractPerk implements Perk {
         this.durability = (short) durability;
         this.name = name;
         this.rarity = rarity;
-        this.soulWellPerk = soulWellPerk;
+        this.soulWell = soulWellPerk;
         this.description = description;
     }
 
