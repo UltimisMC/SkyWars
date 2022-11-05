@@ -1,5 +1,7 @@
 package com.ultimismc.skywars.lobby;
 
+import com.ultimismc.skywars.core.game.features.level.Level;
+import com.ultimismc.skywars.core.game.features.level.Prestige;
 import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
@@ -21,23 +23,23 @@ public class LobbyScoreboard {
     private final ScoreboardManager scoreboardManager;
 
     public void updateGameScoreboard(User user) {
-
         Player player = user.getPlayer();
 
         String gameDisplayName = MessageConfigKeys.SKYWARS_LOBBY_SCOREBOARD_DISPLAYNAME.getStringValue();
         UserStatistics userStatistics = user.getStatistics();
-        int level = userStatistics.getLevel();
+        Level level = userStatistics.getLevel();
+        Prestige selectedPrestigeIcon = user.getSelectedPrestigeIcon();
+        String levelDisplayName = level.getDisplayName(selectedPrestigeIcon);
 
         int soloKills = userStatistics.getSoloKills();
         int soloWins = userStatistics.getSoloWins();
         int doublesKills = userStatistics.getDoublesKills();
         int doublesWins = userStatistics.getDoublesWins();
-
         int coins = userStatistics.getCoins();
         int souls = userStatistics.getSouls();
 
         List<String> scoreboardLines = MessageConfigKeys.SKYWARS_LOBBY_SCOREBOARD_LINES
-                .getStringList(new Replacement("level", level),
+                .getStringList(new Replacement("level", levelDisplayName),
                         new Replacement("solo-kills", soloKills),
                         new Replacement("solo-wins", soloWins),
                         new Replacement("doubles-kills", doublesKills),
