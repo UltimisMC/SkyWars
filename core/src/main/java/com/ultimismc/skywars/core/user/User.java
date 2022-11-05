@@ -2,6 +2,11 @@ package com.ultimismc.skywars.core.user;
 
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
+import com.ultimismc.skywars.core.game.features.level.Level;
+import com.ultimismc.skywars.core.game.features.level.Prestige;
+import com.ultimismc.skywars.core.user.asset.UserAsset;
+import com.ultimismc.skywars.core.user.asset.UserAssetsHandler;
+import com.ultimismc.skywars.core.user.setting.UserSettingHandler;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +15,6 @@ import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.InventoryUser;
 
-import javax.print.attribute.standard.PrinterURI;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -27,11 +31,15 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
     private Player player;
     private String name;
     private boolean online;
+    private boolean scramble;
+    private Prestige selectedPrestigeIcon;
 
     private UserStatistics statistics = new UserStatistics();
     private UserAssetsHandler userAssetsHandler = new UserAssetsHandler();
+    private UserSettingHandler userSettingHandler = new UserSettingHandler();
 
     private UserPlayerInventoryUi currentInventoryUi;
+
 
     public String getName() {
         if(player != null) return player.getName();
@@ -67,6 +75,14 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         if(purchasable == null) return false;
         Currency currency = purchasable.getCurrency();
         return currency.canAfford(this, purchasable);
+    }
+
+    public Level getLevel() {
+        return statistics.getLevel();
+    }
+
+    public void setLevel(Level level) {
+        statistics.setLevel(level);
     }
 
     @Override
