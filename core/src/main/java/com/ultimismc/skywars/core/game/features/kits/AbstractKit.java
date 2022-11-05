@@ -20,7 +20,7 @@ public abstract class AbstractKit implements Kit {
     private final short durability;
     private final String name;
     private final KitRarity rarity;
-    private final boolean soulWellKit;
+    private final boolean soulWell;
 
     private final List<KitItem> items = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public abstract class AbstractKit implements Kit {
         this.durability = (short) durability;
         this.name = name;
         this.rarity = rarity;
-        this.soulWellKit = soulWellKit;
+        this.soulWell = soulWellKit;
     }
 
     public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity) {
