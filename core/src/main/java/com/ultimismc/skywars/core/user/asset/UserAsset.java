@@ -1,9 +1,9 @@
-package com.ultimismc.skywars.core.user;
+package com.ultimismc.skywars.core.user.asset;
 
-import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author DirectPlan
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class UserAsset {
 
     private final Purchasable purchasable;
-    private boolean activated;
+    @Setter private boolean activated;
     private long acquiredAt;
 
     public UserAsset(Purchasable purchasable, long acquiredAt, boolean activated) {
@@ -32,5 +32,9 @@ public class UserAsset {
 
     public String getDisplayPrice() {
         return purchasable.getDisplayPrice();
+    }
+
+    public void toggleAsset() {
+        this.activated = !activated;
     }
 }
