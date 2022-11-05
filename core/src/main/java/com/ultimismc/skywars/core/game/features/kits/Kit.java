@@ -12,6 +12,4 @@ public interface Kit extends Purchasable {
     KitRarity getRarity();
 
     List<KitItem> getItems();
-
-    boolean isSoulWellKit();
 }
