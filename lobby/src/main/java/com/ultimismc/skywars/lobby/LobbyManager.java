@@ -50,7 +50,6 @@ public class LobbyManager {
         if(spawnLocation != null) {
             player.teleport(spawnLocation);
         }
-
         lobbyScoreboard.updateGameScoreboard(user);
 
         menuManager.applyDesign(new LobbyPlayerInventoryUi(this, user));
