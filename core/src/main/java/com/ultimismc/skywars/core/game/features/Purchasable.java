@@ -18,6 +18,8 @@ public interface Purchasable {
 
     short getDisplayDurability();
 
+    boolean isSoulWell();
+
     Currency getCurrency();
 
     default String getDisplayPrice() {
