@@ -33,7 +33,7 @@ public class LobbySkyWarsPlugin extends SkyWarsPlugin {
         commandHandler.registerCommands(new UltimisSkyWarsCommand(), new ShopCommand(),
                 new StatsCommand(), new PurchasesCommand());
 
-        userListener.setUserLoadedListener(new LobbyUserLoadedListener(lobbyManager, featureHandler));
+        userListener.setUserLoadedListener(new LobbyUserLoadedListener(lobbyManager, this));
         userListener.setUserSavedListener(new LobbyUserSavedListener(lobbyManager));
 
     }

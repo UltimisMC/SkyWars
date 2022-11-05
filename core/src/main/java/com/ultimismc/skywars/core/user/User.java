@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.Level;
 import com.ultimismc.skywars.core.game.features.level.Prestige;
+import com.ultimismc.skywars.core.rank.Rank;
 import com.ultimismc.skywars.core.user.asset.UserAsset;
 import com.ultimismc.skywars.core.user.asset.UserAssetsHandler;
 import com.ultimismc.skywars.core.user.setting.UserSettingHandler;
@@ -31,6 +32,8 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
     private Player player;
     private String name;
     private boolean online;
+    private Rank rank;
+
     private boolean scramble;
     private Prestige selectedPrestigeIcon;
 
