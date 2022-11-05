@@ -3,8 +3,9 @@ package com.ultimismc.skywars.lobby.shop.kitsandperks.perks;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserAsset;
+import com.ultimismc.skywars.core.user.asset.UserAsset;
 import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
+import com.ultimismc.skywars.lobby.shop.UserConfirmableProduct;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
@@ -15,10 +16,16 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-public class ShopPerkProduct extends PerkProduct {
+public class ShopPerkProduct extends UserConfirmableProduct {
+
+    private final Perk perk;
+    private final PerkProduct perkProduct;
 
     public ShopPerkProduct(Perk perk) {
-        super(perk);
+        super(perk.getName(), 0);
+
+        this.perk = perk;
+        perkProduct = new PerkProduct(perk);
     }
 
     @Override
@@ -26,7 +33,7 @@ public class ShopPerkProduct extends PerkProduct {
         UserAsset perkAsset = user.getAsset(perk);
         if(perkAsset != null) return null;
 
-        ProductItemDesign productItemDesign = super.designProduct(user);
+        ProductItemDesign productItemDesign = perkProduct.designProduct(user);
 
         List<String> lore = new ArrayList<>();
         lore.add(" ");
