@@ -3,7 +3,9 @@ package com.ultimismc.skywars.core.user;
 /**
  * @author DirectPlan
  */
-public interface UserSavedListener {
+public class UserSavedListener {
 
-    void onUserSaved(User user);
+    public void onUserSaved(User user) {
+
+    }
 }
