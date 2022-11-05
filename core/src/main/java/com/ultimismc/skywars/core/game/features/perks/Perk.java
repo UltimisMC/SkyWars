@@ -10,6 +10,4 @@ public interface Perk extends Purchasable {
     PerkRarity getRarity();
 
     String getDescription();
-
-    boolean isSoulWellPerk();
 }
