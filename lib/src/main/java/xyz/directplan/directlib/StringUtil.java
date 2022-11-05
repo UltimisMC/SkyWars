@@ -114,6 +114,21 @@ public class StringUtil {
         return roman.toString();
     }
 
+    private static final ChatColor[] rainbowColors = {ChatColor.RED, ChatColor.GOLD, ChatColor.YELLOW, ChatColor.GREEN,
+    ChatColor.AQUA, ChatColor.LIGHT_PURPLE, ChatColor.DARK_PURPLE};
+
+    public static String toRainbow(String text) {
+        char[] chars = text.toCharArray();
+        StringBuilder builder = new StringBuilder();
+        int colorIndex = 0;
+        for (char aChar : chars) {
+            builder.append(rainbowColors[colorIndex]).append(aChar);
+            colorIndex++;
+            if (colorIndex == rainbowColors.length) colorIndex = 0;
+        }
+        return builder.toString();
+    }
+
     public static <T> boolean isInBound(List<T> list, int index) {
         return list.size() >= index;
     }
