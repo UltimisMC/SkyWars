@@ -5,7 +5,7 @@ import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.game.features.kits.KitItem;
 import com.ultimismc.skywars.core.game.features.kits.KitRarity;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserAsset;
+import com.ultimismc.skywars.core.user.asset.UserAsset;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserConfirmableProduct;
@@ -48,7 +48,7 @@ public class KitProduct extends UserConfirmableProduct {
         lore.add(" ");
         lore.add("&7Rarity: " + rarity.getDisplayName());
         lore.add("&7Cost: " + currency.getCurrencyColor() + StringUtil.getReadableNumber(rarity.getPrice()));
-        if(kit.isSoulWellKit()) {
+        if(kit.isSoulWell()) {
             lore.add("&bAlso found in the Soul Well!");
         }
         lore.add(" ");
