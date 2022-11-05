@@ -1,33 +1,27 @@
-package com.ultimismc.skywars.core.user;
+package com.ultimismc.skywars.core.user.asset;
 
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
+import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserCacheHandler;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author DirectPlan
  */
-public class UserAssetsHandler {
-
-    private final Map<String, UserAsset> userAssets = new HashMap<>();
+public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
 
     public UserAsset getAsset(String assetName) {
-        return userAssets.get(assetName);
+        return getCache(assetName);
     }
 
     public UserAsset getAsset(Purchasable purchasable) {
-        for(UserAsset asset : userAssets.values()) {
-            if(asset.getPurchasable() != purchasable) continue;
-            return asset;
-        }
-        return null;
+        return getAsset(purchasable.getName());
     }
 
     public void addAsset(UserAsset asset) {
-        userAssets.put(asset.getName(), asset);
+        addCache(asset.getName(), asset);
     }
 
     public void purchaseAsset(User user, Purchasable purchasable) {
@@ -38,6 +32,6 @@ public class UserAssetsHandler {
     }
 
     public Collection<UserAsset> getAssets() {
-        return userAssets.values();
+        return getCacheCollection();
     }
 }
