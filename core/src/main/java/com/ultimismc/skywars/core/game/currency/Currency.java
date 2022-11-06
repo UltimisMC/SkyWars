@@ -11,6 +11,7 @@ public interface Currency {
 
     Currency COIN_CURRENCY = new CoinCurrency();
     Currency SOUL_CURRENCY = new SoulCurrency();
+    Currency EXP_CURRENCY = new ExpCurrency();
 
     ChatColor getCurrencyColor();
 
