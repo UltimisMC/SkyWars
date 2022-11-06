@@ -27,9 +27,7 @@ public class LobbyScoreboard {
 
         String gameDisplayName = MessageConfigKeys.SKYWARS_LOBBY_SCOREBOARD_DISPLAYNAME.getStringValue();
         UserStatistics userStatistics = user.getStatistics();
-        Level level = userStatistics.getLevel();
-        Prestige selectedPrestigeIcon = user.getSelectedPrestigeIcon();
-        String levelDisplayName = level.getDisplayName(selectedPrestigeIcon);
+        String levelDisplayName = user.getLevelDisplayName();
 
         int soloKills = userStatistics.getSoloKills();
         int soloWins = userStatistics.getSoloWins();
