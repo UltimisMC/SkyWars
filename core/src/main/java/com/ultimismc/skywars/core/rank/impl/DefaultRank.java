@@ -12,5 +12,6 @@ public class DefaultRank extends Rank {
     public DefaultRank() {
         super("Default", "&7");
 
+        setDefaultRank(true);
     }
 }
