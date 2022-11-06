@@ -80,6 +80,15 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return currency.canAfford(this, purchasable);
     }
 
+    public String getLevelDisplayName(boolean brackets) {
+        Level level = statistics.getLevel();
+        return level.getDisplayName(selectedPrestigeIcon, brackets);
+    }
+
+    public String getLevelDisplayName() {
+        return getLevelDisplayName(false);
+    }
+
     public Level getLevel() {
         return statistics.getLevel();
     }
