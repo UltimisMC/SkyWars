@@ -6,10 +6,10 @@ import com.ultimismc.skywars.core.user.User;
 /**
  * @author DirectPlan
  */
-public class LevelProcessor implements PlaceholderProcessor {
+public class ChatLevelProcessor implements PlaceholderProcessor {
 
     @Override
     public String process(User user, String value) {
-        return user.getLevelDisplayName();
+        return user.getLevelDisplayName(true);
     }
 }

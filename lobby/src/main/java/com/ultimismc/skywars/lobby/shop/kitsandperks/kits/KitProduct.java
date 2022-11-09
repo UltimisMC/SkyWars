@@ -77,11 +77,12 @@ public class KitProduct extends UserConfirmableProduct {
             user.purchaseAsset(kit);
 
             int price = kit.getPrice();
-            UserStatistics userStatistics = user.getStatistics();
-            userStatistics.decreaseCoins(price);
+            Currency currency = kit.getCurrency();
+
+            currency.decreaseCurrency(user, price);
 
             ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", kit.getName()),
-                    new Replacement("price", price));
+                    new Replacement("price", currency.getCurrencyColor() + Integer.toString(price)));
             return;
         }
 

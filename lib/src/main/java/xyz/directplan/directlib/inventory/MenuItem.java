@@ -66,6 +66,7 @@ public class MenuItem implements Cloneable {
         this.itemStack = builder.type(Material.SKULL_ITEM).durability(3).skullOwner(name).build();
     }
     public void setCustomSkullProperty(String value) {
+        if(value == null) return;
         ItemStack item = builder.type(Material.SKULL_ITEM).durability(3).build();
 
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null);

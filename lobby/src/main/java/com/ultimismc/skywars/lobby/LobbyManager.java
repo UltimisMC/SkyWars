@@ -2,6 +2,7 @@ package com.ultimismc.skywars.lobby;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.lobby.menu.PurchasesMenu;
 import com.ultimismc.skywars.lobby.menu.UserStatsMenu;
 import com.ultimismc.skywars.lobby.shop.SkyWarsShopHandler;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.CustomLocation;
+import xyz.directplan.directlib.StringUtil;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 
@@ -25,12 +27,15 @@ public class LobbyManager {
 
     private final LobbyScoreboard lobbyScoreboard;
     private final MenuManager menuManager;
+    private final UserManager userManager;
     private final SkyWarsShopHandler shopHandler;
 
     public LobbyManager(SkyWarsPlugin plugin) {
         this.plugin = plugin;
 
         menuManager = plugin.getMenuManager();
+        userManager = plugin.getUserManager();
+
         shopHandler = new SkyWarsShopHandler(plugin);
 
         ScoreboardManager scoreboardManager = new ScoreboardManager(plugin, "Ultimis Skywars - Scoreboard Thread");
@@ -40,9 +45,9 @@ public class LobbyManager {
     }
 
     public void initializeLobby() {
-        plugin.registerListeners(new LobbyListener());
+        plugin.registerListeners(new LobbyListener(this));
 
-        shopHandler.initializeShop();
+        shopHandler.initializeShop(this);
     }
 
     public void handleJoin(User user) {
@@ -69,6 +74,16 @@ public class LobbyManager {
         menuManager.openInventory(user.getPlayer(), new UserStatsMenu(user));
     }
 
+    public void openSoulWellMenu(User user) {
+        shopHandler.openSoulWellMenu(user);
+    }
+
+    public void openSoulWellMenu(Player player) {
+        User user = userManager.getCachedUser(player);
+        if(user == null) return;
+        openSoulWellMenu(user);
+    }
+
     public void openPurchasesMenu(Player player, User user) {
         menuManager.openInventory(player, new PurchasesMenu(user));
     }
@@ -83,5 +98,17 @@ public class LobbyManager {
         String serializedSpawn = CustomLocation.locationToString(spawnLocation);
 
         ConfigKeys.SPAWN_LOCATION.setValue(serializedSpawn);
+    }
+
+    public String getProgressBar(int current, int max) {
+
+        int bars = ConfigKeys.PROGRESSBAR_BARS.getInteger();
+        String barSymbol = ConfigKeys.PROGRESSBAR_BARS_SYMBOL.getStringValue();
+        String stable = ConfigKeys.PROGRESSBAR_COLORS_STABLE.getStringValue();
+        String balanced = ConfigKeys.PROGRESSBAR_COLORS_BALANCED.getStringValue();
+        String low = ConfigKeys.PROGRESSBAR_COLORS_LOW.getStringValue();
+        String uncompleted = ConfigKeys.PROGRESSBAR_COLORS_UNCOMPLETED.getStringValue();
+
+        return StringUtil.getProgressBar(current, max, bars, barSymbol, new String[] {stable, balanced, low, uncompleted});
     }
 }

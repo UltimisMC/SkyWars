@@ -6,10 +6,14 @@ import com.ultimismc.skywars.core.user.User;
 /**
  * @author DirectPlan
  */
-public class MaximumProgressProcessor implements PlaceholderProcessor {
+public class RequiredProgressProcessor implements PlaceholderProcessor {
 
     @Override
     public String process(User user, String value) {
-        return "???";
+        int nextRequiredExp = user.getNextRequiredExp();
+        if(nextRequiredExp == -1) {
+            return "MAXED";
+        }
+        return String.valueOf(nextRequiredExp);
     }
 }

@@ -1,6 +1,8 @@
 package com.ultimismc.skywars.core.game.features.level;
 
 import lombok.Data;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +14,9 @@ import java.util.List;
 @Data
 public class Level {
 
-    private final int order, requiredExp;
+    public Level next;
+
+    private final int order, requiredExp, totalExpRequired;
     private final Prestige prestige;
 
     private final List<LevelReward> rewards = new ArrayList<>();
@@ -40,6 +44,22 @@ public class Level {
         return getDisplayName(null);
     }
 
+    public ChatColor getPrestigeColor() {
+        return prestige.getColor();
+    }
+
+    public Material getPrestigeMaterial() {
+        return prestige.getPrestigeMaterial();
+    }
+
+    public String getPrestigeTexture() {
+        return prestige.getPrestigeTexture();
+    }
+    
+    public boolean isExceedingThan(int level) {
+        return order >= level;
+    }
+    
     public boolean hasRewards() {
         return !rewards.isEmpty();
     }

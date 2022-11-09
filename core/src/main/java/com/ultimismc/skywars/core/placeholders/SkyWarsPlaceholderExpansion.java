@@ -15,8 +15,9 @@ public class SkyWarsPlaceholderExpansion extends UserPlaceholderExpansion {
         processorHandler.registerProcessor("player-kills", new KillProcessor());
         processorHandler.registerProcessor("player-prog", new CurrentProgressProcessor());
         processorHandler.registerProcessor("player-progress", new CurrentProgressProcessor());
-        processorHandler.registerProcessor("player-maxprogress", new MaximumProgressProcessor());
+        processorHandler.registerProcessor("player-maxprogress", new RequiredProgressProcessor());
         processorHandler.registerProcessor("player-level", new LevelProcessor());
+        processorHandler.registerProcessor("player-chat-level", new ChatLevelProcessor());
         processorHandler.registerProcessor("player-coins", new CoinProcessor());
         processorHandler.registerProcessor("player-souls", new SoulProcessor());
     }

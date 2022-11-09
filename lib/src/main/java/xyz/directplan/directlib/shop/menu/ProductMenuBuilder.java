@@ -55,6 +55,8 @@ public class ProductMenuBuilder<U> {
         }
         MenuItem menuItem = new MenuItem(material, displayName, durability, productCategoryAction);
 
+        String texture = itemDesign.getSkullTexture();
+        menuItem.setCustomSkullProperty(texture);
         menuItem.setLore(lore);
         return menuItem;
     }

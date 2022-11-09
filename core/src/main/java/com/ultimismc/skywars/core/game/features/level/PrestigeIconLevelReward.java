@@ -18,7 +18,5 @@ public class PrestigeIconLevelReward implements LevelReward {
     }
 
     @Override
-    public void rewardPlayer(User user) {
-
-    }
+    public void rewardPlayer(User user) {}
 }

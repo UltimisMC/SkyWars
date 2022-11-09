@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.lobby.shop.main;
 
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.lobby.LobbyManager;
 import com.ultimismc.skywars.lobby.shop.ShopProductCategory;
 import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
 import com.ultimismc.skywars.core.user.User;
@@ -17,6 +18,7 @@ import xyz.directplan.directlib.shop.ProductCategory;
 @RequiredArgsConstructor
 public class MainProductCategoryBuilder implements UserProductCategoryBuilder {
 
+    private final LobbyManager lobbyManager;
     private final FeatureHandler featureHandler;
 
     @Override
@@ -27,7 +29,7 @@ public class MainProductCategoryBuilder implements UserProductCategoryBuilder {
         productCategory.buildProductCategory(new KitsPerksProductCategoryBuilder(featureHandler));
         productCategory.buildProductCategory(new SoulWellProductCategoryBuilder(featureHandler));
         productCategory.buildProductCategory(new CosmeticsProductCategoryBuilder(featureHandler));
-        productCategory.buildProductCategory(new LevelProductCategoryBuilder(featureHandler));
+        productCategory.buildProductCategory(new LevelProductCategoryBuilder(lobbyManager, featureHandler));
 
         return productCategory;
     }

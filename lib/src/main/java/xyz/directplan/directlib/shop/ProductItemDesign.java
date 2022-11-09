@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 public class ProductItemDesign {
 
+    @Setter private String skullTexture;
     @Setter private String displayName;
     private final Material material;
     private final short durability;
@@ -28,6 +29,11 @@ public class ProductItemDesign {
         this.color = color;
         this.lore = lore;
         this.canAfford = canAfford;
+    }
+
+    public ProductItemDesign(String skullTexture, ChatColor color, List<String> lore, boolean canAfford) {
+        this(Material.SKULL_ITEM, (short)0, color, lore, canAfford);
+        this.skullTexture = skullTexture;
     }
 
     public ProductItemDesign(Material material, short durability, ChatColor color, List<String> lore) {

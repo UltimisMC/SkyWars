@@ -10,6 +10,7 @@ import com.ultimismc.skywars.core.user.asset.UserAssetsHandler;
 import com.ultimismc.skywars.core.user.setting.UserSettingHandler;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -80,9 +81,17 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return currency.canAfford(this, purchasable);
     }
 
+    public String getLevelDisplayName(Level level, boolean brackets) {
+        return level.getDisplayName(selectedPrestigeIcon, brackets);
+    }
+
+    public String getLevelDisplayName(Level level) {
+        return level.getDisplayName(selectedPrestigeIcon, false);
+    }
+
     public String getLevelDisplayName(boolean brackets) {
         Level level = statistics.getLevel();
-        return level.getDisplayName(selectedPrestigeIcon, brackets);
+        return getLevelDisplayName(level, brackets);
     }
 
     public String getLevelDisplayName() {
@@ -93,10 +102,25 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return statistics.getLevel();
     }
 
+    public int getNextRequiredExp() {
+        Level nextLevel = getLevel().next;
+        if(nextLevel != null) {
+            return nextLevel.getRequiredExp();
+        }
+        return -1;
+    }
+
     public void setLevel(Level level) {
         statistics.setLevel(level);
     }
 
+    public boolean hasPrestigeAccess(Prestige prestige) {
+        int requiredLevel = prestige.getRequiredLevel();
+
+        Level level = statistics.getLevel();
+        return level.isExceedingThan(requiredLevel);
+    }
+    
     @Override
     public UserPlayerInventoryUi getInventoryUi() {
         return currentInventoryUi;

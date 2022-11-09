@@ -17,7 +17,9 @@ import java.util.Map;
 public class UserStatistics {
 
     private Level level;
+    private int nextLevelProgress;
     private int totalExp = 0;
+
     private int coins, souls;
 
     private final Map<TeamType, GameStatistics> gameStats = new HashMap<>();

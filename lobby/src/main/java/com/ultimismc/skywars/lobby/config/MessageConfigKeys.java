@@ -55,6 +55,14 @@ public enum MessageConfigKeys implements ConfigEntry {
                     "&7Arrows Shot: &a%arrows-shot%",
                     "&7Arrows Hit: &a%arrows-hit%",
                     "&7Chests Opened: &a%chests-opened%")),
+
+    LEVEL_LEVEL_SHOWN("progression-level.hide-level.showen", "&aYou are now showing your SkyWars level in chat!"),
+    LEVEL_LEVEL_HIDDEN("progression-level.hide-level.hidden", "&aYou are now hiding your SkyWars level in chat!"),
+
+    LEVEL_PRESTIGE_ICON_SUCCESS("progression-level.prestige-icon.success", "&aYou set your Prestige Icon to %prestige-icon%&a!"),
+    LEVEL_PRESTIGE_ICON_ALREADY_SELECTED("progression-level.prestige-icon.already-selected", "&cYou have already selected this Prestige Icon!"),
+    LEVEL_PRESTIGE_ICON_REQUIRED("progression-level.prestige-icon.required", "&cThis Prestige Icon requires %prestige%, unlocked at SkyWars Level %level%."),
+
     ;
 
     private final String key;

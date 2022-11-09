@@ -25,11 +25,11 @@ public enum ConfigKeys implements ConfigEntry {
 //    STORAGE_MAXIMUM_POOL_SIZE("storage.maximum-pool-size", 10),
 
     INCREMENTER_AMOUNT("progress-bar.incrementer-amount", 5),
-    PROGRESSBAR_BARS("progress-bar.bars", 30),
-    PROGRESSBAR_BARS_SYMBOL("progress-bar.bars-symbol", "|"),
-    PROGRESSBAR_COLORS_STABLE("progress-bar.colors.stable", "&a"),
-    PROGRESSBAR_COLORS_BALANCED("progress-bar.colors.balanced", "&6"),
-    PROGRESSBAR_COLORS_LOW("progress-bar.colors.low", "&c"),
+    PROGRESSBAR_BARS("progress-bar.bars", 10),
+    PROGRESSBAR_BARS_SYMBOL("progress-bar.bars-symbol", "■"),
+    PROGRESSBAR_COLORS_STABLE("progress-bar.colors.stable", "&b"),
+    PROGRESSBAR_COLORS_BALANCED("progress-bar.colors.balanced", "&b"),
+    PROGRESSBAR_COLORS_LOW("progress-bar.colors.low", "&b"),
     PROGRESSBAR_COLORS_UNCOMPLETED("progress-bar.colors.un-completed", "&7"),
 
     ;
