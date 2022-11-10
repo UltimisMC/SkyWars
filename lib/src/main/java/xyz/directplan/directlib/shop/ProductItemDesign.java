@@ -21,6 +21,7 @@ public class ProductItemDesign {
     private final short durability;
     private final ChatColor color;
     private final List<String> lore;
+    @Setter private int amount = 1;
     @Setter private boolean canAfford;
 
     public ProductItemDesign(Material material, short durability, ChatColor color, List<String> lore, boolean canAfford) {

@@ -55,6 +55,10 @@ public class ProductMenuBuilder<U> {
         }
         MenuItem menuItem = new MenuItem(material, displayName, durability, productCategoryAction);
 
+        int amount = itemDesign.getAmount();
+        if(amount > 1) {
+            menuItem.setAmount(amount);
+        }
         String texture = itemDesign.getSkullTexture();
         menuItem.setCustomSkullProperty(texture);
         menuItem.setLore(lore);

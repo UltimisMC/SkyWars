@@ -11,7 +11,7 @@ public enum PerkRarity {
 
     LEGENDARY(1, ChatColor.GOLD, 150000), // 150000
     RARE(2, ChatColor.BLUE, 50000), // 50000
-    COMMON(3, ChatColor.GREEN, 0); // 5000
+    COMMON(3, ChatColor.GREEN, 5000); // 5000
 
     private final int priority;
     private final ChatColor color;

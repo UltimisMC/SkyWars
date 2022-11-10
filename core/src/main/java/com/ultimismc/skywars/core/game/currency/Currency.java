@@ -3,6 +3,7 @@ package com.ultimismc.skywars.core.game.currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.user.User;
 import org.bukkit.ChatColor;
+import xyz.directplan.directlib.StringUtil;
 
 /**
  * @author DirectPlan
@@ -25,6 +26,10 @@ public interface Currency {
 
     default void decreaseCurrency(User user, Purchasable purchasable) {
         decreaseCurrency(user, purchasable.getPrice());
+    }
+
+    default String getDisplayPrice(int price) {
+        return getCurrencyColor() + StringUtil.getReadableNumber(price);
     }
 
     boolean canAfford(User user, int amount);

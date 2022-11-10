@@ -9,6 +9,10 @@ import xyz.directplan.directlib.shop.AbstractProduct;
  */
 public abstract class UserProduct extends AbstractProduct<User> {
 
+    public UserProduct(String name, int inventoryRows, int itemSlot) {
+        super(name, inventoryRows, itemSlot);
+    }
+
     public UserProduct(String name, int itemSlot) {
         super(name, itemSlot);
     }

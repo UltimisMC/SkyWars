@@ -44,10 +44,9 @@ public class KitProduct extends UserConfirmableProduct {
                 lore.add("   * " + enchantment.getDisplayName());
             }
         }
-        Currency currency = kit.getCurrency();
         lore.add(" ");
         lore.add("&7Rarity: " + rarity.getDisplayName());
-        lore.add("&7Cost: " + currency.getCurrencyColor() + StringUtil.getReadableNumber(rarity.getPrice()));
+        lore.add("&7Cost: " + kit.getDisplayPrice());
         if(kit.isSoulWell()) {
             lore.add("&bAlso found in the Soul Well!");
         }
@@ -82,7 +81,7 @@ public class KitProduct extends UserConfirmableProduct {
             currency.decreaseCurrency(user, price);
 
             ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", kit.getName()),
-                    new Replacement("price", currency.getCurrencyColor() + Integer.toString(price)));
+                    new Replacement("price", kit.getDisplayPrice()));
             return;
         }
 

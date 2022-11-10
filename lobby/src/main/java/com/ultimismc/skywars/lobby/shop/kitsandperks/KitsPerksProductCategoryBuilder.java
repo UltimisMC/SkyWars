@@ -12,6 +12,7 @@ import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.kitsandperks.kits.KitProduct;
 import com.ultimismc.skywars.lobby.shop.kitsandperks.perks.*;
 import com.ultimismc.skywars.lobby.shop.soulwell.SoulWellProductCategory;
+import com.ultimismc.skywars.lobby.shop.soulwell.SoulWellProductCategoryBuilder;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import xyz.directplan.directlib.shop.DisplayProduct;
@@ -36,7 +37,8 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         addKitsPerksCategoryMode(featureHandler, productCategory, GameType.NORMAL, Material.STONE_SWORD, Material.BREWING_STAND_ITEM, 12);
         addKitsPerksCategoryMode(featureHandler, productCategory, GameType.INSANE, Material.IRON_SWORD, Material.CAULDRON_ITEM, 14);
 
-        productCategory.addProduct(new SoulWellProductCategory(40));
+        SoulWellProductCategoryBuilder soulWellProductCategoryBuilder = new SoulWellProductCategoryBuilder(featureHandler, 40);
+        productCategory.addProduct(soulWellProductCategoryBuilder.buildCategory());
 
         return productCategory;
     }

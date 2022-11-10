@@ -33,7 +33,7 @@ public class SkyWarsShopHandler {
     public void initializeShop(LobbyManager lobbyManager) {
         mainShopCategory = (ShopProductCategory) buildCategory(new MainProductCategoryBuilder(lobbyManager, featureHandler));
 
-        soulWellCategory = (SoulWellProductCategory) buildCategory(new SoulWellProductCategoryBuilder(featureHandler));
+        soulWellCategory = (SoulWellProductCategory) buildCategory(new SoulWellProductCategoryBuilder(featureHandler, -1));
     }
 
     public void openShopMenu(User user) {

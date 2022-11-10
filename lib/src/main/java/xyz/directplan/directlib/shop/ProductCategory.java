@@ -9,7 +9,5 @@ public interface ProductCategory<U> extends Product<U> {
 
     List<Product<U>> getProducts();
 
-    int getInventoryRows();
-
     boolean isPaginated();
 }

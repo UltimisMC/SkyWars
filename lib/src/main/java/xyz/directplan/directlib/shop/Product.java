@@ -12,6 +12,8 @@ public interface Product<U> {
 
     int getItemSlot();
 
+    int getInventoryRows();
+
     boolean isDisplay();
 
     boolean isEnabled();

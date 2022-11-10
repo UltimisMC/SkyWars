@@ -27,7 +27,7 @@ public class MainProductCategoryBuilder implements UserProductCategoryBuilder {
 
 
         productCategory.buildProductCategory(new KitsPerksProductCategoryBuilder(featureHandler));
-        productCategory.buildProductCategory(new SoulWellProductCategoryBuilder(featureHandler));
+        productCategory.buildProductCategory(new SoulWellProductCategoryBuilder(featureHandler, 12));
         productCategory.buildProductCategory(new CosmeticsProductCategoryBuilder(featureHandler));
         productCategory.buildProductCategory(new LevelProductCategoryBuilder(lobbyManager, featureHandler));
 

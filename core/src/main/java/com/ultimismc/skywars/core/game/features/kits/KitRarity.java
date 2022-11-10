@@ -11,7 +11,7 @@ public enum KitRarity {
 
     LEGENDARY(1, ChatColor.GOLD, 30000), // 30000
     RARE(2, ChatColor.BLUE, 20000), // 20000
-    COMMON(3, ChatColor.GREEN, 0); // 15000
+    COMMON(3, ChatColor.GREEN, 15000); // 15000
 
     private final int priority;
     private final ChatColor color;
