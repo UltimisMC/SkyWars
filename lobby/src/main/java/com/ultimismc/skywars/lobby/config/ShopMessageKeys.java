@@ -20,7 +20,7 @@ public enum ShopMessageKeys implements ConfigEntry {
     SHOP_ITEM_STATUS_INSUFFICIENT_FUNDS("shop-item.status.insufficient-funds", "&cYou cannot afford this."),
     SHOP_ITEM_STATUS_CLICK_TO_PURCHASE("shop-item.status.click-to-purchase", "&eClick to purchase!"),
     SHOP_ITEM_PURCHASED_MESSAGE("shop-item.purchased-message", "&aYou've purchased &e%name% &afor &6%price% coins&a."),
-
+    SHOP_ITEM_INSUFFICIENT_FUNDS_MESSAGE("shop-item.insufficient-funds-message", "&cYou don't have enough %currency% to buy that!"),
 
     KITS_PERKS_CATEGORY_LORE("kits-perks.category-lore", Arrays.asList("&7Change the way you play by",
             "&7picking kits and perks!",

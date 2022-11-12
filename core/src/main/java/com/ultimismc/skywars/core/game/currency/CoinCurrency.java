@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 @Getter
 public class CoinCurrency implements Currency {
 
+    private final String name = "coin";
     private final ChatColor currencyColor = ChatColor.GOLD;
 
     @Override

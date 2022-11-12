@@ -23,6 +23,8 @@ public class ProductItemDesign {
     private final List<String> lore;
     @Setter private int amount = 1;
     @Setter private boolean canAfford;
+    @Setter private String purchaseStatus, purchasedStatus;
+    @Setter private boolean ignoreConfirmation;
 
     public ProductItemDesign(Material material, short durability, ChatColor color, List<String> lore, boolean canAfford) {
         this.material = material;

@@ -43,7 +43,7 @@ public class ProductMenuBuilder<U> {
         ProductCategoryAction<U> productCategoryAction = null;
         ChatColor displayNameColor = ChatColor.RED;
         if(itemDesign.isCanAfford()) {
-            productCategoryAction = new ProductCategoryAction<>(shopHandler, user, currentMenu, product);
+            productCategoryAction = new ProductCategoryAction<>(shopHandler, user, product, currentMenu, itemDesign.isIgnoreConfirmation());
             displayNameColor = ChatColor.GREEN;
             if(itemDesign.getColor() != null) {
                 displayNameColor = itemDesign.getColor();

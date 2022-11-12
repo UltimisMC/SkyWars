@@ -23,6 +23,6 @@ public interface Purchasable {
     Currency getCurrency();
 
     default String getDisplayPrice() {
-        return getCurrency().getDisplayPrice(getPrice());
+        return getCurrency().getDisplayAmount(getPrice());
     }
 }

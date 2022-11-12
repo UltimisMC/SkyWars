@@ -25,17 +25,14 @@ public class PerkProduct {
     public ProductItemDesign designProduct(User user) {
         Material displayMaterial = perk.getDisplayMaterial();
         short displayDurability = perk.getDisplayDurability();
-        String description = perk.getDescription();
+        List<String> description = perk.getDescription();
         PerkRarity rarity = perk.getRarity();
-        boolean soulWellPerk = perk.isSoulWell();
 
-        List<String> lore = new ArrayList<>(StringUtil.getCorrectDescription(ChatColor.GRAY, description, 31));
+        List<String> lore = new ArrayList<>(description);
         lore.add(" ");
-        lore.add("&7Rarity: " + rarity.getDisplayName());
-        lore.add(" ");
-        lore.add("&7Cost: " + perk.getDisplayPrice());
-        if(soulWellPerk) {
-            lore.add("&bAlso found in the Soul Well!");
+        if(rarity != null && !perk.isSoulWellPerk()) {
+            lore.add("&7Rarity: " + rarity.getDisplayName());
+            lore.add(" ");
         }
         return new ProductItemDesign(displayMaterial, displayDurability, null, lore);
     }

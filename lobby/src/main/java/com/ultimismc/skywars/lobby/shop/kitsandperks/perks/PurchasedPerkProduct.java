@@ -38,7 +38,6 @@ public class PurchasedPerkProduct extends UserProduct {
 
         List<String> itemLore = productItemDesign.getLore();
         boolean activated = perkAsset.isActivated();
-        itemLore.add(" ");
         itemLore.add("&eClick to toggle " + (activated ? "&cOFF" : "&aON"));
         return productItemDesign;
     }

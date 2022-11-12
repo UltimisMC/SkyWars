@@ -35,10 +35,10 @@ public class PurchasesMenu extends PaginatedMenu<UserAsset> {
     public MenuItem buildContent(Player player, UserAsset asset) {
 
         Purchasable purchasable = asset.getPurchasable();
-        String name = asset.getName();
-        MenuItem menuItem = new MenuItem(purchasable.getDisplayMaterial(), ChatColor.GREEN + name);
-        menuItem.setLore(Arrays.asList("&7Purchased Price: " + asset.getDisplayPrice(),
-                "&7Purchased Date: &b" + DateUtil.getFormattedDate(asset.getAcquiredAt())));
+        String nameWithCategory = asset.getNameWithCategory();
+        MenuItem menuItem = new MenuItem(purchasable.getDisplayMaterial(), ChatColor.GREEN + nameWithCategory);
+        menuItem.setLore(Arrays.asList("&7Price: " + asset.getDisplayPrice(),
+                "&7Date: &b" + DateUtil.getFormattedDate(asset.getAcquiredAt())));
         return menuItem;
     }
 }

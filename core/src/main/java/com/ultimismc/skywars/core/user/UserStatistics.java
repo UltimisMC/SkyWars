@@ -21,6 +21,7 @@ public class UserStatistics {
     private int totalExp = 0;
 
     private int coins, souls;
+    private int maximumSouls = 150;
 
     private final Map<TeamType, GameStatistics> gameStats = new HashMap<>();
 

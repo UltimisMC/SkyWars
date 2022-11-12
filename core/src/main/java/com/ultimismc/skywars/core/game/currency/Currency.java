@@ -14,9 +14,16 @@ public interface Currency {
     Currency SOUL_CURRENCY = new SoulCurrency();
     Currency EXP_CURRENCY = new ExpCurrency();
 
+    String getName();
+
     ChatColor getCurrencyColor();
 
     void increaseCurrency(User user, int amount);
+
+    default void increaseCurrencyWithMessage(User user, int amount) {
+        increaseCurrency(user, amount);
+        sendMessage(user, amount);
+    }
 
     default void increaseCurrency(User user, Purchasable purchasable) {
         increaseCurrency(user, purchasable.getPrice());
@@ -28,8 +35,13 @@ public interface Currency {
         decreaseCurrency(user, purchasable.getPrice());
     }
 
-    default String getDisplayPrice(int price) {
-        return getCurrencyColor() + StringUtil.getReadableNumber(price);
+    default void sendMessage(User user, int amount) {
+        String displayAmount = getDisplayAmount(amount);
+        user.sendMessage(getCurrencyColor() + "+ " + displayAmount);
+    }
+
+    default String getDisplayAmount(int amount) {
+        return getCurrencyColor() + StringUtil.getReadableNumber(amount);
     }
 
     boolean canAfford(User user, int amount);

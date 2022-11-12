@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 @Getter
 public class SoulCurrency implements Currency {
 
+    private final String name = "soul";
     private final ChatColor currencyColor = ChatColor.AQUA;
 
     @Override
@@ -29,5 +30,10 @@ public class SoulCurrency implements Currency {
     public boolean canAfford(User user, int amount) {
         UserStatistics userStatistics = user.getStatistics();
         return userStatistics.getSouls() >= amount;
+    }
+
+    @Override
+    public String getDisplayAmount(int price) {
+        return Currency.super.getDisplayAmount(price) + " Soul" + (price > 1 ? "s" : "");
     }
 }

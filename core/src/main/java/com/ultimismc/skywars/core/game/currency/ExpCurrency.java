@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 @Getter
 public class ExpCurrency implements Currency {
 
-
+    private final String name = "exp";
     private final ChatColor currencyColor = ChatColor.LIGHT_PURPLE;
 
     @Override
@@ -26,8 +26,13 @@ public class ExpCurrency implements Currency {
     }
 
     @Override
-    public boolean canAfford(User user, int exp) {
+    public String getDisplayAmount(int price) {
+        return Currency.super.getDisplayAmount(price) + " SkyWars Experience";
+    }
+
+    @Override
+    public boolean canAfford(User user, int totalExp) {
         UserStatistics userStatistics = user.getStatistics();
-        return userStatistics.getCoins() >= exp;
+        return userStatistics.getTotalExp() >= totalExp;
     }
 }

@@ -50,11 +50,14 @@ public class LobbyManager {
         shopHandler.initializeShop(this);
     }
 
+    public void teleportSpawn(Player player) {
+        if(spawnLocation == null) return;
+        player.teleport(spawnLocation);
+    }
+
     public void handleJoin(User user) {
         Player player = user.getPlayer();
-        if(spawnLocation != null) {
-            player.teleport(spawnLocation);
-        }
+        teleportSpawn(player);
         lobbyScoreboard.updateGameScoreboard(user);
 
         menuManager.applyDesign(new LobbyPlayerInventoryUi(this, user));

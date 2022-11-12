@@ -1,8 +1,6 @@
 package com.ultimismc.skywars.core.user.asset;
 
-import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserCacheHandler;
 
 import java.util.Collection;
@@ -24,11 +22,13 @@ public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
         addCache(asset.getName(), asset);
     }
 
-    public void purchaseAsset(User user, Purchasable purchasable) {
+    public void purchaseAsset(Purchasable purchasable) {
         UserAsset userAsset = new UserAsset(purchasable, System.currentTimeMillis(), false);
         addAsset(userAsset);
-        Currency currency = purchasable.getCurrency();
-        currency.decreaseCurrency(user, purchasable);
+    }
+
+    public boolean isPurchased(Purchasable purchasable) {
+        return getAsset(purchasable) != null;
     }
 
     public Collection<UserAsset> getAssets() {

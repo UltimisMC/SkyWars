@@ -4,6 +4,8 @@ import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.kits.KitRarity;
 import com.ultimismc.skywars.core.game.features.perks.impl.*;
+import com.ultimismc.skywars.core.game.features.soulwell.HarvestingSeasonSoulPerk;
+import com.ultimismc.skywars.core.game.features.soulwell.XezbethLuckSoulPerk;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -25,7 +27,6 @@ public class PerkManager implements FeatureInitializer {
     public PerkManager(SkyWarsPlugin plugin) {
     }
 
-
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
         registerPerks(new BridgerPerk(), new KnowledgePerk(), new LuckyCharmPerk(), new MiningExpertisePerk(), new NourishmentPerk(), new AnnoyOMitePerk(), new ArrowRecoveryPerk(),
@@ -34,6 +35,9 @@ public class PerkManager implements FeatureInitializer {
                 new BulldozerPerk(), new FatPerk(), new JuggernautPerk(), new ResistanceBoostPerk(), new RevengePerk(),
                 new SaviorPerk());
 
+        // SOUL WELL PERKS
+        registerPerks(new HarvestingSeasonSoulPerk(), new XezbethLuckSoulPerk());
+
         perks.sort((perk, perk2) -> {
             PerkRarity rarity1 = perk.getRarity();
             PerkRarity rarity2 = perk2.getRarity();
@@ -41,6 +45,9 @@ public class PerkManager implements FeatureInitializer {
         });
     }
 
+    public Perk getPerk(String name) {
+        return perksMap.get(name);
+    }
 
     public void registerPerk(Perk perk) {
         perksMap.put(perk.getName(), perk);

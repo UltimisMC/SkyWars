@@ -6,6 +6,7 @@ import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserProductCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import xyz.directplan.directlib.StringUtil;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -26,7 +27,7 @@ public class SoulWellProductCategory extends UserProductCategory {
         UserStatistics statistics = user.getStatistics();
         int souls = statistics.getSouls();
 
-        List<String> lore = ShopMessageKeys.SOUL_WELL_CATEGORY_LORE.getStringList(new Replacement("souls", souls));
+        List<String> lore = ShopMessageKeys.SOUL_WELL_CATEGORY_LORE.getStringList(new Replacement("souls", StringUtil.getReadableNumber(souls)));
         return new ProductItemDesign(Material.ENDER_PORTAL_FRAME, ChatColor.AQUA, lore);
     }
 

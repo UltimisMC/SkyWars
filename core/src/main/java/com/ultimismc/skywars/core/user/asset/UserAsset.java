@@ -23,6 +23,10 @@ public class UserAsset {
     }
 
     public String getName() {
+        return purchasable.getName();
+    }
+
+    public String getNameWithCategory() {
         return purchasable.getName() + " " + purchasable.getCategory();
     }
 

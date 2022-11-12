@@ -21,8 +21,9 @@ public class ProductCategoryAction<U> implements ActionableItem {
     private final ShopHandler<U> shopHandler;
 
     private final U user;
-    private final InventoryUI currentMenu;
     private final Product<U> product;
+    private final InventoryUI currentMenu;
+    private final boolean ignoreConfirmation;
 
     @Override
     public void performAction(MenuItem item, Player clicker, ClickType clickType) {
@@ -39,7 +40,7 @@ public class ProductCategoryAction<U> implements ActionableItem {
             return;
         }
 
-        if(product instanceof ConfirmableProduct) {
+        if(!ignoreConfirmation && product instanceof ConfirmableProduct) {
             shopHandler.openInventory(clicker, new ConfirmableActionMenu(item, () -> product.executeAction(user)));
             return;
         }

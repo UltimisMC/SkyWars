@@ -19,7 +19,7 @@ public enum MessageConfigKeys implements ConfigEntry {
 
     SKYWARS_LOBBY_SCOREBOARD_DISPLAYNAME("skywars-lobby.scoreboard.display-name", "&b&lSKYWARS"),
     SKYWARS_LOBBY_SCOREBOARD_LINES("skywars-lobby.scoreboard.lines",
-            Arrays.asList(" %servertime_MMM dd, yyyy% &8L21G",
+            Arrays.asList("&7%servertime_MM/dd/yyyy% &8L21G",
                     " ",
                     "&fYour Level: &7%level%",
                     " ",

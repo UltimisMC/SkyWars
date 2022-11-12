@@ -1,12 +1,15 @@
 package com.ultimismc.skywars.core.game.features.level;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -117,6 +120,20 @@ public class LevelManager implements FeatureInitializer {
         }
         if(progress < 0) progress = 0;
         return progress;
+    }
+
+    public void giveExp(User user, int experience) {
+        Currency.EXP_CURRENCY.increaseCurrencyWithMessage(user, experience);
+
+        Level level = user.getLevel();
+        calculateUserLevel(user);
+        if(user.getLevel() == level) { // If it's the same, then we don't celebrate
+            return;
+        }
+        // CELEBRATE!!
+        Player player = user.getPlayer();
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1f, 1f);
+        user.sendMessage("&aYou are now SkyWars level " + user.getLevelDisplayName() + "&a!");
     }
 
     public void calculateUserLevel(User user) {

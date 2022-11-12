@@ -3,6 +3,7 @@ package com.ultimismc.skywars.core.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.level.Level;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.level.LevelReward;
@@ -45,6 +46,23 @@ public class SkyWarsDebugCommand extends BaseCommand {
         }
     }
 
+    @Subcommand("givecoins")
+    @Syntax("<amount>")
+    public void onGiveCoins(User user, int amount) {
+        increaseCurrency(user, Currency.COIN_CURRENCY, amount);
+    }
+    @Subcommand("giveexp")
+    @Syntax("<experience>")
+    public void onGiveExp(User user, int amount) {
+        levelManager.giveExp(user, amount);
+    }
+
+    @Subcommand("givesouls")
+    @Syntax("<souls>")
+    public void onGiveSouls(User user, int amount) {
+        increaseCurrency(user, Currency.SOUL_CURRENCY, amount);
+    }
+
     @Subcommand("setexp")
     @Syntax("<amount>")
     public void onSetExp(User user, int amount) {
@@ -52,5 +70,9 @@ public class SkyWarsDebugCommand extends BaseCommand {
         userStatistics.setTotalExp(amount);
 
         levelManager.calculateUserLevel(user);
+    }
+
+    private void increaseCurrency(User user, Currency currency, int amount) {
+        currency.increaseCurrencyWithMessage(user, amount);
     }
 }
