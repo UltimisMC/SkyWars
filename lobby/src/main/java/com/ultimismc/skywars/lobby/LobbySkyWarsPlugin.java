@@ -17,7 +17,6 @@ import lombok.Getter;
 @Getter
 public class LobbySkyWarsPlugin extends SkyWarsPlugin {
 
-
     private LobbyManager lobbyManager;
 
     @Override
