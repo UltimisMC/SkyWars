@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitTask;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.InventoryUI;
@@ -27,7 +26,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class SoulWellRollMenu extends InventoryUI {
 
-    private final FeatureHandler featureHandler;
     private final User user;
     private final List<Purchasable> purchasables;
     private Purchasable currentPurchasable;
@@ -41,7 +39,7 @@ public class SoulWellRollMenu extends InventoryUI {
     public SoulWellRollMenu(SkyWarsPlugin plugin, User user) {
         super("Soul Well", 5);
 
-        this.featureHandler = plugin.getFeatureHandler();
+        FeatureHandler featureHandler = plugin.getFeatureHandler();
         this.user = user;
         purchasables = new ArrayList<>(featureHandler.getAllPurchasables());
         Collections.shuffle(purchasables);
@@ -103,7 +101,7 @@ public class SoulWellRollMenu extends InventoryUI {
         }
         currentPurchaseIndex++;
 
-        MenuItem chosenArrowGlass = new MenuItem(Material.STAINED_GLASS, "", 15);
+        MenuItem chosenArrowGlass = new MenuItem(Material.STAINED_GLASS, "&c", 15);
         setSlot(21, chosenArrowGlass);
         setSlot(23, chosenArrowGlass);
     }
@@ -130,9 +128,26 @@ public class SoulWellRollMenu extends InventoryUI {
         player.updateInventory();
 
         String name = currentPurchasable.getNameWithCategory();
-        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1f, 1f);
 
-        user.sendMessage("&aYou've got a &e" + name + " &afrom the Soul Well roll! &c&o(Experimental Roll)");
+        PurchasableRarity rarity = currentPurchasable.getRarity();
+        ChatColor rarityColor = rarity.getColor();
+        String purchasableDisplayName = (rarityColor + name);
+        Sound sound = Sound.LEVEL_UP;
+        if(rarity == PurchasableRarity.LEGENDARY) {
+            sound = Sound.ENDERDRAGON_GROWL;
+        }
+        player.playSound(player.getLocation(), sound, 1f, 1f);
+
+        user.sendMessage("&7&lYou found " + purchasableDisplayName + " &7&lin the well!");
+        if(rarity.isRare()) {
+            String userDisplayName = user.getDisplayName();
+            Bukkit.broadcastMessage(PluginUtility.translateMessage(userDisplayName + " &7has found " + purchasableDisplayName + " &7in the &bSoul Well&7!"));
+        }
         user.addAsset(new UserAsset(currentPurchasable));
+    }
+
+    @Override
+    public String getInventoryId() {
+        return "SoulWell Roll";
     }
 }
