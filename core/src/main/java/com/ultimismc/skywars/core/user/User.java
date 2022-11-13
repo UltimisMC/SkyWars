@@ -50,6 +50,12 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return name;
     }
 
+    public String getDisplayName() {
+        String name = getName();
+        if(rank == null) return name;
+        return rank.getColor() + name;
+    }
+
     public void teleport(Location location) {
         if(location == null) return;
         if(player != null) player.teleport(location);
