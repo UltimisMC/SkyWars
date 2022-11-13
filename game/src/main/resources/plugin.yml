@@ -1,0 +1,6 @@
+name: SkyWarsGame
+version: ${project.version}
+main: com.ultimismc.skywars.game.GameSkyWarsPlugin
+depend: [ PlaceholderAPI, LuckPerms ]
+authors: [ DirectPlan ]
+description: A custom skywars game plugin developed for the UltimisMC Network
