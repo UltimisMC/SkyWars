@@ -45,5 +45,10 @@ public class ProductCategoryMenu<U> extends InventoryUI {
         }
         addCloseButton();
     }
+
+    @Override
+    public String getInventoryId() {
+        return productCategory.getName();
+    }
 }
 
