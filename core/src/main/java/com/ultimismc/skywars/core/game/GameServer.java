@@ -9,13 +9,17 @@ import lombok.Data;
 @Data
 public class GameServer {
 
+    private final String serverId;
     private final GameType gameType;
     private final TeamType teamType;
 
     private final Map map;
 
-    private final int maximumPlayers;
-
     private int spectators;
 
+    private boolean setupMode;
+
+    public int getMaximumPlayers() {
+        return teamType.getMaximumPlayers();
+    }
 }
