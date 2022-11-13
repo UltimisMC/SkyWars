@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.kitsandperks.kits;
 
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.game.features.kits.KitItem;
 import com.ultimismc.skywars.core.game.features.kits.KitRarity;
@@ -29,7 +30,7 @@ public class KitProduct extends UserPurchasableProduct {
     public ProductItemDesign designPurchasableProduct(User user) {
         List<String> lore = new ArrayList<>();
 
-        KitRarity rarity = kit.getRarity();
+        PurchasableRarity rarity = kit.getRarity();
         List<KitItem> kitItems = kit.getItems();
         for(KitItem kitItem : kitItems) {
 

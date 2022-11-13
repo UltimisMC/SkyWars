@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Getter
 public abstract class InventoryUI {
 
-    private Inventory inventory;
+    protected Inventory inventory;
 
     @Setter private String title;
     private final MenuItem[] items;
@@ -124,6 +124,12 @@ public abstract class InventoryUI {
             this.inventory.setItem(i, button.getItemStack());
         }
         return inventory;
+    }
+
+    public void updateButtons(Player player) {
+        build(player);
+        buildInventory();
+        player.updateInventory();
     }
 
     public void updateSlot(int slot, Function<MenuItem, MenuItem> itemFunction) {

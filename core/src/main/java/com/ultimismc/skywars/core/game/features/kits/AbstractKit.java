@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.kits;
 
 import com.ultimismc.skywars.core.game.currency.Currency;
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import lombok.Getter;
 import org.bukkit.Material;
 
@@ -19,7 +20,7 @@ public abstract class AbstractKit implements Kit {
     private final Material displayMaterial;
     private final short durability;
     private final String name;
-    private final KitRarity rarity;
+    private final KitRarity kitRarity;
     private final boolean soulWell;
 
     private final List<KitItem> items = new ArrayList<>();
@@ -28,7 +29,7 @@ public abstract class AbstractKit implements Kit {
         this.displayMaterial = displayMaterial;
         this.durability = (short) durability;
         this.name = name;
-        this.rarity = rarity;
+        this.kitRarity = rarity;
         this.soulWell = soulWellKit;
     }
 
@@ -46,11 +47,19 @@ public abstract class AbstractKit implements Kit {
 
     @Override
     public int getPrice() {
-        return rarity.getPrice();
+        return kitRarity.getPrice();
     }
 
     public void addKitItem(KitItem item) {
         items.add(item);
+    }
+
+    @Override
+    public PurchasableRarity getRarity() {
+        if(kitRarity != null) {
+            return kitRarity.getPurchasableRarity();
+        }
+        return null;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.PlayerInventory;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
@@ -61,5 +62,11 @@ public class MenuListener implements Listener {
             inventoryUI.onClose(event.getInventory());
             menuManager.removeInventory(uuid);
         }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        menuManager.removeInventory(player.getUniqueId());
     }
 }

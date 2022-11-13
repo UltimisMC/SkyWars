@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.game.features.kits;
 
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 
@@ -9,21 +10,23 @@ import org.bukkit.ChatColor;
 @Getter
 public enum KitRarity {
 
-    LEGENDARY(1, ChatColor.GOLD, 30000), // 30000
-    RARE(2, ChatColor.BLUE, 20000), // 20000
-    COMMON(3, ChatColor.GREEN, 15000); // 15000
+    LEGENDARY(PurchasableRarity.LEGENDARY, 30000), // 30000
+    RARE(PurchasableRarity.RARE, 20000), // 20000
+    COMMON(PurchasableRarity.COMMON, 15000); // 15000
 
-    private final int priority;
-    private final ChatColor color;
+    private final PurchasableRarity purchasableRarity;
     private final int price;
 
-    KitRarity(int priority, ChatColor color, int price) {
-        this.priority = priority;
-        this.color = color;
+    KitRarity(PurchasableRarity purchasableRarity, int price) {
+        this.purchasableRarity = purchasableRarity;
         this.price = price;
     }
 
+    public int getPriority() {
+        return purchasableRarity.getPriority();
+    }
+
     public String getDisplayName() {
-        return (color + name());
+        return purchasableRarity.getDisplayName();
     }
 }

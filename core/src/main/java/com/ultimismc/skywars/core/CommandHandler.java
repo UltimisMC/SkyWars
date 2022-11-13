@@ -7,6 +7,7 @@ import com.ultimismc.skywars.core.user.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.ConfigHandler;
+import xyz.directplan.directlib.inventory.manager.MenuManager;
 
 /**
  * @author DirectPlan
@@ -20,9 +21,11 @@ public class CommandHandler {
 
         ConfigHandler configHandler = plugin.getConfigHandler();
         UserManager userManager = plugin.getUserManager();
+        MenuManager menuManager = plugin.getMenuManager();
 
         registerDependency(ConfigHandler.class, configHandler);
         registerDependency(UserManager.class, userManager);
+        registerDependency(MenuManager.class, menuManager);
 
         commandManager.enableUnstableAPI("help");
 

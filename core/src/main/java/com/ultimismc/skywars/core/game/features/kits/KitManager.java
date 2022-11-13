@@ -2,6 +2,8 @@ package com.ultimismc.skywars.core.game.features.kits;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
+import com.ultimismc.skywars.core.game.features.PurchasableRepository;
 import com.ultimismc.skywars.core.game.features.kits.impl.*;
 import lombok.Getter;
 
@@ -11,7 +13,7 @@ import java.util.*;
  * @author DirectPlan
  */
 @Getter
-public class KitManager implements FeatureInitializer {
+public class KitManager implements FeatureInitializer, PurchasableRepository<Kit> {
 
     private final String name = "Kits";
 
@@ -31,8 +33,8 @@ public class KitManager implements FeatureInitializer {
 
         // Why did I pinpoint it?
         kits.sort((kit1, kit2) -> {
-            KitRarity rarity1 = kit1.getRarity();
-            KitRarity rarity2 = kit2.getRarity();
+            PurchasableRarity rarity1 = kit1.getRarity();
+            PurchasableRarity rarity2 = kit2.getRarity();
             return Integer.compare(rarity2.getPriority(), rarity1.getPriority());
         });
         plugin.log("Loaded a total of " + kits.size() + " kits.");
@@ -56,5 +58,10 @@ public class KitManager implements FeatureInitializer {
 
     public Collection<Kit> getKits() {
         return kits;
+    }
+
+    @Override
+    public Map<String, Kit> getPurchasables() {
+        return kitsMap;
     }
 }

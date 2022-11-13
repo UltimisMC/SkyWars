@@ -26,7 +26,7 @@ public class PluginUtility {
     private final static ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public static boolean hasChanceOccurred(int percentChance) {
-        int randomPercentage = random.nextInt(100);
+        int randomPercentage = random.nextInt(100) + 1;
         return randomPercentage <= percentChance;
     }
 

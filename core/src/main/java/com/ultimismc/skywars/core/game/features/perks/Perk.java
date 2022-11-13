@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Perk extends Purchasable {
 
-    PerkRarity getRarity();
+    PerkRarity getPerkRarity();
 
     List<String> getDescription();
 

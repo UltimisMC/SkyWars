@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Kit extends Purchasable {
 
-    KitRarity getRarity();
+    KitRarity getKitRarity();
 
     List<KitItem> getItems();
 }

@@ -2,7 +2,8 @@ package com.ultimismc.skywars.core.game.features.perks;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
-import com.ultimismc.skywars.core.game.features.kits.KitRarity;
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
+import com.ultimismc.skywars.core.game.features.PurchasableRepository;
 import com.ultimismc.skywars.core.game.features.perks.impl.*;
 import com.ultimismc.skywars.core.game.features.soulwell.HarvestingSeasonSoulPerk;
 import com.ultimismc.skywars.core.game.features.soulwell.XezbethLuckSoulPerk;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author DirectPlan
  */
 @Getter
-public class PerkManager implements FeatureInitializer {
+public class PerkManager implements FeatureInitializer, PurchasableRepository<Perk> {
 
     private final String name = "Perks";
 
@@ -25,6 +26,7 @@ public class PerkManager implements FeatureInitializer {
     private final List<Perk> perks = new ArrayList<>();
 
     public PerkManager(SkyWarsPlugin plugin) {
+
     }
 
     @Override
@@ -39,8 +41,8 @@ public class PerkManager implements FeatureInitializer {
         registerPerks(new HarvestingSeasonSoulPerk(), new XezbethLuckSoulPerk());
 
         perks.sort((perk, perk2) -> {
-            PerkRarity rarity1 = perk.getRarity();
-            PerkRarity rarity2 = perk2.getRarity();
+            PurchasableRarity rarity1 = perk.getRarity();
+            PurchasableRarity rarity2 = perk2.getRarity();
             return Integer.compare(rarity2.getPriority(), rarity1.getPriority());
         });
     }
@@ -58,5 +60,10 @@ public class PerkManager implements FeatureInitializer {
         for(Perk perk : perks) {
             registerPerk(perk);
         }
+    }
+
+    @Override
+    public Map<String, Perk> getPurchasables() {
+        return perksMap;
     }
 }

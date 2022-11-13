@@ -27,7 +27,7 @@ public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
         addAsset(userAsset);
     }
 
-    public boolean isPurchased(Purchasable purchasable) {
+    public boolean hasPurchased(Purchasable purchasable) {
         return getAsset(purchasable) != null;
     }
 

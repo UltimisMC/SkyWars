@@ -22,7 +22,13 @@ public interface Purchasable {
 
     Currency getCurrency();
 
+    PurchasableRarity getRarity();
+
     default String getDisplayPrice() {
         return getCurrency().getDisplayAmount(getPrice());
+    }
+
+    default String getNameWithCategory() {
+        return getName() + " " + getCategory();
     }
 }

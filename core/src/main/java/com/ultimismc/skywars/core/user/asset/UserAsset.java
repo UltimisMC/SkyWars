@@ -27,7 +27,7 @@ public class UserAsset {
     }
 
     public String getNameWithCategory() {
-        return purchasable.getName() + " " + purchasable.getCategory();
+        return purchasable.getNameWithCategory();
     }
 
     public int getPrice() {

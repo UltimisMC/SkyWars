@@ -23,7 +23,7 @@ public class SoulWellProductCategoryBuilder implements UserProductCategoryBuilde
     public ProductCategory<User> buildCategory() {
         SoulWellProductCategory productCategory = new SoulWellProductCategory(categorySlot);
 
-        productCategory.addProduct(new RollSoulWellProduct(13));
+        productCategory.addProduct(new RollSoulWellProduct(featureHandler.getPlugin(), 13));
 
         SoulHarvestersCategory soulHarvestersCategory = new SoulHarvestersCategory(29);
         soulHarvestersCategory.addProduct(new SoulHarvesterProduct("Warlock", 11, 5, 600));

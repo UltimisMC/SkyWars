@@ -75,8 +75,8 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         userAssetsHandler.purchaseAsset(purchasable);
     }
 
-    public boolean isPurchased(Purchasable purchasable) {
-        return userAssetsHandler.isPurchased(purchasable);
+    public boolean hasPurchased(Purchasable purchasable) {
+        return userAssetsHandler.hasPurchased(purchasable);
     }
 
     public boolean canAfford(Purchasable purchasable) {

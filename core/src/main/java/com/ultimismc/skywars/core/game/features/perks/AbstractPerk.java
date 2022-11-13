@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks;
 
 import com.ultimismc.skywars.core.game.currency.Currency;
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ public abstract class AbstractPerk implements Perk {
     private final Material displayMaterial;
     private final short durability;
     private final String name;
-    private final PerkRarity rarity;
+    private final PerkRarity perkRarity;
     private final boolean soulWell;
     private final List<String> description;
 
@@ -32,7 +33,7 @@ public abstract class AbstractPerk implements Perk {
         this.displayMaterial = displayMaterial;
         this.durability = (short) durability;
         this.name = name;
-        this.rarity = rarity;
+        this.perkRarity = rarity;
         this.soulWell = soulWellPerk;
         this.description = description;
     }
@@ -60,12 +61,20 @@ public abstract class AbstractPerk implements Perk {
 
     @Override
     public int getPrice() {
-        if(rarity == PerkRarity.SOUL_WELL) return price;
-        return rarity.getPrice();
+        if(perkRarity == PerkRarity.SOUL_WELL) return price;
+        return perkRarity.getPrice();
+    }
+
+    @Override
+    public PurchasableRarity getRarity() {
+        if(perkRarity != null) {
+            return perkRarity.getPurchasableRarity();
+        }
+        return null;
     }
 
     @Override
     public boolean isSoulWellPerk() {
-        return rarity == null || rarity == PerkRarity.SOUL_WELL;
+        return perkRarity == null || perkRarity == PerkRarity.SOUL_WELL;
     }
 }

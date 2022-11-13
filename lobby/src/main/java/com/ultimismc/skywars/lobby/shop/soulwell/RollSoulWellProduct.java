@@ -1,9 +1,13 @@
 package com.ultimismc.skywars.lobby.shop.soulwell;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
+import com.ultimismc.skywars.lobby.shop.soulwell.roll.SoulWellRollMenu;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.Arrays;
@@ -14,8 +18,14 @@ import java.util.List;
  */
 public class RollSoulWellProduct extends UserPurchasableProduct {
 
-    public RollSoulWellProduct(int itemSlot) {
+    private final SkyWarsPlugin plugin;
+    private final MenuManager menuManager;
+
+    public RollSoulWellProduct(SkyWarsPlugin plugin, int itemSlot) {
         super("Roll Soul Well", itemSlot, 50, Currency.SOUL_CURRENCY);
+
+        this.plugin = plugin;
+        this.menuManager = plugin.getMenuManager();
     }
 
     @Override
@@ -33,6 +43,7 @@ public class RollSoulWellProduct extends UserPurchasableProduct {
 
     @Override
     public void executePurchasableProduct(User user) {
-        user.sendMessage("let them roll!");
+        Player player = user.getPlayer();
+        menuManager.openInventory(player, new SoulWellRollMenu(plugin, user));
     }
 }

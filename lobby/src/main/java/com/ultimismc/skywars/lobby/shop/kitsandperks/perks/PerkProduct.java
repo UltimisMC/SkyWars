@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.kitsandperks.perks;
 
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
 import com.ultimismc.skywars.core.user.User;
@@ -26,7 +27,7 @@ public class PerkProduct {
         Material displayMaterial = perk.getDisplayMaterial();
         short displayDurability = perk.getDisplayDurability();
         List<String> description = perk.getDescription();
-        PerkRarity rarity = perk.getRarity();
+        PurchasableRarity rarity = perk.getRarity();
 
         List<String> lore = new ArrayList<>(description);
         lore.add(" ");

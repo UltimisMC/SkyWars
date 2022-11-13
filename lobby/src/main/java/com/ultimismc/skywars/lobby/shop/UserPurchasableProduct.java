@@ -37,12 +37,12 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
     }
 
     public UserPurchasableProduct(int itemSlot, Purchasable purchasable) {
-        this(purchasable.getName() + " " + purchasable.getCategory(), itemSlot, purchasable.getPrice(), purchasable.getCurrency());
+        this(purchasable.getNameWithCategory(), itemSlot, purchasable.getPrice(), purchasable.getCurrency());
         this.purchasable = purchasable;
     }
 
     public UserPurchasableProduct(int itemSlot, int inventoryRows, Purchasable purchasable) {
-        this(purchasable.getName() + " " + purchasable.getCategory(), inventoryRows, itemSlot, purchasable.getPrice(), purchasable.getCurrency());
+        this(purchasable.getNameWithCategory(), inventoryRows, itemSlot, purchasable.getPrice(), purchasable.getCurrency());
         this.purchasable = purchasable;
     }
 
@@ -61,7 +61,7 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
             displayName = getName();
         }
         boolean canAfford = currency.canAfford(user, cost);
-        boolean isPurchased = (purchasable != null && user.isPurchased(purchasable));
+        boolean hasPurchased = (purchasable != null && user.hasPurchased(purchasable));
 
         Material material = shopProductItemDesign.getMaterial();
         short durability = shopProductItemDesign.getDurability();
@@ -71,13 +71,13 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
         String purchaseStatus = shopProductItemDesign.getPurchaseStatus();
         if(color == null) {
             color = ChatColor.GREEN;
-            if(!isPurchased) {
+            if(!hasPurchased) {
                 color = (canAfford ? ChatColor.GREEN : ChatColor.RED);
             }
         }
         displayName = color + displayName;
 
-        if(!isPurchased) {
+        if(!hasPurchased) {
             lore.add("&7Cost: " + currency.getDisplayAmount(cost));
             if(purchasable != null && purchasable.isSoulWell()) {
                 lore.add("&bAlso found in the Soul Well!");
@@ -99,8 +99,8 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
                 lore.add(purchasedStatus);
             }
         }
-        ProductItemDesign productItemDesign = new ProductItemDesign(material, durability, color, lore, isPurchased || canAfford);
-        productItemDesign.setIgnoreConfirmation(isPurchased);
+        ProductItemDesign productItemDesign = new ProductItemDesign(material, durability, color, lore, hasPurchased || canAfford);
+        productItemDesign.setIgnoreConfirmation(hasPurchased);
         productItemDesign.setDisplayName(displayName);
         productItemDesign.setSkullTexture(productTexture);
         return productItemDesign;
@@ -110,7 +110,7 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
     public void executeAction(User user) {
         Player player = user.getPlayer();
 
-        if(purchasable != null && user.isPurchased(purchasable)) {
+        if(purchasable != null && user.hasPurchased(purchasable)) {
             executePurchasableProduct(user);
             return;
         }

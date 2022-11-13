@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.game.features.perks;
 
+import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 
@@ -9,23 +10,25 @@ import org.bukkit.ChatColor;
 @Getter
 public enum PerkRarity {
 
-    LEGENDARY(1, ChatColor.GOLD, 150000), // 150000
-    RARE(2, ChatColor.BLUE, 50000), // 50000
-    COMMON(3, ChatColor.GREEN, 5000), // 5000
-    SOUL_WELL(4, ChatColor.AQUA, -1),
+    LEGENDARY(PurchasableRarity.LEGENDARY, 150000), // 150000
+    RARE(PurchasableRarity.RARE, 50000), // 50000
+    COMMON(PurchasableRarity.COMMON, 5000), // 5000
+    SOUL_WELL(PurchasableRarity.COMMON, -1),
     ;
 
-    private final int priority;
-    private final ChatColor color;
+    private final PurchasableRarity purchasableRarity;
     private final int price;
 
-    PerkRarity(int priority, ChatColor color, int price) {
-        this.priority = priority;
-        this.color = color;
+    PerkRarity(PurchasableRarity purchasableRarity, int price) {
+        this.purchasableRarity = purchasableRarity;
         this.price = price;
     }
 
+    public int getPriority() {
+        return purchasableRarity.getPriority();
+    }
+
     public String getDisplayName() {
-        return (color + name());
+        return purchasableRarity.getDisplayName();
     }
 }
