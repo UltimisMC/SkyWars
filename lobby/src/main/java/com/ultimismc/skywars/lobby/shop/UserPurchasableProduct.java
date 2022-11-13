@@ -116,8 +116,8 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
         }
         currency.decreaseCurrency(user, cost);
         player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);
-        player.closeInventory();
         if(purchasable != null) { // Purchasable exists but not purchased
+            player.closeInventory();
             String displayPrice = currency.getDisplayAmount(cost);
 
             user.purchaseAsset(purchasable);
@@ -125,7 +125,6 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
                     new Replacement("price", displayPrice));
             return;
         }
-
         executePurchasableProduct(user);
     }
 }
