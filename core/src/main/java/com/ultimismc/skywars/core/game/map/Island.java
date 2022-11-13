@@ -1,13 +1,13 @@
 package com.ultimismc.skywars.core.game.map;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 import org.bukkit.Location;
 
 /**
  * @author DirectPlan
  */
-@RequiredArgsConstructor
+@Data
 public class Island {
 
-    private final Location cageSpawnLocation;
+    private final Location cageLocation;
 }
