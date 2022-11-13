@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.map;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +9,16 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-@Data
+@RequiredArgsConstructor
+@Getter
 public class Map {
 
     private final String name;
+    private final List<Island> islands;
 
-    private final List<Island> islands = new ArrayList<>();
+    public Map(String name) {
+        this(name, new ArrayList<>());
+    }
 
     public void addIsland(Island island) {
         islands.add(island);
