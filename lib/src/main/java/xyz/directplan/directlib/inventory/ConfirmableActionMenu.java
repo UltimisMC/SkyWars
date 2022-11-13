@@ -29,9 +29,8 @@ public class ConfirmableActionMenu extends InventoryUI {
         };
 
         menuItem.setAction((item, clicker, clickType) -> {
-            confirmedAction.executeAction();
-            clicker.closeInventory();
             clicker.playSound(clicker.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);
+            confirmedAction.executeAction();
         });
         MenuItem cancellationItem = new MenuItem(Material.STAINED_CLAY, "&cCancel Action", 14, cancellationAction);
         cancellationItem.setLore(PluginUtility.translateMessage("&7Click here to cancel this action!"));
