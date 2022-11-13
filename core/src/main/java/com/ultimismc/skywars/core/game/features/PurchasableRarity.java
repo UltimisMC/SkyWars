@@ -25,4 +25,8 @@ public enum PurchasableRarity {
     public String getDisplayName() {
         return (color + name());
     }
+
+    public boolean isRare() {
+        return priority <= 2;
+    }
 }
