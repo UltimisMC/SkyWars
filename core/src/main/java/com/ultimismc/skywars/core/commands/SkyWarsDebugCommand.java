@@ -9,8 +9,16 @@ import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.level.LevelReward;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import xyz.directplan.directlib.PluginUtility;
+import xyz.directplan.directlib.inventory.InventoryUI;
+import xyz.directplan.directlib.inventory.manager.MenuManager;
 
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author DirectPlan
@@ -21,6 +29,9 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Dependency
     private LevelManager levelManager;
+
+    @Dependency
+    private MenuManager menuManager;
 
     @HelpCommand
     @Syntax("")
@@ -70,6 +81,21 @@ public class SkyWarsDebugCommand extends BaseCommand {
         userStatistics.setTotalExp(amount);
 
         levelManager.calculateUserLevel(user);
+    }
+
+    @Subcommand("dumpinventories")
+    public void onDumpInventories(CommandSender sender) {
+        sender.sendMessage(PluginUtility.translateMessage("&bShowing inventory entries:"));
+        for(Map.Entry<UUID, InventoryUI> entry : menuManager.getInventories().entrySet()) {
+            UUID uuid = entry.getKey();
+            Player player = Bukkit.getPlayer(uuid);
+            String name = player.getName();
+
+            InventoryUI inventoryUI = entry.getValue();
+            String inventoryId = inventoryUI.getInventoryId();
+
+            sender.sendMessage(PluginUtility.translateMessage(" &3" + name + " &7 - &3") + inventoryId);
+        }
     }
 
     private void increaseCurrency(User user, Currency currency, int amount) {
