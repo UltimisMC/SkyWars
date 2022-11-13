@@ -54,4 +54,9 @@ public class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Product<U>> {
 
         productMenuBuilder.addGoBackButton(player, this, previousMenu);
     }
+
+    @Override
+    public String getInventoryId() {
+        return productCategory.getName();
+    }
 }
