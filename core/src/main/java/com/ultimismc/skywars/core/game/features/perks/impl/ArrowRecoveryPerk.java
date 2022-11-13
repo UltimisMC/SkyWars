@@ -4,6 +4,8 @@ import com.ultimismc.skywars.core.game.features.perks.AbstractPerk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
 import org.bukkit.Material;
 
+import java.util.Arrays;
+
 /**
  * @author DirectPlan
  */
@@ -11,6 +13,7 @@ public class ArrowRecoveryPerk extends AbstractPerk {
 
     public ArrowRecoveryPerk() {
         super(Material.ARROW, "Arrow Recovery", PerkRarity.RARE,
-                "50% chance of getting your arrow back on bow hit.");
+                Arrays.asList("&750% chance of getting your arrow",
+                        "&7back on bow hit."));
     }
 }

@@ -11,6 +11,6 @@ public class MiningExpertisePerk extends AbstractPerk {
 
     public MiningExpertisePerk() {
         super(Material.IRON_PICKAXE, "Mining Expertise", PerkRarity.COMMON,
-                "Get 1 extra ore per block mined.");
+                "&7Get 1 extra ore per block mined.");
     }
 }

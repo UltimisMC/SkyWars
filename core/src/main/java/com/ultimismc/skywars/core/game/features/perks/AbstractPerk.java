@@ -42,12 +42,21 @@ public abstract class AbstractPerk implements Perk {
         this(displayMaterial, durability, name, rarity, soulWellPerk, new ArrayList<>(Collections.singletonList(description)));
     }
 
+    public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, List<String> description) {
+        this(displayMaterial, durability, name, rarity, true, description);
+    }
+
     public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, String description) {
         this(displayMaterial, durability, name, rarity, true, description);
     }
 
     public AbstractPerk(Material displayMaterial, String name, PerkRarity rarity, boolean soulWellPerk, String description) {
         this(displayMaterial, 0, name, rarity, soulWellPerk, description);
+    }
+
+
+    public AbstractPerk(Material material, String name, PerkRarity rarity, List<String> description) {
+        this(material, 0, name, rarity, true, description);
     }
 
     public AbstractPerk(Material material, String name, PerkRarity rarity, String description) {

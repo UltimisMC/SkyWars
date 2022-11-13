@@ -11,6 +11,6 @@ public class KnowledgePerk extends AbstractPerk {
 
     public KnowledgePerk() {
         super(Material.BOOK, "Knowledge", PerkRarity.COMMON,
-                "Every kill you gain 3 EXP Level.");
+                "&7Every kill you gain 3 EXP Level.");
     }
 }

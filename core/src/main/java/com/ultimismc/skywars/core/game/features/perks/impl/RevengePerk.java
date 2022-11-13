@@ -11,6 +11,6 @@ public class RevengePerk extends AbstractPerk {
 
     public RevengePerk() {
         super(Material.IRON_SWORD, "Revenge", PerkRarity.LEGENDARY,
-                "Spawn a spider when you die.");
+                "&7Spawn a spider when you die.");
     }
 }

@@ -34,7 +34,7 @@ public abstract class AbstractKit implements Kit {
     }
 
     public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity) {
-        this(displayMaterial, durability, name, rarity, false);
+        this(displayMaterial, durability, name, rarity, true);
     }
 
     public AbstractKit(Material displayMaterial, String name, KitRarity rarity, boolean soulWellKit) {
@@ -42,7 +42,7 @@ public abstract class AbstractKit implements Kit {
     }
 
     public AbstractKit(Material material, String name, KitRarity rarity) {
-        this(material, name, rarity, false);
+        this(material, name, rarity, true);
     }
 
     @Override

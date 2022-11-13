@@ -49,7 +49,8 @@ public class SoulWellRollMenu extends InventoryUI {
         purchasables.removeIf(purchasable -> {
             PurchasableRarity rarity = purchasable.getRarity();
             int occurrence = rarity.getOccurrenceChance();
-            return !purchasable.isSoulWell() || user.hasPurchased(purchasable) || !PluginUtility.hasChanceOccurred(occurrence);
+            boolean hasChanceOccurred = PluginUtility.hasChanceOccurred(occurrence);
+            return !purchasable.isSoulWell() || user.hasPurchased(purchasable) || !hasChanceOccurred;
         });
         purchaseSlots = new int[]{
                 40,
