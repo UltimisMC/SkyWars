@@ -121,7 +121,7 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
             String displayPrice = currency.getDisplayAmount(cost);
 
             user.purchaseAsset(purchasable);
-            ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", purchasable.getName()),
+            ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", purchasable.getNameWithCategory()),
                     new Replacement("price", displayPrice));
             return;
         }
