@@ -19,6 +19,10 @@ public class GameServer {
 
     private boolean setupMode;
 
+    public String getName() {
+        return teamType.getName() + " " + gameType.getName();
+    }
+
     public int getMaximumPlayers() {
         return teamType.getMaximumPlayers();
     }
