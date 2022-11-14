@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
+import xyz.directplan.directlib.config.ConfigHandler;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 
@@ -32,6 +33,9 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Dependency
     private MenuManager menuManager;
+
+    @Dependency
+    private ConfigHandler configHandler;
 
     @HelpCommand
     @Syntax("")
@@ -98,7 +102,15 @@ public class SkyWarsDebugCommand extends BaseCommand {
         }
     }
 
+
     private void increaseCurrency(User user, Currency currency, int amount) {
         currency.increaseCurrencyWithMessage(user, amount);
+    }
+
+    @Subcommand("reload")
+    @Syntax("Reloads configuration files")
+    public void onReload(User user) {
+        configHandler.reloadConfigurations();
+        user.sendMessage("&aAll configuration files has been reloaded.");
     }
 }
