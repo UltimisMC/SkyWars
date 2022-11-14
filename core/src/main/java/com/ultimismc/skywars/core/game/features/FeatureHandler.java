@@ -42,13 +42,17 @@ public class FeatureHandler {
 
     public void initializeFeatures() {
         for(FeatureInitializer featureInitializer : featureInitializers) {
-            plugin.log("Initializing " + featureInitializer.getName() + "...");
-            featureInitializer.initializeFeature(plugin);
-            plugin.getCommandHandler().registerDependency(featureInitializer.getClass(), featureInitializer);
+            initializeFeature(featureInitializer);
         }
 
         purchasableHandler.registerPurchasableRepository(kitManager);
         purchasableHandler.registerPurchasableRepository(perkManager);
+    }
+
+    public void initializeFeature(FeatureInitializer featureInitializer) {
+        plugin.log("Initializing " + featureInitializer.getName() + "...");
+        featureInitializer.initializeFeature(plugin);
+        plugin.getCommandHandler().registerDependency(featureInitializer.getClass(), featureInitializer);
     }
 
     public <T extends Purchasable> T getPurchasable(Class<T> clazz, String key) {
