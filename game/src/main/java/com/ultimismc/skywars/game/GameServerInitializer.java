@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameServerInitializer {
 
-//    private final GameManager gameManager;
+    private final SkyWarsPlugin plugin;
 
     @Getter private GameServer gameServer;
 
@@ -38,12 +38,21 @@ public class GameServerInitializer {
 
         gameServer = new GameServer(serverId, gameType, teamType, gameMap.toMap());
 
+        if(gameServer.isSetupMode()) {
+            plugin.log("Server is on Setup Mode. ");
+            return;
+        }
+        plugin.log("Checking redis connection...");
+        // Check if redis is established
+        plugin.log("Sending startup payload for server " + gameInfo.getServerId() + "...");
         // Sending message to lobby about this server...
-
     }
 
     public void finalizeServer() {
+        plugin.log("Sending shutdown payload for server " + gameServer.getServerId() + "...");
+        // Send shutdown message to lobby.
 
+        plugin.log("Saving configuration files...");
     }
 
     private GameInfo loadGameInfo() {
@@ -68,6 +77,7 @@ public class GameServerInitializer {
 
         for(String serializedIsland : serializedIslands) {
 
+            if(serializedIsland.isEmpty()) continue;
             String[] args = serializedIsland.split("/");
             String serializedLocation = args[0];
             gameMap.addIsland(serializedLocation);
