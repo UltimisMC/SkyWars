@@ -10,7 +10,6 @@ import com.ultimismc.skywars.core.user.asset.UserAssetsHandler;
 import com.ultimismc.skywars.core.user.setting.UserSettingHandler;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
