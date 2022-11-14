@@ -9,5 +9,6 @@ import org.bukkit.Location;
 @Data
 public class Island {
 
+    private boolean taken;
     private final Location cageLocation;
 }
