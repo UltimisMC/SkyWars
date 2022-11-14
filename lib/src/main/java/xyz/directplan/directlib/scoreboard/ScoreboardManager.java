@@ -91,6 +91,7 @@ public class ScoreboardManager {
         if(scoreboard == null) return;
         removeScoreboard(scoreboard);
     }
+
     public void removeScoreboard(DirectScoreboard scoreboard) {
         if(scoreboard.isAsyncSupported()) {
             asyncExecutor.execute(scoreboard::remove);
