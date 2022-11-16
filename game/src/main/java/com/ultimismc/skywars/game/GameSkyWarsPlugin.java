@@ -1,6 +1,8 @@
 package com.ultimismc.skywars.game;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.game.commands.SkyWarsGameCommand;
+import com.ultimismc.skywars.game.commands.SkyWarsSetupCommand;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.user.GameUserLoadedListener;
 import com.ultimismc.skywars.game.user.GameUserSavedListener;
@@ -17,9 +19,9 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
     @Override
     public void enable() {
         configHandler.loadConfiguration("messages.yml", MessageConfigKeys.class);
-        gameManager = new GameManager(this);
-        gameManager.initialize();
+        featureHandler.initializeFeature(gameManager = new GameManager(this));
 
+        commandHandler.registerCommands(new SkyWarsGameCommand(), new SkyWarsSetupCommand());
         userListener.setUserLoadedListener(new GameUserLoadedListener(this, gameManager));
         userListener.setUserSavedListener(new GameUserSavedListener(gameManager));
     }

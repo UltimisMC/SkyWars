@@ -18,6 +18,7 @@ import java.util.Map;
 public enum MapConfigKeys implements ConfigEntry {
 
     MAP_NAME("name", "Ehh"),
+    WORLD_NAME("world-name", "world"),
     MAP_SERIALIZED_ISLANDS("serialized-islands", Arrays.asList("")),
     MAP_SERIALIZED_CHESTS("serialized-chests", Arrays.asList("")),
     ;

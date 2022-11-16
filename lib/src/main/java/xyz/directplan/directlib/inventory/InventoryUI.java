@@ -82,7 +82,7 @@ public abstract class InventoryUI {
 
     public void addCloseButton() {
         MenuItem closeButton = new MenuItem(Material.BARRIER, "&cClose");
-        closeButton.setAction((item, clicker, clickType) -> clicker.closeInventory());
+        closeButton.setAction((item, clicker, clickedBlock, clickType) -> clicker.closeInventory());
 
         int lastSlot = getLastSlotIndex();
         setSlot((lastSlot - 4), closeButton);

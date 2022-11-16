@@ -1,6 +1,7 @@
 package xyz.directplan.directlib.shop.menu;
 
 import lombok.RequiredArgsConstructor;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.inventory.ActionableItem;
@@ -26,7 +27,7 @@ public class ProductCategoryAction<U> implements ActionableItem {
     private final boolean ignoreConfirmation;
 
     @Override
-    public void performAction(MenuItem item, Player clicker, ClickType clickType) {
+    public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType) {
         if(product.isDisplay()) return;
         if(product.isCategory()) {
             ProductCategory<U> productCategory = (ProductCategory<U>) product;

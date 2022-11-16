@@ -34,7 +34,7 @@ public class LobbyPlayerInventoryUi extends UserPlayerInventoryUi {
         List<String> lore = MessageConfigKeys.SKYWARS_LOBBY_SHOP_ITEM_LORE.getStringList(new Replacement("coins", userStatistics.getCoins()));
         shopItem.setLore(lore);
 
-        shopItem.setAction((item, clicker, clickType) -> lobbyManager.openShopMenu(user));
+        shopItem.setAction((item, clicker, clickedBlock, clickType) -> lobbyManager.openShopMenu(user));
         setSlot(shopItemSlot, shopItem);
     }
 }

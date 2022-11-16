@@ -22,13 +22,13 @@ public class ConfirmableActionMenu extends InventoryUI {
     @Override
     public void build(Player player) {
 
-        ActionableItem cancellationAction = (item, clicker, clickType) -> {
+        ActionableItem cancellationAction = (item, clicker, clickedBlock, clickType) -> {
             clicker.sendMessage(PluginUtility.translateMessage("&cYou've cancelled this action."));
             clicker.closeInventory();
             clicker.playSound(clicker.getLocation(), Sound.VILLAGER_NO, 1f, 1f);
         };
 
-        menuItem.setAction((item, clicker, clickType) -> {
+        menuItem.setAction((item, clicker, clickedBlock, clickType) -> {
             clicker.playSound(clicker.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);
             confirmedAction.executeAction();
         });

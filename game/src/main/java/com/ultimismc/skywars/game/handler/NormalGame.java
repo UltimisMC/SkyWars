@@ -1,13 +1,13 @@
-package com.ultimismc.skywars.game.mode;
+package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.core.user.User;
 
 /**
  * @author DirectPlan
  */
-public class InsaneGame extends AbstractGame {
+public class NormalGame extends AbstractGame {
 
-    public InsaneGame(GameHandler gameHandler) {
+    public NormalGame(GameHandler gameHandler) {
         super(gameHandler);
     }
 

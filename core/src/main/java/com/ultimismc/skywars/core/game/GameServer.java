@@ -26,4 +26,12 @@ public class GameServer {
     public int getMaximumPlayers() {
         return teamType.getMaximumPlayers();
     }
+
+    public String getMapName() {
+        return map.getName();
+    }
+
+    public void setMapName(String name) {
+        map.setName(name);
+    }
 }

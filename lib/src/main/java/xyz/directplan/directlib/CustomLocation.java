@@ -77,6 +77,10 @@ public class CustomLocation {
         return customLocation;
     }
 
+    public static String locationToString(Location location) {
+        return locationToString(CustomLocation.fromBukkitLocation(location));
+    }
+
     public static String locationToString(CustomLocation loc) {
         StringJoiner joiner = new StringJoiner(", ");
         joiner.add(Double.toString(loc.getX()));

@@ -1,6 +1,7 @@
 package xyz.directplan.directlib.inventory;
 
 import lombok.Getter;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
@@ -54,8 +55,8 @@ public abstract class PlayerInventoryUI<U extends InventoryUser> extends Invento
         if(!item.hasAction()) {
             return;
         }
-
-        item.performAction(item, player, ClickType.RIGHT);
+        Block clickedBlock = event.getClickedBlock();
+        item.performAction(item, player, clickedBlock, ClickType.RIGHT);
     }
 
 

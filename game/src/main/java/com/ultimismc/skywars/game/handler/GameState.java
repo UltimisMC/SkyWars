@@ -1,8 +1,5 @@
-package com.ultimismc.skywars.core.game;
+package com.ultimismc.skywars.game.handler;
 
-/**
- * @author DirectPlan
- */
 public enum GameState {
 
     WAITING,

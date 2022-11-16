@@ -68,7 +68,7 @@ public class ProductMenuBuilder<U> {
     public void addGoBackButton(Player player, InventoryUI currentMenu, InventoryUI previousMenu) {
         MenuItem backButton = new MenuItem(Material.ARROW, "&aGo Back");
         backButton.setLore("&7To " + previousMenu.getTitle());
-        backButton.setAction((item, clicker, clickType) -> shopHandler.openInventory(player, previousMenu));
+        backButton.setAction((item, clicker, clickedBlock, clickType) -> shopHandler.openInventory(player, previousMenu));
         int lastSlot = currentMenu.getLastSlotIndex();
         currentMenu.setSlot((lastSlot - 4), backButton);
     }

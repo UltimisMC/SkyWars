@@ -11,12 +11,13 @@ import lombok.Setter;
  */
 @Data
 @Setter
-public class UserSession {
+public class UserGameSession {
 
     private final User user;
     private final GameServer gameServer;
 
     private boolean spectator;
+    private boolean setupMode;
 
     private final UserStatistics userStatistics = new UserStatistics();
 

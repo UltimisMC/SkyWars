@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public class UserSessionHandler {
 
-    private final Map<UUID, UserSession> userSessions = new HashMap<>();
+    private final Map<UUID, UserGameSession> userSessions = new HashMap<>();
 
     private final GameServer gameServer;
     public UserSessionHandler(GameServer gameServer) {
@@ -21,23 +21,23 @@ public class UserSessionHandler {
 
     public void addUser(User user) {
         UUID uuid = user.getUuid();
-        userSessions.put(uuid, new UserSession(user, gameServer));
+        userSessions.put(uuid, new UserGameSession(user, gameServer));
     }
 
-    public UserSession getSession(UUID uuid) {
+    public UserGameSession getSession(UUID uuid) {
         return userSessions.get(uuid);
     }
 
-    public UserSession removeSession(UUID uuid) {
+    public UserGameSession removeSession(UUID uuid) {
         return userSessions.remove(uuid);
     }
 
-    public UserSession getSession(User user) {
+    public UserGameSession getSession(User user) {
         UUID uuid = user.getUuid();
         return getSession(uuid);
     }
 
-    public UserSession removeSession(User user) {
+    public UserGameSession removeSession(User user) {
         UUID uuid = user.getUuid();
         return removeSession(uuid);
     }

@@ -71,14 +71,14 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
             int currentPage = (page + 1);
             String nextPageDisplayName = "&aNext Page &7("+currentPage+"/" + totalPages + ")";
 
-            MenuItem nextPageItem = new MenuItem(Material.ARROW, nextPageDisplayName, (item, clicker, clickType) -> this.nextPage(clicker));
+            MenuItem nextPageItem = new MenuItem(Material.ARROW, nextPageDisplayName, (item, clicker, clickedBlock, clickType) -> this.nextPage(clicker));
             this.setSlot(nextPageSlot, nextPageItem);
         }
         if(this.page > 1) {
             int previousPage = (page - 1);
             String previousPageDisplayName = "&aPrevious page &7(" + previousPage + "/"+ totalPages +")";
 
-            MenuItem previousPageItem = new MenuItem(Material.ARROW, previousPageDisplayName, (item, clicker, clickType) -> this.previousPage(clicker));
+            MenuItem previousPageItem = new MenuItem(Material.ARROW, previousPageDisplayName, (item, clicker, clickedBlock, clickType) -> this.previousPage(clicker));
             this.setSlot(previousPageSlot, previousPageItem);
         }
 

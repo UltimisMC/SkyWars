@@ -7,6 +7,7 @@ import lombok.Setter;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -134,10 +135,14 @@ public class MenuItem implements Cloneable {
         return action != null;
     }
 
-    public void performAction(MenuItem item, Player clicker, ClickType clickType){
+    public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType){
         if(this.action != null){
-            this.action.performAction(item, clicker, clickType);
+            this.action.performAction(item, clicker, clickedBlock, clickType);
         }
+    }
+
+    public void performAction(MenuItem item, Player clicker, ClickType clickType){
+        performAction(item, clicker, null, clickType);
     }
 
     public void removeCompoundKey(String compoundKey) {

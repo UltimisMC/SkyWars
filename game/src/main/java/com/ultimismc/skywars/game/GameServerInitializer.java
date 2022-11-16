@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.game.map.Chest;
 import com.ultimismc.skywars.core.game.map.Island;
 import com.ultimismc.skywars.core.game.map.Map;
 import com.ultimismc.skywars.game.config.GameConfigKeys;
@@ -11,9 +12,13 @@ import com.ultimismc.skywars.game.config.MapConfigKeys;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import xyz.directplan.directlib.CustomLocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +40,9 @@ public class GameServerInitializer {
         String serverId = gameInfo.getServerId();
 
         GameMap gameMap = loadGameMap();
-
+        if(gameMap == null) {
+            return;
+        }
         gameServer = new GameServer(serverId, gameType, teamType, gameMap.toMap());
 
         if(gameServer.isSetupMode()) {
@@ -49,6 +56,9 @@ public class GameServerInitializer {
     }
 
     public void finalizeServer() {
+        plugin.log("Saving game map...");
+        saveGameMap();
+
         plugin.log("Sending shutdown payload for server " + gameServer.getServerId() + "...");
         // Send shutdown message to lobby.
 
@@ -70,7 +80,7 @@ public class GameServerInitializer {
 
         String name = MapConfigKeys.MAP_NAME.getStringValue();
         List<String> serializedIslands = MapConfigKeys.MAP_SERIALIZED_ISLANDS.getStringList();
-//        List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
+        List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
 
         GameMap gameMap = new GameMap(name);
 
@@ -82,7 +92,50 @@ public class GameServerInitializer {
             String serializedLocation = args[0];
             gameMap.addIsland(serializedLocation);
         }
+        String worldName = MapConfigKeys.WORLD_NAME.getStringValue();
+        World world = Bukkit.getWorld(worldName);
+        if(world == null) {
+            plugin.shutdown("World '" + worldName + "' does not exist. Shutting down");
+            return null;
+        }
+
+        for(String serializedChest : serializedChests) {
+            if(serializedChest.isEmpty()) continue;
+            String[] args = serializedChest.split("/");
+            String serializedLocation = args[0];
+            CustomLocation customLocation = CustomLocation.stringToLocation(serializedLocation);
+            boolean midChest = Boolean.parseBoolean(args[1]);
+
+            Block block = world.getBlockAt(customLocation.toBukkitLocation());
+            if(!(block instanceof org.bukkit.block.Chest)) continue;
+
+            gameMap.addChest(block, midChest);
+        }
         return gameMap;
+    }
+
+    private void saveGameMap() {
+
+        Map map = gameServer.getMap();
+        MapConfigKeys.MAP_NAME.setValue(map.getName());
+
+        List<String> serializedChests = new ArrayList<>();
+        List<String> serializedIslands = new ArrayList<>();
+
+        for(Chest chest : map.getChests().values()) {
+            Location location = chest.getLocation();
+            String serializedLocation = CustomLocation.locationToString(location);
+            boolean midChest = chest.isMidChest();
+            serializedChests.add(serializedLocation + "/" + midChest);
+        }
+        for(Island island : map.getIslands()) {
+            Location cageLocation = island.getCageLocation();
+            String serializedCageLocation = CustomLocation.locationToString(cageLocation);
+            serializedIslands.add(serializedCageLocation);
+        }
+
+        MapConfigKeys.MAP_SERIALIZED_CHESTS.setValue(serializedChests);
+        MapConfigKeys.MAP_SERIALIZED_ISLANDS.setValue(serializedIslands);
     }
 
     @Data
@@ -109,6 +162,10 @@ public class GameServerInitializer {
 
         public void addIsland(Island island) {
             map.addIsland(island);
+        }
+
+        public void addChest(Block block, boolean midChest) {
+            map.addChest(block, midChest);
         }
 
         public void addIsland(String serializedCageLocation) {

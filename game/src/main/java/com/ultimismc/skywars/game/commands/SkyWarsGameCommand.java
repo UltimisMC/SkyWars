@@ -1,9 +1,11 @@
 package com.ultimismc.skywars.game.commands;
 
+import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.game.GameManager;
-import com.ultimismc.skywars.game.mode.GameHandler;
+import com.ultimismc.skywars.game.handler.GameHandler;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
 
@@ -12,7 +14,7 @@ import xyz.directplan.directlib.PluginUtility;
  */
 @CommandAlias("skywarsgame|sgame")
 @CommandPermission("ultimismc.skywars.admin")
-public class SkyWarsGameCommand {
+public class SkyWarsGameCommand extends BaseCommand {
 
     @Dependency
     private GameManager gameManager;
@@ -32,6 +34,13 @@ public class SkyWarsGameCommand {
         sendMessage(player, "&aYou've successfully set waiting location.");
     }
 
+
+    @CommandAlias("whereami")
+    public void onWhereAmi(Player player) {
+        GameServer gameServer = gameHandler.getGameServer();
+        String name = gameServer.getName();
+        sendMessage(player, "&aYou are currently in server &e" + name + " - " +  gameServer.getServerId() +"&a.");
+    }
     private void sendMessage(Player player, String message) {
         player.sendMessage(PluginUtility.translateMessage(message));
     }

@@ -1,5 +1,6 @@
 package xyz.directplan.directlib.inventory;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 
@@ -8,5 +9,5 @@ import org.bukkit.event.inventory.ClickType;
  */
 public interface ActionableItem {
 
-    void performAction(MenuItem item, Player clicker, ClickType clickType);
+    void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType);
 }
