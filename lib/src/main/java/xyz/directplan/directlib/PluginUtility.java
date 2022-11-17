@@ -88,6 +88,10 @@ public class PluginUtility {
         firework.setFireworkMeta(fireworkMeta);
     }
 
+    public static void playSound(Player player, Sound sound) {
+        player.playSound(player.getLocation(), sound, 1f, 1f);
+    }
+
     public static void spawnParticle(Location location, EnumParticle particle) {
         PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(particle, true, (float) location.getX(),
                 (float) location.getY(), (float) location.getZ(), 0, 0, 0, 0, 15);
