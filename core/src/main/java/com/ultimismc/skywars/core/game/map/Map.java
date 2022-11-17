@@ -1,14 +1,12 @@
 package com.ultimismc.skywars.core.game.map;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @author DirectPlan
@@ -17,21 +15,38 @@ import java.util.List;
 public class Map {
 
     @Setter private String name;
-    private final List<Island> islands;
+    private final java.util.Map<Location, Island> islands;
     private final java.util.Map<Location, Chest> chests;
 
-    public Map(String name, List<Island> islands, java.util.Map<Location, Chest> chests) {
+    public Map(String name, java.util.Map<Location, Island> islands, java.util.Map<Location, Chest> chests) {
         this.name = name;
         this.islands = islands;
         this.chests = chests;
     }
 
     public Map(String name) {
-        this(name, new ArrayList<>(), new HashMap<>());
+        this(name, new HashMap<>(), new HashMap<>());
     }
 
     public void addIsland(Island island) {
-        islands.add(island);
+        islands.put(island.getCageLocation(), island);
+    }
+
+    public Island getIsland(Location location) {
+        return islands.get(location);
+    }
+
+    public Island getAvailableIsland() {
+        Optional<Island> optionalIsland = islands.values().stream().filter(island -> !island.isTaken()).findFirst();
+        return optionalIsland.orElse(null);
+    }
+
+    public void removeIsland(Location location) {
+        islands.remove(location);
+    }
+
+    public void removeIsland(Island island) {
+        removeIsland(island.getCageLocation());
     }
 
     public void addChest(Chest chest) {
