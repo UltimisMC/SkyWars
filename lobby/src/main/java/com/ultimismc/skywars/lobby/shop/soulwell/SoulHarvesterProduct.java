@@ -2,8 +2,12 @@ package com.ultimismc.skywars.lobby.shop.soulwell;
 
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserStatistics;
+import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.ArrayList;
@@ -39,6 +43,15 @@ public class SoulHarvesterProduct extends UserPurchasableProduct {
 
     @Override
     public void executePurchasableProduct(User user) {
-        user.sendMessage("let them harvest!");
+        UserStatistics userStatistics = user.getStatistics();
+        int sumSouls = userStatistics.getSouls() + souls;
+        if(sumSouls >= userStatistics.getMaximumSouls()) {
+            user.sendMessage("&cYou've reached the maximum Souls");
+            return;
+        }
+        Player player = user.getPlayer();
+        Currency.SOUL_CURRENCY.increaseCurrencyWithMessage(user, souls);
+        ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", getName()),
+                new Replacement("price", getDisplayCost()));
     }
 }
