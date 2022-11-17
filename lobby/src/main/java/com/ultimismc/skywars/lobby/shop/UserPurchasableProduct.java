@@ -78,7 +78,7 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
         displayName = color + displayName;
 
         if(!hasPurchased) {
-            lore.add("&7Cost: " + currency.getDisplayAmount(cost));
+            lore.add("&7Cost: " + getDisplayCost());
             if(purchasable != null && purchasable.isSoulWell()) {
                 lore.add("&bAlso found in the Soul Well!");
             }
@@ -118,7 +118,7 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
         player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);
         if(purchasable != null) { // Purchasable exists but not purchased
             player.closeInventory();
-            String displayPrice = currency.getDisplayAmount(cost);
+            String displayPrice = getDisplayCost();
 
             user.purchaseAsset(purchasable);
             ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", purchasable.getNameWithCategory()),
@@ -126,5 +126,9 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
             return;
         }
         executePurchasableProduct(user);
+    }
+
+    protected String getDisplayCost() {
+        return currency.getDisplayAmount(cost);
     }
 }
