@@ -109,8 +109,8 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Subcommand("reload")
     @Syntax("Reloads configuration files")
-    public void onReload(User user) {
+    public void onReload(CommandSender sender) {
         configHandler.reloadConfigurations();
-        user.sendMessage("&aAll configuration files has been reloaded.");
+        sender.sendMessage(PluginUtility.translateMessage("&aAll configuration files have been reloaded."));
     }
 }
