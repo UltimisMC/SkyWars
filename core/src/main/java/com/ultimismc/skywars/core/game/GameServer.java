@@ -19,6 +19,14 @@ public class GameServer {
 
     private boolean setupMode;
 
+    public String getGameName() {
+        return gameType.getName();
+    }
+
+    public String getTeamName() {
+        return teamType.getName();
+    }
+
     public String getName() {
         return teamType.getName() + " " + gameType.getName();
     }
@@ -33,5 +41,13 @@ public class GameServer {
 
     public void setMapName(String name) {
         map.setName(name);
+    }
+
+    public int getSizeIslands() {
+        return map.getIslands().size();
+    }
+
+    public boolean isSoloGame() {
+        return teamType.isSolo();
     }
 }
