@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.handler.setup;
 
 import com.ultimismc.skywars.core.game.map.Chest;
+import com.ultimismc.skywars.core.game.map.Island;
 import com.ultimismc.skywars.core.game.map.Map;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
@@ -51,6 +52,22 @@ public class GameSetupHandler {
         menuManager.revertInventory(user);
     }
 
+    public void addRemoveIsland(User user) {
+        Player player = user.getPlayer();
+        Location location = player.getLocation();
+
+        Island island = map.getIsland(location);
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+        user.sendMessage("&aYou've " + (island != null ? "&cremoved" : "added")+ "&a a cage at &e" + x + "&a, &e" + y + "&a, &e" + z + "&a.");
+        if(island == null) {
+            map.addIsland(new Island(location));
+            return;
+        }
+        map.removeIsland(location);
+    }
+
     public void addRemoveChest(User user, Block block, boolean midChest) {
         if(block == null) return;
 
@@ -65,7 +82,7 @@ public class GameSetupHandler {
         int y = location.getBlockY();
         int z = location.getBlockZ();
         if(chest != null) midChest = chest.isMidChest();
-        user.sendMessage("&aYou've " + (chest != null ? "&cremoved" : "added")+ "&a a " + (midChest ? "&emiddle " : "") + "chest in &e" + x + "&a, &e" + y + "&a, &e" + z + (midChest ? " &7(Middle Chest)" : "") + "&a.");
+        user.sendMessage("&aYou've " + (chest != null ? "&cremoved" : "added")+ "&a a " + (midChest ? "&emiddle " : "") + "&achest at &e" + x + "&a, &e" + y + "&a, &e" + z + (midChest ? " &7(Middle Chest)" : "") + "&a.");
         if(chest == null) {
             map.addChest(block, midChest);
             return;
