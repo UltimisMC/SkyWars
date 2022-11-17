@@ -19,10 +19,6 @@ public enum GameConfigKeys implements ConfigEntry {
     SERVER_ID("server-id", "SW01"),
     GAME_TYPE("game-type", "NORMAL"),
     GAME_TEAM_TYPE("game-team-type", "SOLO"),
-
-    GAME_MAXIMUM_PLAYERS("game.solo.maximum-players", 12),
-    GAME_SOLO_MAXIMUM_PLAYERS("game.doubles.maximum-players", 24),
-
     ;
 
     private final String key;
