@@ -127,6 +127,7 @@ public abstract class InventoryUI {
     }
 
     public void updateButtons(Player player) {
+        inventory.clear();
         build(player);
         buildInventory();
         player.updateInventory();
