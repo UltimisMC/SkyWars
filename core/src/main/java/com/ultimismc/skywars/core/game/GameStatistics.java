@@ -16,4 +16,16 @@ public class GameStatistics {
     private int bowKills, voidKills;
     private int arrowsShot, arrowsHit;
     private int chestsOpened;
+
+    public void increaseWin() {
+        wins++;
+    }
+
+    public void increaseKill() {
+        kills++;
+    }
+
+    public void increaseChestsOpened() {
+        chestsOpened++;
+    }
 }
