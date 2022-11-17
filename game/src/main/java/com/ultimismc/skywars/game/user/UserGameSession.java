@@ -1,8 +1,9 @@
 package com.ultimismc.skywars.game.user;
 
 import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserStatistics;
+
 import lombok.Data;
 import lombok.Setter;
 
@@ -19,7 +20,21 @@ public class UserGameSession {
     private boolean spectator;
     private boolean setupMode;
 
-    private final UserStatistics userStatistics = new UserStatistics();
+    private final GameStatistics gameStatistics = new GameStatistics();
 
+    public int getKills() {
+        return gameStatistics.getKills();
+    }
 
+    public void increaseKill() {
+        gameStatistics.increaseKill();
+    }
+
+    public void increaseWin() {
+        gameStatistics.increaseWin();
+    }
+
+    public void increaseChestsOpened() {
+        gameStatistics.increaseChestsOpened();
+    }
 }
