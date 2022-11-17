@@ -22,7 +22,7 @@ public class GameChestsMenu extends PaginatedMenu<Chest> {
     private final GameServer gameServer;
 
     public GameChestsMenu(GameServer gameServer) {
-        super(gameServer.getName() + " - " + gameServer.getServerId(), 3, PaginatedModel.DEFAULT_MODEL);
+        super("Chests " + gameServer.getName() + " - " + gameServer.getServerId(), 3, PaginatedModel.DEFAULT_MODEL);
         this.gameServer = gameServer;
     }
 
@@ -35,7 +35,6 @@ public class GameChestsMenu extends PaginatedMenu<Chest> {
         boolean midChest = chest.isMidChest();
         MenuItem menuItem = new MenuItem(Material.CHEST, "&3Chest &b" + x + "&3, &b" + y + "&3, &b" + z + (midChest ? " &7(Middle Chest)" : ""));
         menuItem.setLore(Arrays.asList(" ", "&eClick to teleport!"));
-
         menuItem.setAction((item, clicker, clickedBlock, clickType) -> clicker.teleport(location));
         return menuItem;
     }
