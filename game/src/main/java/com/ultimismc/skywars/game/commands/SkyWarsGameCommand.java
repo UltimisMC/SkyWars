@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import org.bukkit.entity.Player;
@@ -34,12 +35,22 @@ public class SkyWarsGameCommand extends BaseCommand {
         sendMessage(player, "&aYou've successfully set waiting location.");
     }
 
+    @Subcommand("forcestart")
+    @Syntax("")
+    public void onForceStart(User user) {
+        if(gameHandler.hasStarted()) {
+            user.sendMessage("&cThis game has already started!");
+            return;
+        }
+        user.sendMessage("&aYou've force started SkyWars &e" + gameHandler.getServerName() + " - " + gameHandler.getServerId() + " &agame!");
+        gameHandler.startPreparer();
+    }
 
     @CommandAlias("whereami")
     public void onWhereAmi(Player player) {
         GameServer gameServer = gameHandler.getGameServer();
         String name = gameServer.getName();
-        sendMessage(player, "&aYou are currently in server &e" + name + " - " +  gameServer.getServerId() +"&a.");
+        sendMessage(player, "&aYou are currently connected to &e" + name + " - " +  gameServer.getServerId() +"&a.");
     }
     private void sendMessage(Player player, String message) {
         player.sendMessage(PluginUtility.translateMessage(message));
