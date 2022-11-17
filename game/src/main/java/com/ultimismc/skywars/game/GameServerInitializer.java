@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import xyz.directplan.directlib.CustomLocation;
@@ -88,9 +89,8 @@ public class GameServerInitializer {
         for(String serializedIsland : serializedIslands) {
 
             if(serializedIsland.isEmpty()) continue;
-            String[] args = serializedIsland.split("/");
-            String serializedLocation = args[0];
-            gameMap.addIsland(serializedLocation);
+//            String[] args = serializedIsland.split("/");
+            gameMap.addIsland(serializedIsland);
         }
         String worldName = MapConfigKeys.WORLD_NAME.getStringValue();
         World world = Bukkit.getWorld(worldName);
@@ -107,10 +107,26 @@ public class GameServerInitializer {
             boolean midChest = Boolean.parseBoolean(args[1]);
 
             Block block = world.getBlockAt(customLocation.toBukkitLocation());
-            if(!(block instanceof org.bukkit.block.Chest)) continue;
-
+            if(block.getType() != Material.CHEST) continue;
             gameMap.addChest(block, midChest);
         }
+        /*
+        serialized-chests:
+- -199.0, 29.0, -25.0/true
+- -190.0, 32.0, -27.0/false
+- -202.0, 32.0, -37.0/false
+- -200.0, 29.0, -26.0/true
+- -198.0, 32.0, -35.0/false
+- -209.0, 32.0, -27.0/false
+- -211.0, 32.0, -23.0/false
+- -198.0, 29.0, -26.0/true
+- -188.0, 32.0, -23.0/false
+- -196.0, 32.0, -14.0/false
+- -200.0, 32.0, -16.0/false
+- -199.0, 29.0, -27.0/true
+
+
+         */
         return gameMap;
     }
 
@@ -128,7 +144,7 @@ public class GameServerInitializer {
             boolean midChest = chest.isMidChest();
             serializedChests.add(serializedLocation + "/" + midChest);
         }
-        for(Island island : map.getIslands()) {
+        for(Island island : map.getIslands().values()) {
             Location cageLocation = island.getCageLocation();
             String serializedCageLocation = CustomLocation.locationToString(cageLocation);
             serializedIslands.add(serializedCageLocation);
