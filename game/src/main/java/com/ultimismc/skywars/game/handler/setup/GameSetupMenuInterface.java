@@ -26,7 +26,11 @@ public class GameSetupMenuInterface extends UserPlayerInventoryUi {
         addRemoveChest.setLore("&7Right click a chest to either add or remove it to the game.");
         addRemoveChest.setLore("&7Sneak + Right Click to add as middle chest.");
 
-
         setSlot(0, addRemoveChest);
+
+        MenuItem addRemoveIsland = new MenuItem(Material.BED, "&eAdd/Remove Cage");
+        addRemoveIsland.setAction((item, clicker, clickedBlock, clickType) -> gameSetupHandler.addRemoveIsland(user));
+        addRemoveIsland.setLore("&7Right click to either add or remove cage location.");
+        setSlot(4, addRemoveIsland);
     }
 }
