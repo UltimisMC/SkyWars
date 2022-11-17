@@ -9,6 +9,7 @@ import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.setup.GameChestsMenu;
+import com.ultimismc.skywars.game.handler.setup.GameIslandsMenu;
 import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
 import org.bukkit.entity.Player;
 
@@ -60,6 +61,12 @@ public class SkyWarsSetupCommand extends BaseCommand {
     public void onShowChests(Player player) {
         GameServer gameServer = gameManager.getGameServer();
         gameManager.openMenu(player, new GameChestsMenu(gameServer));
+    }
+
+    @CommandAlias("showislands")
+    public void onShowIslands(Player player) {
+        GameServer gameServer = gameManager.getGameServer();
+        gameManager.openMenu(player, new GameIslandsMenu(gameServer));
     }
 
     @CommandAlias("renamemap")
