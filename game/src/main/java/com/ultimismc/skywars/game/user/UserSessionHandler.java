@@ -19,9 +19,11 @@ public class UserSessionHandler {
         this.gameServer = gameServer;
     }
 
-    public void addUser(User user) {
+    public UserGameSession addUser(User user) {
         UUID uuid = user.getUuid();
-        userSessions.put(uuid, new UserGameSession(user, gameServer));
+        UserGameSession userGameSession = new UserGameSession(user, gameServer);
+        userSessions.put(uuid, userGameSession);
+        return userGameSession;
     }
 
     public UserGameSession getSession(UUID uuid) {
