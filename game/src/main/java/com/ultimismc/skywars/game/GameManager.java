@@ -3,12 +3,14 @@ package com.ultimismc.skywars.game;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
-import com.ultimismc.skywars.core.game.map.Map;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
+import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.island.IslandHandler;
 import com.ultimismc.skywars.game.user.UserSessionHandler;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -16,6 +18,9 @@ import org.bukkit.entity.Player;
 import xyz.directplan.directlib.CustomLocation;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
+import xyz.directplan.directlib.scoreboard.ScoreboardManager;
+
+import java.util.UUID;
 
 /**
  * @author DirectPlan
@@ -26,26 +31,39 @@ public class GameManager implements FeatureInitializer {
     private final SkyWarsPlugin plugin;
     private final MenuManager menuManager;
 
-    private final GameServerInitializer serverInitializer;
+    private GameServerInitializer serverInitializer;
     private GameServer gameServer;
     private GameHandler gameHandler;
+    private final ScoreboardManager scoreboardManager;
+
+    private final UserSessionHandler userSessionHandler;
+    private ChestHandler chestHandler;
+    private IslandHandler islandHandler;
+
     private Location spawnLocation;
 
     public GameManager(SkyWarsPlugin plugin) {
         this.plugin = plugin;
 
         menuManager = plugin.getMenuManager();
-        serverInitializer = new GameServerInitializer(plugin);
+
+        scoreboardManager = new ScoreboardManager(plugin, "Ultimis SkyWars Scoreboard");
+        userSessionHandler = new UserSessionHandler(gameServer);
     }
 
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
+        FeatureHandler featureHandler = plugin.getFeatureHandler();
         spawnLocation = CustomLocation.stringToLocation(ConfigKeys.SPAWN_LOCATION.getStringValue()).toBukkitLocation();
 
-        FeatureHandler featureHandler = plugin.getFeatureHandler();
+        serverInitializer = new GameServerInitializer(plugin);
 
-        serverInitializer.initializeServer();
+        islandHandler = new IslandHandler(gameHandler);
+        chestHandler = new ChestHandler(gameHandler);
+
+        serverInitializer.initializeServer(islandHandler, chestHandler);
         gameServer = serverInitializer.getGameServer();
+
         gameHandler = new GameHandler(plugin, this, gameServer);
         featureHandler.initializeFeature(gameHandler);
     }
@@ -88,6 +106,10 @@ public class GameManager implements FeatureInitializer {
         ConfigKeys.SPAWN_LOCATION.setValue(serializedSpawn);
     }
 
+    public void removeScoreboard(UUID uuid) {
+        scoreboardManager.removeScoreboard(uuid);
+    }
+
     public void openMenu(Player player, InventoryUI inventoryUI) {
         menuManager.openInventory(player, inventoryUI);
     }
@@ -102,10 +124,6 @@ public class GameManager implements FeatureInitializer {
 
     public Map getServerMap() {
         return gameServer.getMap();
-    }
-
-    public UserSessionHandler getUserSessionHandler() {
-        return gameHandler.getUserSessionHandler();
     }
 
     @Override
