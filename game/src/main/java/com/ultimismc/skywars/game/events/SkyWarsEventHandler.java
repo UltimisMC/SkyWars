@@ -28,7 +28,9 @@ public class SkyWarsEventHandler {
 
         LinkedList<SkyWarsEvent> skyWarsEvents = new LinkedList<>();
         skyWarsEvents.addLast(new RefillSkyWarsEvent(12000));
-
+        skyWarsEvents.addLast(new TestSkyWarsEvent("Gay"));
+        skyWarsEvents.addLast(new TestSkyWarsEvent("Never Gonna Give You Up"));
+        skyWarsEvents.addLast(new TestSkyWarsEvent("Morocco"));
 
         eventIterator = skyWarsEvents.iterator();
     }
@@ -38,6 +40,8 @@ public class SkyWarsEventHandler {
             task = plugin.getServer().getScheduler().runTaskTimer(plugin, new SkyWarsEventRunnable(this), 20L, 20L);
         }
         eventStartedAt = System.currentTimeMillis();
+
+        if(!eventIterator.hasNext()) return;
         nextEvent = eventIterator.next();
     }
 
@@ -54,6 +58,6 @@ public class SkyWarsEventHandler {
 
     public String getNextEventDisplayFormat() {
         long timeLeft = getUntilNextEvent();
-        return (nextEvent.getName() + " " + DateUtil.readableTime(timeLeft));
+        return (nextEvent.getName() + " " + ((timeLeft / 1000) + 1) + "s");
     }
 }
