@@ -1,4 +1,4 @@
-package com.ultimismc.skywars.core.game.map;
+package com.ultimismc.skywars.game.chest;
 
 import lombok.Data;
 import org.bukkit.Location;
