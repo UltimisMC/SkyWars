@@ -1,11 +1,13 @@
 package com.ultimismc.skywars.game.handler.setup;
 
-import com.ultimismc.skywars.core.game.map.Chest;
-import com.ultimismc.skywars.core.game.map.Island;
-import com.ultimismc.skywars.core.game.map.Map;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
+import com.ultimismc.skywars.game.chest.Chest;
+import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
+import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.island.Island;
+import com.ultimismc.skywars.game.island.IslandHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import com.ultimismc.skywars.game.user.UserSessionHandler;
 import org.bukkit.Location;
@@ -21,14 +23,21 @@ import xyz.directplan.directlib.inventory.manager.MenuManager;
 public class GameSetupHandler {
 
     private final GameManager gameManager;
+    private final GameHandler gameHandler;
+
     private final UserSessionHandler userSessionHandler;
-    private final Map map;
+    private final ChestHandler chestHandler;
+    private final IslandHandler islandHandler;
+
 
     public GameSetupHandler(GameManager gameManager) {
         this.gameManager = gameManager;
-        map = gameManager.getServerMap();
+        this.gameHandler = gameManager.getGameHandler();
 
-        userSessionHandler = gameManager.getUserSessionHandler();
+        userSessionHandler = gameHandler.getUserSessionHandler();
+        chestHandler = gameHandler.getChestHandler();
+        islandHandler = gameHandler.getIslandHandler();
+
     }
 
     public void toggleSetupMode(User user) {
@@ -56,16 +65,16 @@ public class GameSetupHandler {
         Player player = user.getPlayer();
         Location location = player.getLocation();
 
-        Island island = map.getIsland(location);
+        Island island = islandHandler.getIsland(location);
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
         user.sendMessage("&aYou've " + (island != null ? "&cremoved" : "added")+ "&a a cage at &e" + x + "&a, &e" + y + "&a, &e" + z + "&a.");
         if(island == null) {
-            map.addIsland(new Island(location));
+            islandHandler.addIsland(new Island(location));
             return;
         }
-        map.removeIsland(location);
+        islandHandler.removeIsland(location);
     }
 
     public void addRemoveChest(User user, Block block, boolean midChest) {
@@ -76,7 +85,7 @@ public class GameSetupHandler {
             return;
         }
 
-        Chest chest = map.getChest(block);
+        Chest chest = chestHandler.getChest(block);
         Location location = block.getLocation();
         int x = location.getBlockX();
         int y = location.getBlockY();
@@ -84,9 +93,9 @@ public class GameSetupHandler {
         if(chest != null) midChest = chest.isMidChest();
         user.sendMessage("&aYou've " + (chest != null ? "&cremoved" : "added")+ "&a a " + (midChest ? "&emiddle " : "") + "&achest at &e" + x + "&a, &e" + y + "&a, &e" + z + (midChest ? " &7(Middle Chest)" : "") + "&a.");
         if(chest == null) {
-            map.addChest(block, midChest);
+            chestHandler.addChest(block, midChest);
             return;
         }
-        map.removeChest(block);
+        chestHandler.removeChest(block);
     }
 }

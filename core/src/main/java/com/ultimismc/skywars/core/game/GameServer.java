@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.core.game;
 
-import com.ultimismc.skywars.core.game.map.Map;
 import lombok.Data;
 
 /**
@@ -41,10 +40,6 @@ public class GameServer {
 
     public void setMapName(String name) {
         map.setName(name);
-    }
-
-    public int getSizeIslands() {
-        return map.getIslands().size();
     }
 
     public boolean isSoloGame() {

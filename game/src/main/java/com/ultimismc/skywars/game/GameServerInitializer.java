@@ -3,15 +3,17 @@ package com.ultimismc.skywars.game;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.TeamType;
-import com.ultimismc.skywars.core.game.map.Chest;
-import com.ultimismc.skywars.core.game.map.Island;
-import com.ultimismc.skywars.core.game.map.Map;
+import com.ultimismc.skywars.game.chest.Chest;
+import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.config.GameConfigKeys;
 import com.ultimismc.skywars.game.config.MapConfigKeys;
+import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.island.Island;
+import com.ultimismc.skywars.game.island.IslandHandler;
 import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,14 +27,22 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-@RequiredArgsConstructor
 public class GameServerInitializer {
 
     private final SkyWarsPlugin plugin;
 
+    private IslandHandler islandHandler;
+    private ChestHandler chestHandler;
+
+    public GameServerInitializer(SkyWarsPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @Getter private GameServer gameServer;
 
-    public void initializeServer() {
+    public void initializeServer(IslandHandler islandHandler, ChestHandler chestHandler) {
+        this.islandHandler = islandHandler;
+        this.chestHandler = chestHandler;
 
         GameInfo gameInfo = loadGameInfo();
         GameType gameType = gameInfo.getGameType();
@@ -83,7 +93,7 @@ public class GameServerInitializer {
         List<String> serializedIslands = MapConfigKeys.MAP_SERIALIZED_ISLANDS.getStringList();
         List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
 
-        GameMap gameMap = new GameMap(name);
+        GameMap gameMap = new GameMap(name, islandHandler, chestHandler);
 
 
         for(String serializedIsland : serializedIslands) {
@@ -138,13 +148,13 @@ public class GameServerInitializer {
         List<String> serializedChests = new ArrayList<>();
         List<String> serializedIslands = new ArrayList<>();
 
-        for(Chest chest : map.getChests().values()) {
+        for(Chest chest : chestHandler.getChests().values()) {
             Location location = chest.getLocation();
             String serializedLocation = CustomLocation.locationToString(location);
             boolean midChest = chest.isMidChest();
             serializedChests.add(serializedLocation + "/" + midChest);
         }
-        for(Island island : map.getIslands().values()) {
+        for(Island island : islandHandler.getIslands().values()) {
             Location cageLocation = island.getCageLocation();
             String serializedCageLocation = CustomLocation.locationToString(cageLocation);
             serializedIslands.add(serializedCageLocation);
@@ -170,18 +180,22 @@ public class GameServerInitializer {
 
     private static class GameMap {
 
+        private final IslandHandler islandHandler;
+        private final ChestHandler chestHandler;
         private final Map map;
 
-        public GameMap(String name) {
-            map = new Map(name);
+        public GameMap(String mapName, IslandHandler islandHandler, ChestHandler chestHandler) {
+            map = new Map(mapName);
+            this.islandHandler = islandHandler;
+            this.chestHandler = chestHandler;
         }
 
         public void addIsland(Island island) {
-            map.addIsland(island);
+            islandHandler.addIsland(island);
         }
 
         public void addChest(Block block, boolean midChest) {
-            map.addChest(block, midChest);
+            chestHandler.addChest(block, midChest);
         }
 
         public void addIsland(String serializedCageLocation) {
