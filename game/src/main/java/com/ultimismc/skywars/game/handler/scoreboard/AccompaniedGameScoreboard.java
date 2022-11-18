@@ -2,6 +2,7 @@ package com.ultimismc.skywars.game.handler.scoreboard;
 
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
+import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 
 import java.util.Arrays;
 
@@ -10,8 +11,8 @@ import java.util.Arrays;
  */
 public class AccompaniedGameScoreboard extends GameScoreboard {
 
-    public AccompaniedGameScoreboard(GameHandler gameHandler) {
-        super(gameHandler);
+    public AccompaniedGameScoreboard(ScoreboardManager scoreboardManager, GameHandler gameHandler) {
+        super(scoreboardManager, gameHandler);
     }
 
     @Override
