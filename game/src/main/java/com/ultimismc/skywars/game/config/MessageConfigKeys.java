@@ -31,7 +31,7 @@ public enum MessageConfigKeys implements ConfigEntry {
                     "&3play.ultimismc.com"
                     )),
     SKYWARS_GAME_WAITING_STATUS_SCOREBOARD("skywars-game.scoreboard-waiting.waiting-status", "&fWaiting..."),
-    SKYWARS_GAME_STARTING_STATUS_SCOREBOARD("skywars-game.scoreboard-waiting.starting-status", "&fStarting in &a%time%&f."),
+    SKYWARS_GAME_STARTING_STATUS_SCOREBOARD("skywars-game.scoreboard-waiting.starting-status", "&fStarting in &a%time%"),
 
     SKYWARS_GAME_STARTED_SCOREBOARD_LINES("skywars-game.scoreboard-started.lines",
             Arrays.asList("&7%servertime_MM/dd/yyyy% &8%server-id%",
