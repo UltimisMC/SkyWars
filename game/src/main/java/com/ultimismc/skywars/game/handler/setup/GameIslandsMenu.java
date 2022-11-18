@@ -2,8 +2,8 @@ package com.ultimismc.skywars.game.handler.setup;
 
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.TeamType;
-import com.ultimismc.skywars.core.game.map.Island;
-import com.ultimismc.skywars.core.game.map.Map;
+import com.ultimismc.skywars.game.island.Island;
+import com.ultimismc.skywars.game.island.IslandHandler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,11 +20,11 @@ import java.util.Collection;
  */
 public class GameIslandsMenu extends PaginatedMenu<Island> {
 
-    private final GameServer gameServer;
+    private final IslandHandler islandHandler;
 
-    public GameIslandsMenu(GameServer gameServer) {
-        super("Islands " + gameServer.getServerId() + " (" + gameServer.getSizeIslands() + "/" + TeamType.SOLO.getMaximumPlayers() + ")", 3, PaginatedModel.DEFAULT_MODEL);
-        this.gameServer = gameServer;
+    public GameIslandsMenu(IslandHandler islandHandler, GameServer gameServer) {
+        super("Islands " + gameServer.getServerId() + " (" + islandHandler.getSize() + "/" + TeamType.SOLO.getMaximumPlayers() + ")", 3, PaginatedModel.DEFAULT_MODEL);
+        this.islandHandler = islandHandler;
     }
 
     @Override
@@ -34,7 +34,6 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
         int y = cageLocation.getBlockY();
         int z = cageLocation.getBlockZ();
 
-        Map map = gameServer.getMap();
         MenuItem menuItem = new MenuItem(Material.CHEST, "&3Island &b" + x + "&3, &b" + y + "&3, &b" + z);
         menuItem.setLore(" ");
         menuItem.setLore("&eLeft Click to teleport!");
@@ -45,7 +44,7 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
                 player.teleport(cageLocation);
                 return;
             }
-            map.removeIsland(island);
+            islandHandler.removeIsland(island);
 
             updateButtons(player);
         });
@@ -59,8 +58,7 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
         MenuItem menuItem = new MenuItem(Material.BARRIER, "&cClear All");
         menuItem.setLore("&7Removes all saved island locations");
         menuItem.setAction((item, clicker, clickedBlock, clickType) -> {
-            Map map = gameServer.getMap();
-            map.getIslands().clear();
+            islandHandler.getIslands().clear();
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);
             player.closeInventory();
         });
@@ -70,7 +68,6 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
 
     @Override
     public Collection<Island> getList() {
-        Map map = gameServer.getMap();
-        return map.getIslands().values();
+        return islandHandler.getIslands().values();
     }
 }
