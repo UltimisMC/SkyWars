@@ -12,7 +12,12 @@ public class SkyWarsEventRunnable implements Runnable {
 
     @Override
     public void run() {
-        if(skyWarsEventHandler.getNextEvent() == null) return;
+        SkyWarsEvent nextEvent = skyWarsEventHandler.getNextEvent();
+        if(nextEvent == null) return;
+
+        for(SkyWarsEventUpdater updater : skyWarsEventHandler.getUpdaters()) {
+            updater.update(skyWarsEventHandler);
+        }
 
         long timeLeft = skyWarsEventHandler.getUntilNextEvent();
         if(timeLeft > 0) return;

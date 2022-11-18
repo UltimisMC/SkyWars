@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.game.chest.GameChestRegistry;
 
 import java.util.List;
 
@@ -8,6 +9,11 @@ import java.util.List;
  * @author DirectPlan
  */
 public interface Game {
+
+    // I'm starting to believe that All the methods down here are useless and can be
+    // put on the GameHandler only
+
+    GameChestRegistry getChestRegistry();
 
     void startGame();
 

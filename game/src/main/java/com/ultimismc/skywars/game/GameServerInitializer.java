@@ -31,18 +31,18 @@ public class GameServerInitializer {
 
     private final SkyWarsPlugin plugin;
 
-    private IslandHandler islandHandler;
-    private ChestHandler chestHandler;
+    private final IslandHandler islandHandler;
+    private final ChestHandler chestHandler;
 
-    public GameServerInitializer(SkyWarsPlugin plugin) {
+    public GameServerInitializer(SkyWarsPlugin plugin, IslandHandler islandHandler, ChestHandler chestHandler) {
         this.plugin = plugin;
+        this.islandHandler = islandHandler;
+        this.chestHandler = chestHandler;
     }
 
     @Getter private GameServer gameServer;
 
-    public void initializeServer(IslandHandler islandHandler, ChestHandler chestHandler) {
-        this.islandHandler = islandHandler;
-        this.chestHandler = chestHandler;
+    public void initializeServer() {
 
         GameInfo gameInfo = loadGameInfo();
         GameType gameType = gameInfo.getGameType();

@@ -1,20 +1,20 @@
 package xyz.directplan.directlib;
 
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
+import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.*;
+import org.bukkit.block.Chest;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import xyz.directplan.directlib.misc.title.Title;
+import xyz.directplan.directlib.misc.title.TitleSlot;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -114,11 +114,29 @@ public class PluginUtility {
         return (int) (timeLeft / 1000);
     }
 
-    public static void sendTitle(Player player, String title, String subTitle) {
-        TitleUtil.send(player, PluginUtility.translateMessage(title), PluginUtility.translateMessage(subTitle));
+    public static void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String titleText, String subTitle) {
+        Title title = new Title(TitleSlot.TITLE);
+        title.setTitle(translateMessage(titleText));
+        title.setSubTitle(translateMessage(subTitle));
+        title.setFadeIn(fadeIn);
+        title.setStay(stay);
+        title.setFadeOut(fadeOut);
+        title.send(player);
     }
 
-    public static void sendTitle(Player player, String title) {
-        sendTitle(player, title, "");
+    public static void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title) {
+        sendTitle(player, fadeIn, stay, fadeOut, title, "");
+    }
+
+    public static void sendSubTitle(Player player, int fadeIn, int stay, int fadeOut, String subTitle) {
+        sendTitle(player, fadeIn, stay, fadeOut, "", subTitle);
+    }
+
+    public static void playChestAction(Chest chest, boolean open) {
+        Location location = chest.getLocation();
+        World world = ((CraftWorld) location.getWorld()).getHandle();
+        BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
+        TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+        world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
     }
 }

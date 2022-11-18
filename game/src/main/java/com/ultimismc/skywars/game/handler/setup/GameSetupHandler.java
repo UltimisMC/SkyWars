@@ -22,7 +22,6 @@ import xyz.directplan.directlib.inventory.manager.MenuManager;
  */
 public class GameSetupHandler {
 
-    private final GameManager gameManager;
     private final GameHandler gameHandler;
 
     private final UserSessionHandler userSessionHandler;
@@ -30,9 +29,8 @@ public class GameSetupHandler {
     private final IslandHandler islandHandler;
 
 
-    public GameSetupHandler(GameManager gameManager) {
-        this.gameManager = gameManager;
-        this.gameHandler = gameManager.getGameHandler();
+    public GameSetupHandler(GameHandler gameHandler) {
+        this.gameHandler = gameHandler;
 
         userSessionHandler = gameHandler.getUserSessionHandler();
         chestHandler = gameHandler.getChestHandler();
@@ -41,14 +39,14 @@ public class GameSetupHandler {
     }
 
     public void toggleSetupMode(User user) {
-        MenuManager menuManager = gameManager.getMenuManager();
+        MenuManager menuManager = gameHandler.getMenuManager();
 
         UserGameSession userSession = userSessionHandler.getSession(user);
 
         boolean setupMode = userSession.isSetupMode();
         Player player = user.getPlayer();
 
-        String serverName = gameManager.getServerName();
+        String serverName = gameHandler.getServerName();
         if(!setupMode) {
             MessageConfigKeys.SETUP_MODE_ENTERED.sendMessage(player, new Replacement("name", serverName));
             userSession.setSetupMode(true);

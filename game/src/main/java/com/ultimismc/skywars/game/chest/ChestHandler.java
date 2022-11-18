@@ -1,9 +1,13 @@
 package com.ultimismc.skywars.game.chest;
 
+import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
+import com.ultimismc.skywars.game.events.SkyWarsEventUpdater;
+import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import xyz.directplan.directlib.PluginUtility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,22 +17,52 @@ import java.util.Map;
  */
 public class ChestHandler {
 
-    private final GameHandler gameHandler;
     @Getter private final Map<Location, Chest> chests = new HashMap<>();
 
+    private final GameHandler gameHandler;
+    private final SkyWarsEventHandler skyWarsEventHandler;
 
     public ChestHandler(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
+        skyWarsEventHandler = gameHandler.getSkyWarsEventHandler();
     }
 
     public void refillChest(Chest chest) {
+        Game game = gameHandler.getGame();
+        GameChestRegistry chestRegistry = game.getChestRegistry();
+        chestRegistry.refillChest(chest);
 
-        boolean midChest = chest.isMidChest();
+        if(!chest.isOpened()) return;
+        chest.setOpened(false);
+        PluginUtility.playChestAction(chest.getBlockChest(), false);
 
+        ChestHologram chestHologram = chest.getChestHologram();
+        if(chestHologram != null) chestHologram.destroy();
+
+        SkyWarsEventUpdater updater = chest.getUpdater();
+        skyWarsEventHandler.removeUpdater(updater);
     }
 
     public void refillAllChests() {
         chests.forEach((location, chest) -> refillChest(chest));
+    }
+
+    public void openChest(Block block) {
+        Chest chest = getChest(block);
+        PluginUtility.playChestAction(chest.getBlockChest(), true);
+        chest.setOpened(true);
+        ChestSkyWarsEventUpdater updater = new ChestSkyWarsEventUpdater(chest);
+        skyWarsEventHandler.addUpdater(updater);
+    }
+
+    public void shutdown() {
+        for(Chest chest : chests.values()) {
+            org.bukkit.block.Chest blockChest = chest.getBlockChest();
+            blockChest.getBlockInventory().clear();
+
+            ChestHologram hologram = chest.getChestHologram();
+            hologram.destroy();
+        }
     }
 
     public void addChest(Chest chest) {

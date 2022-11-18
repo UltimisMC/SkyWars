@@ -26,6 +26,8 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
 
         featureHandler.initializeFeature(gameManager = new GameManager(this));
 
+        registerListeners(new SkyWarsGameListener(gameManager.getGameHandler()));
+
         commandHandler.registerCommands(new SkyWarsGameCommand(), new SkyWarsSetupCommand());
         userListener.setUserLoadedListener(new GameUserLoadedListener(this, gameManager));
         userListener.setUserSavedListener(new GameUserSavedListener(gameManager));

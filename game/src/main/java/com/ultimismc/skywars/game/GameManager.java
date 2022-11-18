@@ -31,14 +31,11 @@ public class GameManager implements FeatureInitializer {
     private final SkyWarsPlugin plugin;
     private final MenuManager menuManager;
 
-    private GameServerInitializer serverInitializer;
-    private GameServer gameServer;
     private GameHandler gameHandler;
+    private GameServer gameServer;
     private final ScoreboardManager scoreboardManager;
 
     private final UserSessionHandler userSessionHandler;
-    private ChestHandler chestHandler;
-    private IslandHandler islandHandler;
 
     private Location spawnLocation;
 
@@ -56,20 +53,14 @@ public class GameManager implements FeatureInitializer {
         FeatureHandler featureHandler = plugin.getFeatureHandler();
         spawnLocation = CustomLocation.stringToLocation(ConfigKeys.SPAWN_LOCATION.getStringValue()).toBukkitLocation();
 
-        serverInitializer = new GameServerInitializer(plugin);
-
-        islandHandler = new IslandHandler(gameHandler);
-        chestHandler = new ChestHandler(gameHandler);
-
-        serverInitializer.initializeServer(islandHandler, chestHandler);
-        gameServer = serverInitializer.getGameServer();
-
-        gameHandler = new GameHandler(plugin, this, gameServer);
+        gameHandler = new GameHandler(plugin, this);
         featureHandler.initializeFeature(gameHandler);
+
+        gameServer = gameHandler.getGameServer();
     }
 
     public void shutdown() {
-        serverInitializer.finalizeServer();
+        gameHandler.shutdown();
     }
 
     public void handleJoin(User user) {

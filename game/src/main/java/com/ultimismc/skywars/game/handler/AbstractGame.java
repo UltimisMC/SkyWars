@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,11 +18,14 @@ import java.util.List;
 public abstract class AbstractGame implements Game {
 
     private final GameHandler gameHandler;
+    private final GameChestRegistry chestRegistry;
 
     private final int minimumPlayers = 8;
     private GameState gameState = GameState.WAITING;
     private final List<User> players = new ArrayList<>();
     private final List<User> spectators = new ArrayList<>();
+
+
 
     @Override
     public void startGame() {

@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
+import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
@@ -44,6 +45,14 @@ public class SkyWarsGameCommand extends BaseCommand {
         }
         user.sendMessage("&aYou've force started SkyWars &e" + gameHandler.getServerName() + " - " + gameHandler.getServerId() + " &agame!");
         gameHandler.startPreparer();
+    }
+
+    @Subcommand("refillchests")
+    @Syntax("")
+    public void onRefillChests(User user) {
+        ChestHandler chestHandler = gameHandler.getChestHandler();
+        chestHandler.refillAllChests();
+        user.sendMessage("&aAll chests have been refilled!");
     }
 
     @CommandAlias("whereami")

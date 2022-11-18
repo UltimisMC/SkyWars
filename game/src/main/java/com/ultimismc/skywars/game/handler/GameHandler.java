@@ -8,6 +8,7 @@ import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.game.GameManager;
+import com.ultimismc.skywars.game.GameServerInitializer;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
@@ -19,6 +20,8 @@ import com.ultimismc.skywars.game.handler.scoreboard.SoloGameScoreboard;
 import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
 import com.ultimismc.skywars.game.island.IslandHandler;
 import com.ultimismc.skywars.game.menubar.GameSpectatorBarMenu;
+import com.ultimismc.skywars.game.mode.InsaneGame;
+import com.ultimismc.skywars.game.mode.NormalGame;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import com.ultimismc.skywars.game.user.UserSessionHandler;
 import com.ultimismc.skywars.game.menubar.UserWaitingBarMenu;
@@ -49,37 +52,44 @@ public class GameHandler implements FeatureInitializer {
     private final GameManager gameManager;
     private final MenuManager menuManager;
 
+    private GameServer gameServer;
+    private GameServerInitializer gameServerInitializer;
     private Game game;
-    private final GameServer gameServer;
     private GameScoreboard gameScoreboard;
 
     private final long preparerCountdown = (1000L * 15);
     @Setter private long prepareCountdownLeft;
     @Setter private long gameTime;
 
-    private final UserSessionHandler userSessionHandler;
+    private UserSessionHandler userSessionHandler;
     private GameSetupHandler gameSetupHandler;
     private SkyWarsEventHandler skyWarsEventHandler;
-    private final ChestHandler chestHandler;
-    private final IslandHandler islandHandler;
+    private ChestHandler chestHandler;
+    private IslandHandler islandHandler;
 
     private BukkitTask gamePreparer, gameTask;
 
-    public GameHandler(SkyWarsPlugin plugin, GameManager gameManager, GameServer gameServer) {
+    public GameHandler(SkyWarsPlugin plugin, GameManager gameManager) {
         this.plugin = plugin;
         this.gameManager = gameManager;
-        this.gameServer = gameServer;
         menuManager = plugin.getMenuManager();
+        userManager = plugin.getUserManager();
 
         prepareCountdownLeft = preparerCountdown;
-        userManager = plugin.getUserManager();
-        userSessionHandler = gameManager.getUserSessionHandler();
-        chestHandler = gameManager.getChestHandler();
-        islandHandler = gameManager.getIslandHandler();
     }
 
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
+
+        skyWarsEventHandler = new SkyWarsEventHandler(plugin, this);
+        islandHandler = new IslandHandler(this);
+        chestHandler = new ChestHandler(this);
+
+        gameServerInitializer = new GameServerInitializer(plugin, islandHandler, chestHandler);
+
+        gameServerInitializer.initializeServer();
+        gameServer = gameServerInitializer.getGameServer();
+
         GameType gameType = gameServer.getGameType();
         switch (gameType) {
             case NORMAL: {
@@ -93,15 +103,21 @@ public class GameHandler implements FeatureInitializer {
             default:
                 throw new IllegalStateException("Unexpected SkyWars Mode: " + gameType);
         }
+        userSessionHandler = new UserSessionHandler(gameServer);
 
         ScoreboardManager scoreboardManager = gameManager.getScoreboardManager();
         gameScoreboard = new SoloGameScoreboard(scoreboardManager, this);
         if(!gameServer.isSoloGame()) {
             gameScoreboard = new AccompaniedGameScoreboard(scoreboardManager, this);
         }
-        gameSetupHandler = new GameSetupHandler(gameManager);
-        skyWarsEventHandler = new SkyWarsEventHandler(plugin, this);
+        gameSetupHandler = new GameSetupHandler(this);
+
         plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
+    }
+
+    public void shutdown() {
+        chestHandler.shutdown();
+        gameServerInitializer.finalizeServer();
     }
 
     public void prepareUser(User user) {
@@ -111,7 +127,7 @@ public class GameHandler implements FeatureInitializer {
                 new Replacement("maximum-players", gameServer.getMaximumPlayers()));
 
         Player player = user.getPlayer();
-        PluginUtility.sendTitle(player, "&eSkyWars", "&a" + gameServer.getGameType() + " mode");
+        PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", "&a" + gameServer.getGameName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
         game.prepareUser(user);
@@ -156,6 +172,7 @@ public class GameHandler implements FeatureInitializer {
         game.setGameState(GameState.STARTED);
         game.startGame();
         skyWarsEventHandler.startNextEvent();
+        chestHandler.refillAllChests();
 
         broadcastFunction(user -> PluginUtility.playSound(user.getPlayer(), Sound.FIREWORK_BLAST));
         String repeatLine = StringUtils.repeat("▬", 70);
