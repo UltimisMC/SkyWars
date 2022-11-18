@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.game.handler.setup;
 
 import com.ultimismc.skywars.core.game.GameServer;
-import com.ultimismc.skywars.core.game.map.Chest;
-import com.ultimismc.skywars.core.game.map.Map;
+import com.ultimismc.skywars.game.chest.Chest;
+import com.ultimismc.skywars.game.chest.ChestHandler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,11 +19,10 @@ import java.util.stream.Collectors;
  */
 public class GameChestsMenu extends PaginatedMenu<Chest> {
 
-    private final GameServer gameServer;
-
-    public GameChestsMenu(GameServer gameServer) {
+    private final ChestHandler chestHandler;
+    public GameChestsMenu(ChestHandler chestHandler, GameServer gameServer) {
         super("Chests " + gameServer.getName() + " - " + gameServer.getServerId(), 3, PaginatedModel.DEFAULT_MODEL);
-        this.gameServer = gameServer;
+        this.chestHandler = chestHandler;
     }
 
     @Override
@@ -41,7 +40,6 @@ public class GameChestsMenu extends PaginatedMenu<Chest> {
 
     @Override
     public Collection<Chest> getList() {
-        Map map = gameServer.getMap();
-        return map.getChests().values().stream().sorted((o1, o2) -> Boolean.compare(o2.isMidChest(), o1.isMidChest())).collect(Collectors.toList());
+        return chestHandler.getChests().values().stream().sorted((o1, o2) -> Boolean.compare(o2.isMidChest(), o1.isMidChest())).collect(Collectors.toList());
     }
 }
