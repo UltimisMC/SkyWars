@@ -5,6 +5,7 @@ import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import xyz.directplan.directlib.config.replacement.Replacement;
+import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
  */
 public class SoloGameScoreboard extends GameScoreboard {
 
-    public SoloGameScoreboard(GameHandler gameHandler) {
-        super(gameHandler);
+    public SoloGameScoreboard(ScoreboardManager scoreboardManager, GameHandler gameHandler) {
+        super(scoreboardManager, gameHandler);
     }
 
     @Override
