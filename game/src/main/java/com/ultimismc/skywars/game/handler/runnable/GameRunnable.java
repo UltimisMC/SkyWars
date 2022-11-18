@@ -16,6 +16,6 @@ public class GameRunnable implements Runnable {
         long gameTime = gameHandler.getGameTime();
         gameHandler.setGameTime(gameTime += 1000L);
 
-
+        gameHandler.updateScoreboard();
     }
 }
