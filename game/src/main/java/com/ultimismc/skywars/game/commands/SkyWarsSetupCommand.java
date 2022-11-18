@@ -4,13 +4,15 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.core.game.GameServer;
-import com.ultimismc.skywars.core.game.map.Map;
+import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
+import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.setup.GameChestsMenu;
 import com.ultimismc.skywars.game.handler.setup.GameIslandsMenu;
 import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
+import com.ultimismc.skywars.game.island.IslandHandler;
 import org.bukkit.entity.Player;
 
 /**
@@ -46,8 +48,8 @@ public class SkyWarsSetupCommand extends BaseCommand {
         Map map = gameServer.getMap();
 
         String mapName = map.getName();
-        int chestsAmount = map.getChests().size();
-        int islandsAmount = map.getIslands().size();
+        int chestsAmount = gameHandler.getRegisteredChests();
+        int islandsAmount = gameHandler.getRegisteredIslands();
         user.sendMessage("&bShowing &3" + gameServer.getServerId() + "&b server map info:");
         user.sendMessage(" ");
         user.sendMessage(" &7- &bName: &3" + mapName);
@@ -60,13 +62,15 @@ public class SkyWarsSetupCommand extends BaseCommand {
     @CommandAlias("showchests")
     public void onShowChests(Player player) {
         GameServer gameServer = gameManager.getGameServer();
-        gameManager.openMenu(player, new GameChestsMenu(gameServer));
+        ChestHandler chestHandler = gameHandler.getChestHandler();
+        gameManager.openMenu(player, new GameChestsMenu(chestHandler, gameServer));
     }
 
     @CommandAlias("showislands")
     public void onShowIslands(Player player) {
         GameServer gameServer = gameManager.getGameServer();
-        gameManager.openMenu(player, new GameIslandsMenu(gameServer));
+        IslandHandler islandHandler = gameHandler.getIslandHandler();
+        gameManager.openMenu(player, new GameIslandsMenu(gameHandler.getIslandHandler(), gameServer));
     }
 
     @CommandAlias("renamemap")
