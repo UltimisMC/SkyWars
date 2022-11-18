@@ -7,7 +7,6 @@ import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.Data;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.DateUtil;
 import xyz.directplan.directlib.config.replacement.Replacement;
@@ -20,11 +19,14 @@ import java.util.List;
  */
 public abstract class GameScoreboard {
 
+    private final ScoreboardManager scoreboardManager;
+
     protected final GameHandler gameHandler;
     protected final GameServer gameServer;
     protected final Game game;
 
-    public GameScoreboard(GameHandler gameHandler) {
+    public GameScoreboard(ScoreboardManager scoreboardManager, GameHandler gameHandler) {
+        this.scoreboardManager = scoreboardManager;
         this.gameHandler = gameHandler;
         gameServer = gameHandler.getGameServer();
         game = gameHandler.getGame();
@@ -46,9 +48,10 @@ public abstract class GameScoreboard {
         int maximumPlayers = gameServer.getMaximumPlayers();
         String gameStatus = MessageConfigKeys.SKYWARS_GAME_WAITING_STATUS_SCOREBOARD.getStringValue();
         if(game.isStarting()) {
-            String startingTime = DateUtil.readableTime(gameHandler.getPrepareCountdownLeft());
+            long prepareCountdownLeft = gameHandler.getPrepareCountdownLeft();
+            int countdownLeftSeconds = (int) prepareCountdownLeft / 1000;
             gameStatus = MessageConfigKeys.SKYWARS_GAME_STARTING_STATUS_SCOREBOARD.
-                    getStringValue(new Replacement("time", startingTime));
+                    getStringValue(new Replacement("time", countdownLeftSeconds + "s"));
         }
         String mapName = gameServer.getMapName();
         String modeName = gameServer.getGameName();
@@ -67,7 +70,6 @@ public abstract class GameScoreboard {
     }
 
     private void updateScoreboard(User user, GameScoreboardInfo scoreboardInfo) {
-        ScoreboardManager scoreboardManager = gameHandler.getScoreboardManager();
         Player player = user.getPlayer();
 
         String displayName = scoreboardInfo.getDisplayName();
