@@ -113,4 +113,12 @@ public class PluginUtility {
         long timeLeft = ((lastTime + cooldownDelay) - System.currentTimeMillis());
         return (int) (timeLeft / 1000);
     }
+
+    public static void sendTitle(Player player, String title, String subTitle) {
+        TitleUtil.send(player, PluginUtility.translateMessage(title), PluginUtility.translateMessage(subTitle));
+    }
+
+    public static void sendTitle(Player player, String title) {
+        sendTitle(player, title, "");
+    }
 }
