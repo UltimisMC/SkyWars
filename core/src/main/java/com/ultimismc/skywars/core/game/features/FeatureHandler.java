@@ -1,12 +1,11 @@
 package com.ultimismc.skywars.core.game.features;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.perks.PerkManager;
 import lombok.Getter;
-import org.bukkit.entity.Player;
-import xyz.directplan.directlib.inventory.InventoryUI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +23,7 @@ public class FeatureHandler {
     private final KitManager kitManager;
     private final PerkManager perkManager;
     private final LevelManager levelManager;
+    private final CosmeticManager cosmeticManager;
 
     private final PurchasableHandler purchasableHandler;
 
@@ -35,24 +35,38 @@ public class FeatureHandler {
         kitManager = new KitManager(plugin);
         perkManager = new PerkManager(plugin);
         levelManager = new LevelManager(plugin);
+        cosmeticManager = new CosmeticManager(this, plugin);
         purchasableHandler = new PurchasableHandler();
 
-        addInitializers(kitManager, perkManager, levelManager);
+        addInitializers(kitManager, perkManager, levelManager, cosmeticManager);
     }
 
     public void initializeFeatures() {
         for(FeatureInitializer featureInitializer : featureInitializers) {
             initializeFeature(featureInitializer);
         }
+    }
 
-        purchasableHandler.registerPurchasableRepository(kitManager);
-        purchasableHandler.registerPurchasableRepository(perkManager);
+    public void shutdownFeatures() {
+        for(FeatureInitializer featureInitializer : featureInitializers) {
+            shutdownFeature(featureInitializer);
+        }
     }
 
     public void initializeFeature(FeatureInitializer featureInitializer) {
         plugin.log("Initializing " + featureInitializer.getName() + "...");
         featureInitializer.initializeFeature(plugin);
         plugin.getCommandHandler().registerDependency(featureInitializer.getClass(), featureInitializer);
+
+        if(featureInitializer instanceof PurchasableRepository<?>) {
+            PurchasableRepository<?> purchasableRepository = (PurchasableFeature<?>) featureInitializer;
+            purchasableHandler.registerPurchasableRepository(purchasableRepository);
+        }
+    }
+
+    public void shutdownFeature(FeatureInitializer featureInitializer) {
+        plugin.log("Shutting down " + featureInitializer.getName() + "...");
+        featureInitializer.shutdownFeature(plugin);
     }
 
     public <T extends Purchasable> T getPurchasable(Class<T> clazz, String key) {
