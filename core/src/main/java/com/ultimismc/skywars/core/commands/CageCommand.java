@@ -29,7 +29,7 @@ public class CageCommand extends BaseCommand {
     @Subcommand("placecage")
     @Syntax("<cage>")
     public void onPlaceCage(User user, String cageName) {
-        cageHandler.placeCage(user, cageName);
+        cageHandler.placeCage(user, cageName, true);
     }
 
     @Subcommand("listcages")
