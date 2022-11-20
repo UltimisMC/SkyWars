@@ -1,10 +1,10 @@
 package com.ultimismc.skywars.core;
 
 import co.aikar.commands.*;
-import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.ConfigHandler;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
@@ -33,6 +33,17 @@ public class CommandHandler {
         commandManager.setFormat(MessageType.SYNTAX, ChatColor.AQUA, ChatColor.DARK_AQUA, ChatColor.WHITE);
 
         CommandContexts<BukkitCommandExecutionContext> commandContexts = commandManager.getCommandContexts();
+
+        commandContexts.registerContext(Material.class, resolver -> {
+            String name = resolver.popFirstArg();
+            Material material;
+            try {
+                material = Material.valueOf(name.toUpperCase());
+            }catch (Exception ignored) {
+                throw new InvalidCommandArgument("&cInvalid material '" + name + "'");
+            }
+            return material;
+        });
 
         commandContexts.registerIssuerAwareContext(User.class, resolver -> {
             BukkitCommandIssuer commandIssuer = resolver.getIssuer();
