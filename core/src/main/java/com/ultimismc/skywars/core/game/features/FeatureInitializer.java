@@ -10,4 +10,10 @@ public interface FeatureInitializer {
     String getName();
 
     void initializeFeature(SkyWarsPlugin plugin);
+
+    default void shutdownFeature(SkyWarsPlugin plugin) {}
+
+    default void log(SkyWarsPlugin plugin, String message) {
+        plugin.log("[" + getName() + "] " + message);
+    }
 }
