@@ -27,8 +27,12 @@ public class Chest {
     }
 
     public boolean isEmpty() {
-        org.bukkit.block.Chest chest = getBlockChest();
-        Inventory inventory = chest.getBlockInventory();
+        Inventory inventory = getChestInventory();
         return PluginUtility.isEmpty(inventory);
+    }
+
+    public Inventory getChestInventory() {
+        org.bukkit.block.Chest chest = getBlockChest();
+        return chest.getBlockInventory();
     }
 }
