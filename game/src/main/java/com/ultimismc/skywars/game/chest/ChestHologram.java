@@ -4,6 +4,7 @@ import com.ultimismc.skywars.game.events.SkyWarsEvent;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
+import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.misc.hologram.Hologram;
 
 /**
@@ -21,6 +22,7 @@ public class ChestHologram {
         if(hologram == null) {
             hologram = new Hologram(chest.getLocation().add(0.5, 0.5, 0.5));
         }
+        PluginUtility.playChestAction(chest.getBlockChest(), true);
         String timeLine = ChatColor.GREEN + eventHandler.getTimeLeftForNextEvent();
         if(chest.isEmpty()) {
             hologram.updateLines(timeLine, "&cEmpty!");
