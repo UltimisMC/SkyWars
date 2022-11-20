@@ -4,13 +4,17 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.core.game.currency.Currency;
+import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.Level;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.level.LevelReward;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
+import com.ultimismc.skywars.core.user.setting.UserSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.config.ConfigHandler;
@@ -18,6 +22,7 @@ import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -99,6 +104,29 @@ public class SkyWarsDebugCommand extends BaseCommand {
             String inventoryId = inventoryUI.getInventoryId();
 
             sender.sendMessage(PluginUtility.translateMessage(" &3" + name + " &7 - &3") + inventoryId);
+        }
+    }
+
+    @Subcommand("removenearbystands")
+    public void onRemoveNearbyStands(Player player) {
+        List<Entity> nearby = player.getNearbyEntities(10, 10, 10);
+        for (Entity entity : nearby) {
+            if(entity instanceof ArmorStand) entity.remove();
+        }
+    }
+
+    @Subcommand("showsettings")
+    @Syntax("")
+    public void onShowSettings(User user) {
+        user.sendMessage("&aShowing " + user.getDisplayName() + " &asettings:");
+        for(UserSetting userSetting : user.getSettings()) {
+            String key = userSetting.getKey();
+            Object value = userSetting.getValue();
+            if(value instanceof Purchasable) {
+                Purchasable purchasable = (Purchasable) value;
+                value = purchasable.getNameWithCategory();
+            }
+            user.sendMessage(" &a* Key: &e" + key + "&a. Value: &e" + value);
         }
     }
 
