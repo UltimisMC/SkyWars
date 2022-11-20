@@ -1,12 +1,13 @@
 package com.ultimismc.skywars.game.island;
 
-import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.Cage;
+import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 
 import java.util.HashMap;
@@ -17,12 +18,20 @@ import java.util.Optional;
  * @author DirectPlan
  */
 @Getter
-@RequiredArgsConstructor
 public class IslandHandler {
 
     private final GameHandler gameHandler;
+    private final CageHandler cageHandler;
 
     private final Map<Location, Island> islands = new HashMap<>();
+    private final Cage defaultCage;
+
+    public IslandHandler(GameHandler gameHandler) {
+        this.gameHandler = gameHandler;
+        CosmeticManager cosmeticManager = gameHandler.getCosmeticManager();
+        cageHandler = cosmeticManager.getCageHandler();
+        defaultCage = cageHandler.getDefaultCage();
+    }
 
     public Island getAvailableIsland() {
         Optional<Island> optionalIsland = islands.values().stream().filter(island -> !island.isTaken()).findFirst();
@@ -36,11 +45,22 @@ public class IslandHandler {
             throw new RuntimeException("There is no available island. Current: " + getSize() + " " + TeamType.SOLO.getMaximumPlayers());
         }
         Location cageLocation = island.getCageLocation();
-        userGameSession.teleport(cageLocation);
         island.setTaken(true);
         userGameSession.setCurrentIsland(island);
         // Get user cage
-        // Place cage schematic
+
+        User user = userGameSession.getUser();
+        Cage selectedCage = user.getSetting(Cage.class, "cage");
+        if(selectedCage != null && selectedCage != defaultCage) {
+            island.setCage(selectedCage);
+            cageHandler.placeCage(selectedCage, cageLocation, false);
+        }
+        if(selectedCage != null) {
+            user.sendMessage("&aA cage was detected: " + selectedCage.getName());
+        }
+
+        cageLocation = cageLocation.clone().add(0, 1, 0);
+        userGameSession.teleport(cageLocation);
     }
 
     public void handleCageQuit(UserGameSession userGameSession) {
@@ -51,9 +71,33 @@ public class IslandHandler {
 
         Cage cage = currentIsland.getCage();
         // Revert changes.
+        if(cage == null) return;
+        restoreIsland(currentIsland);
+    }
+
+    public void restoreIsland(Island island) {
+        Cage cage = island.getCage();
+        if(cage == null) return;
+        Location cageLocation = island.getCageLocation();
+        cageHandler.placeCage(defaultCage, cageLocation, false);
+
+    }
+    public void removeAllCages() {
+        for(Island island : islands.values()) {
+            Location location = island.getCageLocation();
+            location = location.clone().add(0, -2, 0);
+            cageHandler.removeCage(location);
+        }
+    }
+
+    public void shutdown() {
+        removeAllCages();
     }
 
     public void addIsland(Island island) {
+        island.setCage(defaultCage);
+        Location cageLocation = island.getCageLocation();
+        cageHandler.placeCage(defaultCage, cageLocation, false);
         islands.put(island.getCageLocation(), island);
     }
 
