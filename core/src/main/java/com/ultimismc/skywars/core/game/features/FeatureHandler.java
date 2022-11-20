@@ -77,6 +77,10 @@ public class FeatureHandler {
         return purchasableHandler.getAllPurchasables();
     }
 
+    public List<Purchasable> getDefaultPurchasables() {
+        return purchasableHandler.getDefaultPurchasables();
+    }
+
     public void addInitializers(FeatureInitializer... identifiers) {
         featureInitializers.addAll(Arrays.asList(identifiers));
     }
