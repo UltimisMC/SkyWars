@@ -1,6 +1,6 @@
 name: UltSkyWars
 version: ${project.version}
 main: com.ultimismc.skywars.core.SkyWarsPlugin
-depend: [ PlaceholderAPI, LuckPerms ]
+depend: [ WorldEdit, PlaceholderAPI, LuckPerms ]
 authors: [ DirectPlan ]
 description: A custom skywars plugin developed for the UltimisMC Network
