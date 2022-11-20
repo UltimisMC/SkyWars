@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.core.game.features;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import lombok.Getter;
+
+import java.util.*;
 
 /**
  * @author DirectPlan
@@ -10,14 +10,18 @@ import java.util.Map;
 public class PurchasableHandler {
 
     private final Map<String, Purchasable> serverPurchasables = new HashMap<>();
+    @Getter private final List<Purchasable> defaultPurchasables = new ArrayList<>();
 
     public <T extends Purchasable> void registerPurchasableRepository(PurchasableRepository<T> purchasableRepository) {
         Map<String, T> purchasables = purchasableRepository.getPurchasables();
-        serverPurchasables.putAll(purchasables);
+        purchasables.forEach(this::addPurchasable);
     }
 
     public void addPurchasable(String key, Purchasable purchasable) {
         serverPurchasables.put(key, purchasable);
+        if(purchasable.isDefault()) {
+            defaultPurchasables.add(purchasable);
+        }
     }
 
     public void addPurchasable(Purchasable purchasable) {
