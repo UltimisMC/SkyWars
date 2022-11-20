@@ -24,6 +24,10 @@ public interface Purchasable {
 
     PurchasableRarity getRarity();
 
+    default boolean isDefault() {
+        return false;
+    }
+
     default String getDisplayPrice() {
         return getCurrency().getDisplayAmount(getPrice());
     }
