@@ -97,7 +97,7 @@ public class CageHandler implements PurchasableFeature<Cage> {
             int durability = cage.getDisplayDurability();
             CosmeticRarity rarity = cage.getCosmeticRarity();
 
-            String schematicFile = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getName();
+            String schematicFile = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
 
             serializedCages.add(name + "/" + material.name() + "/" + durability + "/" + rarity.name() + "/" + schematicFile);
         }
