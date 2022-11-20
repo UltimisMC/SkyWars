@@ -12,9 +12,12 @@ import org.bukkit.Location;
  * @author DirectPlan
  */
 @Getter
+
 public class Cage extends AbstractCosmetic {
 
     @Setter private CageSchematic schematic;
+    private final String category = "Cage";
+    @Setter private boolean defaultCage = false;
 
     public Cage(CageSchematic schematic, PurchasableDesign design, String name, CosmeticRarity rarity) {
         super(design.getMaterial(), design.getDurability(), name, rarity);
@@ -22,7 +25,12 @@ public class Cage extends AbstractCosmetic {
         this.schematic = schematic;
     }
 
-    public void placeSchematic(Location location) {
-        schematic.placeSchematic(location);
+    public void placeSchematic(Location location, boolean ignoreAir) {
+        schematic.placeSchematic(location, ignoreAir);
+    }
+
+    @Override
+    public boolean isDefault() {
+        return defaultCage;
     }
 }
