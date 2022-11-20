@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.ActionableItem;
 import xyz.directplan.directlib.inventory.MenuItem;
 
@@ -29,6 +30,7 @@ public class GameBarMenu extends UserPlayerInventoryUi {
     }
 
     public MenuItem addBarItem(int slot, Material material, String displayName) {
-        return addBarItem(slot, material, displayName, null);
+        return addBarItem(slot, material, displayName, (item, clicker, clickedBlock, clickType) ->
+                clicker.sendMessage(PluginUtility.translateMessage("&cStill under construction!")));
     }
 }
