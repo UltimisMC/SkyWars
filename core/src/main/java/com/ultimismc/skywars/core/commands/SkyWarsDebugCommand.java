@@ -102,7 +102,6 @@ public class SkyWarsDebugCommand extends BaseCommand {
         }
     }
 
-
     private void increaseCurrency(User user, Currency currency, int amount) {
         currency.increaseCurrencyWithMessage(user, amount);
     }
