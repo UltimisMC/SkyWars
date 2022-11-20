@@ -4,7 +4,9 @@ import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
+import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
+import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.game.GameManager;
@@ -66,6 +68,7 @@ public class GameHandler implements FeatureInitializer {
     private SkyWarsEventHandler skyWarsEventHandler;
     private ChestHandler chestHandler;
     private IslandHandler islandHandler;
+    private CosmeticManager cosmeticManager;
 
     private BukkitTask gamePreparer, gameTask;
 
@@ -80,12 +83,14 @@ public class GameHandler implements FeatureInitializer {
 
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
+        FeatureHandler featureHandler = plugin.getFeatureHandler();
+        cosmeticManager = featureHandler.getCosmeticManager();
 
         skyWarsEventHandler = new SkyWarsEventHandler(plugin, this);
         islandHandler = new IslandHandler(this);
         chestHandler = new ChestHandler(this);
 
-        gameServerInitializer = new GameServerInitializer(plugin, islandHandler, chestHandler);
+        gameServerInitializer = new GameServerInitializer(plugin, this);
 
         gameServerInitializer.initializeServer();
         gameServer = gameServerInitializer.getGameServer();
@@ -111,12 +116,12 @@ public class GameHandler implements FeatureInitializer {
             gameScoreboard = new AccompaniedGameScoreboard(scoreboardManager, this);
         }
         gameSetupHandler = new GameSetupHandler(this);
-
         plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
     }
 
     public void shutdown() {
         chestHandler.shutdown();
+        islandHandler.shutdown();
         gameServerInitializer.finalizeServer();
     }
 
@@ -149,7 +154,7 @@ public class GameHandler implements FeatureInitializer {
         game.quitUser(user);
 
         islandHandler.handleCageQuit(userGameSession);
-        if(!game.hasStarted() && !hasMinimumPlayers()) {
+        if(game.isStarting() && !hasMinimumPlayers()) {
             broadcastMessage("&cNot enough players!");
             cancelPreparer();
         }
@@ -168,6 +173,7 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public void startGame() {
+        islandHandler.removeAllCages();
         gamePreparer.cancel();
         game.setGameState(GameState.STARTED);
         game.startGame();
