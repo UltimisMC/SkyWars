@@ -4,6 +4,7 @@ import lombok.Data;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
+import xyz.directplan.directlib.PluginUtility;
 
 /**
  * @author DirectPlan
@@ -28,6 +29,6 @@ public class Chest {
     public boolean isEmpty() {
         org.bukkit.block.Chest chest = getBlockChest();
         Inventory inventory = chest.getBlockInventory();
-        return inventory.firstEmpty() == -1;
+        return PluginUtility.isEmpty(inventory);
     }
 }
