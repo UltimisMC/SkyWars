@@ -3,6 +3,7 @@ package com.ultimismc.skywars.core.user;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.storage.UserStorage;
 import lombok.Getter;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class UserManager {
             }
             plugin.getLogger().info(user.getName() + " has taken " +(System.currentTimeMillis() - time) +" ms to load from storage!");
             return user;
-        }, executorService).thenAccept(syncTask);
+        }, executorService).thenAccept(output -> MinecraftServer.getServer().postToMainThread(() -> syncTask.accept(output)));
     }
 
     public void saveUserAsync(User user, boolean remove, Consumer<User> syncTask) {
@@ -78,13 +79,14 @@ public class UserManager {
 
             plugin.getLogger().info(user.getName() + " took "+(System.currentTimeMillis() - time)+" ms to save data on database");
             return user;
-        }, executorService).thenAccept(syncTask);
+        }, executorService).thenAccept(output -> MinecraftServer.getServer().postToMainThread(() -> syncTask.accept(output)));
     }
 
     public void saveUserAsync(UUID uuid, boolean remove, Consumer<User> syncTask) {
         User user = getCachedUser(uuid);
         saveUserAsync(user, remove, syncTask);
     }
+
 
     public User getCachedUser(UUID uuid) {
         return users.get(uuid);
