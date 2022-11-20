@@ -18,7 +18,7 @@ public abstract class AbstractKit implements Kit {
 
     private final String category = "Kit";
     private final Material displayMaterial;
-    private final short durability;
+    private final short displayDurability;
     private final String name;
     private final KitRarity kitRarity;
     private final boolean soulWell;
@@ -27,7 +27,7 @@ public abstract class AbstractKit implements Kit {
 
     public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity, boolean soulWellKit) {
         this.displayMaterial = displayMaterial;
-        this.durability = (short) durability;
+        this.displayDurability = (short) durability;
         this.name = name;
         this.kitRarity = rarity;
         this.soulWell = soulWellKit;
@@ -60,10 +60,5 @@ public abstract class AbstractKit implements Kit {
             return kitRarity.getPurchasableRarity();
         }
         return null;
-    }
-
-    @Override
-    public short getDisplayDurability() {
-        return durability;
     }
 }
