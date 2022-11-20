@@ -1,9 +1,8 @@
 package com.ultimismc.skywars.core.game.features.kits;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.features.FeatureInitializer;
+import com.ultimismc.skywars.core.game.features.PurchasableFeature;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
-import com.ultimismc.skywars.core.game.features.PurchasableRepository;
 import com.ultimismc.skywars.core.game.features.kits.impl.*;
 import lombok.Getter;
 
@@ -13,7 +12,7 @@ import java.util.*;
  * @author DirectPlan
  */
 @Getter
-public class KitManager implements FeatureInitializer, PurchasableRepository<Kit> {
+public class KitManager implements PurchasableFeature<Kit> {
 
     private final String name = "Kits";
 

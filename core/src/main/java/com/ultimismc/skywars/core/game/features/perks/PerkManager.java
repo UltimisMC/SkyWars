@@ -1,9 +1,8 @@
 package com.ultimismc.skywars.core.game.features.perks;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.features.FeatureInitializer;
+import com.ultimismc.skywars.core.game.features.PurchasableFeature;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
-import com.ultimismc.skywars.core.game.features.PurchasableRepository;
 import com.ultimismc.skywars.core.game.features.perks.impl.*;
 import com.ultimismc.skywars.core.game.features.soulwell.HarvestingSeasonSoulPerk;
 import com.ultimismc.skywars.core.game.features.soulwell.XezbethLuckSoulPerk;
@@ -18,7 +17,7 @@ import java.util.Map;
  * @author DirectPlan
  */
 @Getter
-public class PerkManager implements FeatureInitializer, PurchasableRepository<Perk> {
+public class PerkManager implements PurchasableFeature<Perk> {
 
     private final String name = "Perks";
 
