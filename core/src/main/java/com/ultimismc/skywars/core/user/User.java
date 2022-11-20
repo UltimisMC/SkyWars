@@ -7,6 +7,7 @@ import com.ultimismc.skywars.core.game.features.level.Prestige;
 import com.ultimismc.skywars.core.rank.Rank;
 import com.ultimismc.skywars.core.user.asset.UserAsset;
 import com.ultimismc.skywars.core.user.asset.UserAssetsHandler;
+import com.ultimismc.skywars.core.user.setting.UserSetting;
 import com.ultimismc.skywars.core.user.setting.UserSettingHandler;
 import lombok.Data;
 import lombok.Getter;
@@ -88,6 +89,22 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         if(purchasable == null) return false;
         Currency currency = purchasable.getCurrency();
         return currency.canAfford(this, purchasable);
+    }
+
+    public <T> void addSetting(String key, T value) {
+        userSettingHandler.addSetting(key, value);
+    }
+
+    public <T> T getSetting(Class<T> castClass, String key) {
+        return userSettingHandler.getSetting(castClass, key);
+    }
+
+    public Collection<UserSetting> getSettings() {
+        return userSettingHandler.getSettings();
+    }
+
+    public boolean hasEmptySettings() {
+        return userSettingHandler.isEmpty();
     }
 
     public String getLevelDisplayName(Level level, boolean brackets) {
