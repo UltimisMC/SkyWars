@@ -6,10 +6,12 @@ import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableFeature;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.CageSchematic;
+import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.SchematicAdapter;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.WorldEditSchematicAdapter;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -27,12 +29,13 @@ public class CageHandler implements PurchasableFeature<Cage> {
     private final String name = "Cosmetics: Cage";
 
     private final SkyWarsPlugin plugin;
-    private WorldEditSchematicAdapter schematicAdapter;
+    private SchematicAdapter schematicAdapter;
 
     private final Map<String, Cage> cages = new HashMap<>();
 
     private final World world;
     private Cage defaultCage;
+    private CageSchematic voidSchematic;
 
     public CageHandler(SkyWarsPlugin plugin) {
         this.plugin = plugin;
@@ -83,8 +86,9 @@ public class CageHandler implements PurchasableFeature<Cage> {
             Cage cage = new Cage(schematic, design, name, rarity);
             registerCage(name, cage);
         }
-
+        voidSchematic = schematicAdapter.loadSchematic(new File(plugin.getDataFolder(), "/cages/void.schematic"));
         defaultCage = getCage("Default");
+        defaultCage.setDefaultCage(true);
     }
 
     @Override
@@ -163,19 +167,27 @@ public class CageHandler implements PurchasableFeature<Cage> {
         return cages.get(name);
     }
 
-    public void placeCage(User user, Cage cage) {
+    public void placeCage(Cage cage, Location location, boolean ignoreAir) {
+        log(plugin, "Placing schematic of " + cage.getName());
+        cage.placeSchematic(location, ignoreAir);
+    }
+    public void placeCage(User user, Cage cage, boolean ignoreAir) {
         Player player = user.getPlayer();
-        cage.placeSchematic(player.getLocation());
+        placeCage(cage, player.getLocation(), ignoreAir);
     }
 
-    public void placeCage(User user, String cageName) {
+    public void placeCage(User user, String cageName, boolean ignoreAir) {
         Cage cage = getCage(cageName);
         if(cage == null) {
             user.sendMessage("&cA cage by this name does not exist!");
             return;
         }
         user.sendMessage("&aPlacing cage: &e" + cage.getName() + "&a...");
-        placeCage(user, cage);
+        placeCage(user, cage, ignoreAir);
+    }
+
+    public void removeCage(Location location) {
+        voidSchematic.placeSchematic(location, false);
     }
 
     @Override
