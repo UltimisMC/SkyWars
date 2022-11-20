@@ -11,7 +11,5 @@ public interface CageSchematic {
 
     File getSchematicFile();
 
-    void placeSchematic(Location location);
-
-    void saveSchematic(File file);
+    void placeSchematic(Location location, boolean ignoreAir);
 }
