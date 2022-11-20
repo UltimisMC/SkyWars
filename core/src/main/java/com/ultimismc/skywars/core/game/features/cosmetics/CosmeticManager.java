@@ -15,7 +15,7 @@ public class CosmeticManager implements FeatureInitializer {
     @Getter private final String name = "Cosmetics";
 
     private final FeatureHandler featureHandler;
-    private final CageHandler cageHandler;
+    @Getter private final CageHandler cageHandler;
 
     public CosmeticManager(FeatureHandler featureHandler, SkyWarsPlugin plugin) {
         this.featureHandler = featureHandler;
