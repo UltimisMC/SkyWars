@@ -7,6 +7,7 @@ import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.Inventory;
 import xyz.directplan.directlib.PluginUtility;
 
 import java.util.HashMap;
@@ -49,7 +50,6 @@ public class ChestHandler {
 
     public void openChest(Block block) {
         Chest chest = getChest(block);
-        PluginUtility.playChestAction(chest.getBlockChest(), true);
         chest.setOpened(true);
         ChestSkyWarsEventUpdater updater = new ChestSkyWarsEventUpdater(chest);
         skyWarsEventHandler.addUpdater(updater);
@@ -58,7 +58,10 @@ public class ChestHandler {
     public void shutdown() {
         for(Chest chest : chests.values()) {
             org.bukkit.block.Chest blockChest = chest.getBlockChest();
-            blockChest.getBlockInventory().clear();
+            Inventory blockInventory = blockChest.getBlockInventory();
+            if(blockInventory != null) {
+                blockInventory.clear();
+            }
 
             ChestHologram hologram = chest.getChestHologram();
             hologram.destroy();
