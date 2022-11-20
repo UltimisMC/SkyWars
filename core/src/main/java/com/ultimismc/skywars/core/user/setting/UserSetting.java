@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class UserSetting {
 
-    private final String name;
+    private final String key;
     private Object value;
 
     public boolean asBoolean() {
