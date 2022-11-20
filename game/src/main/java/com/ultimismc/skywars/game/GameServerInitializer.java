@@ -34,10 +34,10 @@ public class GameServerInitializer {
     private final IslandHandler islandHandler;
     private final ChestHandler chestHandler;
 
-    public GameServerInitializer(SkyWarsPlugin plugin, IslandHandler islandHandler, ChestHandler chestHandler) {
+    public GameServerInitializer(SkyWarsPlugin plugin, GameHandler gameHandler) {
         this.plugin = plugin;
-        this.islandHandler = islandHandler;
-        this.chestHandler = chestHandler;
+        this.islandHandler = gameHandler.getIslandHandler();
+        this.chestHandler = gameHandler.getChestHandler();
     }
 
     @Getter private GameServer gameServer;
