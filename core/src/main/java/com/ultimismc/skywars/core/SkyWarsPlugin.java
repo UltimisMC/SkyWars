@@ -1,6 +1,8 @@
 package com.ultimismc.skywars.core;
 
+import com.ultimismc.skywars.core.commands.CageCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsDebugCommand;
+import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameListener;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
@@ -46,6 +48,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     public void onEnable() {
         configHandler = new BukkitConfigHandler(this);
         configHandler.loadConfiguration("config.yml", ConfigKeys.class);
+        configHandler.loadConfiguration("cages.yml", CageConfigKeys.class);
 
         storage = new UserStorage(this);
         storage.connect();
@@ -65,7 +68,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
                 new GameListener(userManager, featureHandler),
                 userListener = new UserListener(userManager));
 
-        commandHandler.registerCommands(new SkyWarsDebugCommand());
+        commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand());
         enable();
     }
 
@@ -73,6 +76,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     public void onDisable() {
         disable();
 
+        featureHandler.shutdownFeatures();
         configHandler.saveConfigurations();
         userManager.saveUsers();
 
