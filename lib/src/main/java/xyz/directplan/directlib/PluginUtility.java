@@ -39,15 +39,18 @@ public class PluginUtility {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public static boolean isInventoryEmpty(Player player) {
-        Inventory inventory = player.getInventory();
+    public static boolean isEmpty(Inventory inventory) {
         ItemStack[] contents = inventory.getContents();
         for(ItemStack content : contents) {
-            if(content == null) {
-                return true;
+            if(content != null) {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+    public static boolean isInventoryEmpty(Player player) {
+        Inventory inventory = player.getInventory();
+        return isEmpty(inventory);
     }
 
     public static boolean doesLocationMatch(Location first, Location second) {
