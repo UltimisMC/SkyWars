@@ -21,7 +21,7 @@ public class SkyWarsEventHandler {
     private final GameHandler gameHandler;
 
     private final LinkedList<SkyWarsEvent> events = new LinkedList<>();
-    private final Iterator<SkyWarsEvent> eventIterator;
+    private Iterator<SkyWarsEvent> eventIterator;
     @Getter private SkyWarsEvent nextEvent;
     private long eventStartedAt;
     private BukkitTask task;
@@ -33,16 +33,12 @@ public class SkyWarsEventHandler {
     public SkyWarsEventHandler(SkyWarsPlugin plugin, GameHandler gameHandler) {
         this.plugin = plugin;
         this.gameHandler = gameHandler;
-
-        events.addLast(new ChestRefillSkyWarsEvent(180000));
-        events.addLast(new TestSkyWarsEvent("Gay"));
-        events.addLast(new TestSkyWarsEvent("Never Gonna Give You Up"));
-        events.addLast(new TestSkyWarsEvent("Morocco"));
-
-        eventIterator = events.iterator();
     }
 
     public void startNextEvent() {
+        if(eventIterator == null) {
+            eventIterator = events.iterator();
+        }
         if(task == null) {
             task = plugin.getServer().getScheduler().runTaskTimer(plugin, new SkyWarsEventRunnable(this), 20L, 20L);
         }
@@ -66,6 +62,11 @@ public class SkyWarsEventHandler {
     public String getTimeLeftForNextEvent() {
         long timeLeft = getUntilNextEvent();
         return dateFormat.format(timeLeft);
+    }
+
+
+    public void addEvent(SkyWarsEvent event) {
+        events.addLast(event);
     }
 
     public String getNextEventDisplayFormat() {
