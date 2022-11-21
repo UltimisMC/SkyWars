@@ -12,6 +12,7 @@ import xyz.directplan.directlib.PluginUtility;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author DirectPlan
@@ -26,12 +27,15 @@ public class ChestHandler {
     public ChestHandler(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
         skyWarsEventHandler = gameHandler.getSkyWarsEventHandler();
+
+        skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.SECOND, 60000));
+        skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.THIRD, 60000));
     }
 
-    public void refillChest(Chest chest) {
+    public void refillChest(RefillPhase refillPhase, Chest chest) {
         Game game = gameHandler.getGame();
         GameChestRegistry chestRegistry = game.getChestRegistry();
-        chestRegistry.refillChest(chest);
+        chestRegistry.refillChest(refillPhase, chest);
 
         if(!chest.isOpened()) return;
         chest.setOpened(false);
@@ -44,8 +48,12 @@ public class ChestHandler {
         skyWarsEventHandler.removeUpdater(updater);
     }
 
+    public void refillAllChests(RefillPhase refillPhase) {
+        chests.forEach((location, chest) -> refillChest(refillPhase, chest));
+    }
+
     public void refillAllChests() {
-        chests.forEach((location, chest) -> refillChest(chest));
+        refillAllChests(RefillPhase.FIRST);
     }
 
     public void openChest(Block block) {
