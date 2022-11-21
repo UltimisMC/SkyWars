@@ -22,6 +22,10 @@ public class GameServer {
         return gameType.getName();
     }
 
+    public String getGameDisplayName() {
+        return gameType.getDisplayName();
+    }
+
     public String getTeamName() {
         return teamType.getName();
     }
