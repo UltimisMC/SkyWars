@@ -42,11 +42,11 @@ public class UserSettingHandler extends UserCacheHandler<String, UserSetting> {
         return getSetting(Boolean.class, key);
     }
 
-    public int getSettingInt(SettingCategory category, String key) {
+    public int getSettingInt(String key) {
         return getSetting(Integer.class, key);
     }
 
-    public String getSettingString(SettingCategory category, String key) {
+    public String getSettingString(String key) {
         return getSetting(String.class, key);
     }
 
