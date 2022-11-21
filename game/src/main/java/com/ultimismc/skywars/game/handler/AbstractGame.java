@@ -17,14 +17,13 @@ import java.util.List;
 @Setter
 public abstract class AbstractGame implements Game {
 
-    private final GameHandler gameHandler;
+    protected final GameHandler gameHandler;
     private final GameChestRegistry chestRegistry;
 
     private final int minimumPlayers = 8;
     private GameState gameState = GameState.WAITING;
     private final List<User> players = new ArrayList<>();
     private final List<User> spectators = new ArrayList<>();
-
 
 
     @Override
