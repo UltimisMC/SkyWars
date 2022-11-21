@@ -26,8 +26,16 @@ public class PluginUtility {
     private final static ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public static boolean hasChanceOccurred(int percentChance) {
-        int randomPercentage = random.nextInt(100) + 1;
-        return randomPercentage <= percentChance;
+        return getRandomInteger(1, 101) <= percentChance;
+    }
+
+    // int
+    public static int getRandomInteger(int minimum, int maximum) {
+        int randomPercentage = random.nextInt(maximum);
+        if(randomPercentage < minimum) {
+            randomPercentage = minimum;
+        }
+        return randomPercentage;
     }
 
     public static <T> T getRandom(List<T> collection) {
