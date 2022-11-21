@@ -7,5 +7,8 @@ import com.ultimismc.skywars.game.chest.GameChestRegistry;
  */
 public class InsaneChestRegistry extends GameChestRegistry {
 
+    @Override
+    public void buildItems() {
 
+    }
 }
