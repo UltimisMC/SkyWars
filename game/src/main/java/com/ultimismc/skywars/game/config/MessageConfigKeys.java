@@ -51,7 +51,7 @@ public enum MessageConfigKeys implements ConfigEntry {
 
     ,
 
-    JOIN_MESSAGE("join-message", "%player% &ehas joined (&b%current-players%&e/&b%maximum-players%&e)"),
+    JOIN_MESSAGE("join-message", "%player% &ehas joined (&b%current-players%&e/&b%maximum-players%&e)!"),
     QUIT_MESSAGE("quit-message", "%player% &ehas quit!"),
 
     GAME_STARTS_IN_MESSAGE("game-starts-in-message", "&eThe game starts in %time%&e seconds!"),
