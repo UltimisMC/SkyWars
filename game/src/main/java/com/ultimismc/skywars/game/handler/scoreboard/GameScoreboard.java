@@ -54,7 +54,7 @@ public abstract class GameScoreboard {
                     getStringValue(new Replacement("time", countdownLeftSeconds + "s"));
         }
         String mapName = gameServer.getMapName();
-        String modeName = gameServer.getGameName();
+        String modeDisplayName = gameServer.getGameDisplayName();
 
         String displayName = MessageConfigKeys.SKYWARS_GAME_SCOREBOARD_DISPLAYNAME.getStringValue();
 
@@ -64,7 +64,7 @@ public abstract class GameScoreboard {
                         new Replacement("maximum-players", maximumPlayers),
                         new Replacement("game-status", gameStatus),
                         new Replacement("map", mapName),
-                        new Replacement("mode", modeName));
+                        new Replacement("mode", modeDisplayName));
 
         updateScoreboard(user, new GameScoreboardInfo(displayName, scoreboardLines));
     }
