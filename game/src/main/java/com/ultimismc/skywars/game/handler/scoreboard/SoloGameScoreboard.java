@@ -27,7 +27,7 @@ public class SoloGameScoreboard extends GameScoreboard {
         String serverId = gameServer.getServerId();
         int playersLeft = gameHandler.getPlayersLeft();;
         String mapName = gameServer.getMapName();
-        String modeName = gameServer.getGameName();
+        String modeDisplayName = gameServer.getGameDisplayName();
 
         String displayName = MessageConfigKeys.SKYWARS_GAME_SCOREBOARD_DISPLAYNAME.getStringValue();
 
@@ -39,7 +39,7 @@ public class SoloGameScoreboard extends GameScoreboard {
                         new Replacement("players-left", playersLeft),
                         new Replacement("kills", kills),
                         new Replacement("map", mapName),
-                        new Replacement("mode", modeName));
+                        new Replacement("mode", modeDisplayName));
 
         return new GameScoreboardInfo(displayName, scoreboardLines);
     }
