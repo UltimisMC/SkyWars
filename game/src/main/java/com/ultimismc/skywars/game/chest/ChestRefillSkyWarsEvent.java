@@ -11,14 +11,17 @@ import xyz.directplan.directlib.PluginUtility;
  */
 public class ChestRefillSkyWarsEvent extends AbstractSkyWarsEvent {
 
-    public ChestRefillSkyWarsEvent(long scheduledIn) {
+    private final RefillPhase refillPhase;
+    public ChestRefillSkyWarsEvent(RefillPhase refillPhase, long scheduledIn) {
         super("Refill", scheduledIn);
+        this.refillPhase = refillPhase;
     }
 
     @Override
     public void executeEvent(GameHandler gameHandler) {
+        gameHandler.log("Beginning chest refill for " + refillPhase.name() + " phase.");
         ChestHandler chestHandler = gameHandler.getChestHandler();
-        chestHandler.refillAllChests();
+        chestHandler.refillAllChests(refillPhase);
         gameHandler.broadcastFunction(user -> {
             Player player = user.getPlayer();
             PluginUtility.playSound(player, Sound.CHEST_OPEN);
