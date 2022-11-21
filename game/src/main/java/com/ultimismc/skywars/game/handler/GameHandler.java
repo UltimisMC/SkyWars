@@ -12,6 +12,7 @@ import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.GameServerInitializer;
 import com.ultimismc.skywars.game.chest.ChestHandler;
+import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import com.ultimismc.skywars.game.handler.runnable.GamePreparer;
@@ -108,6 +109,10 @@ public class GameHandler implements FeatureInitializer {
             default:
                 throw new IllegalStateException("Unexpected SkyWars Mode: " + gameType);
         }
+        GameChestRegistry chestRegistry = game.getChestRegistry();
+        chestRegistry.buildItems();
+
+        log(plugin, "Loaded " + chestRegistry.getSize() + " chest items for " + gameType.getName() + " mode.");
         userSessionHandler = new UserSessionHandler(gameServer);
 
         ScoreboardManager scoreboardManager = gameManager.getScoreboardManager();
@@ -132,7 +137,7 @@ public class GameHandler implements FeatureInitializer {
                 new Replacement("maximum-players", gameServer.getMaximumPlayers()));
 
         Player player = user.getPlayer();
-        PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", "&a" + gameServer.getGameName() + " mode");
+        PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameServer.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
         game.prepareUser(user);
@@ -234,10 +239,6 @@ public class GameHandler implements FeatureInitializer {
         broadcastFunction(user -> user.sendMessage(message));
     }
 
-    public void broadcastTitle(String message) {
-        broadcastFunction(user -> user.sendMessage("Title: " + message));
-    }
-
     public void broadcastFunction(Consumer<User> consumer) {
         for(User user : userManager.getUsers().values()) {
             consumer.accept(user);
@@ -294,5 +295,9 @@ public class GameHandler implements FeatureInitializer {
 
     public boolean isOpen() {
         return !game.hasStarted() && getOnlinePlayers() < getMaximumPlayers();
+    }
+
+    public void log(String message) {
+        log(plugin, message);
     }
 }
