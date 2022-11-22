@@ -48,6 +48,12 @@ public class InsaneChestRegistry extends GameChestRegistry {
         addChestItem(false, 100, Material.LOG, 64);
         addChestItem(false, 100, Material.STONE, 64);
         addChestItem(false, 100, Material.ENCHANTMENT_TABLE);
+        addChestItem(false, 100, Material.WOOD, 16);
+        addChestItem(false, 100, Material.WOOD, 32);
+        addChestItem(false, 100, Material.WOOD, 64);
+        addChestItem(false, 100, Material.STONE, 16);
+        addChestItem(false, 100, Material.STONE, 32);
+        addChestItem(false, 100, Material.STONE, 64);
 
         // Middle Chest Items
         // Armor Pieces
