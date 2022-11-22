@@ -61,10 +61,11 @@ public abstract class GameChestRegistry {
         }
     }
 
-    public void addChestItem(boolean middle, int percentage, Material material, int amount, ItemEnchantment enchantment) {
+    public void addChestItem(boolean middle, int percentage, Material material, int durability, int amount, ItemEnchantment... enchantments) {
         ChestItem chestItem = new ChestItem(percentage, material, amount);
-        if(enchantment != null) {
-            chestItem.addEnchantment(enchantment);
+        chestItem.setDurability(durability);
+        if(enchantments != null) {
+            chestItem.addEnchantments(enchantments);
         }
         if(middle) {
             middleChestItems.add(chestItem);
@@ -73,18 +74,12 @@ public abstract class GameChestRegistry {
         chestItems.add(chestItem);
     }
 
-    public void addChestItem(boolean middle, int percentage, Material material, ItemEnchantment enchantment) {
-        addChestItem(middle, percentage, material, 1, enchantment);
+    public void addChestItem(boolean middle, int percentage, Material material, int amount, ItemEnchantment... enchantments) {
+        addChestItem(middle, percentage, material, 0, amount, enchantments);
     }
 
-    public void addChestItem(boolean middle, int percentage, Material material, int amount) {
-        addChestItem(middle, percentage, material, amount, null);
-    }
-
-    public void addChestItem(boolean middle, int percentage, Material material, int... amounts) {
-        for(int amount : amounts) {
-            addChestItem(middle, percentage, material, amount, null);
-        }
+    public void addChestItem(boolean middle, int percentage, Material material, ItemEnchantment... enchantments) {
+        addChestItem(middle, percentage, material, 1, enchantments);
     }
 
     public void addChestItem(boolean middle, int percentage, Material material) {
