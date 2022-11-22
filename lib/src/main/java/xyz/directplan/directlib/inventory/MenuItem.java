@@ -104,10 +104,15 @@ public class MenuItem implements Cloneable {
         return itemStack.getItemMeta().getLore();
     }
 
+    public void setDurability(int durability) {
+        itemStack = builder.durability(durability).build();
+    }
+
     public void setAmount(int amount) {
         this.itemAmount = amount;
         itemStack = builder.amount(amount).build();
     }
+
     public void markUnbreakable() {
         ItemMeta meta = itemStack.getItemMeta();
         meta.spigot().setUnbreakable(true);
