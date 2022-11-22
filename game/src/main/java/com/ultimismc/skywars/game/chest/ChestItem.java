@@ -25,10 +25,13 @@ public class ChestItem {
         this(percentage, material, 1);
     }
 
-    public void addEnchantment(ItemEnchantment enchantment) {
+    public void addEnchantments(ItemEnchantment... enchantment) {
         menuItem.addEnchantments(enchantment);
     }
 
+    public void setDurability(int durability) {
+        menuItem.setDurability(durability);
+    }
 
     public int getItemAmount() {
         return menuItem.getItemAmount();
