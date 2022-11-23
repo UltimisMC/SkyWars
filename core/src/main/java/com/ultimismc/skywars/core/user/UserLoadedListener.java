@@ -5,6 +5,7 @@ import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.rank.RankManager;
+import com.ultimismc.skywars.core.user.asset.UserAsset;
 
 import java.util.Locale;
 
@@ -33,6 +34,7 @@ public class UserLoadedListener {
             String category = defaultPurchasable.getCategory();
             category = category.toLowerCase(Locale.ROOT);
             user.addSetting(category, defaultPurchasable);
+            user.addAsset(new UserAsset(defaultPurchasable));
         }
     }
 }
