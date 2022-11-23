@@ -2,10 +2,12 @@ package com.ultimismc.skywars.game.menubar;
 
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
+import com.ultimismc.skywars.game.handler.GameHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.ActionableItem;
+import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.MenuItem;
 
 /**
@@ -13,8 +15,11 @@ import xyz.directplan.directlib.inventory.MenuItem;
  */
 public class GameBarMenu extends UserPlayerInventoryUi {
 
-    public GameBarMenu(User user) {
+    protected final GameHandler gameHandler;
+
+    public GameBarMenu(GameHandler gameHandler, User user) {
         super(user);
+        this.gameHandler = gameHandler;
     }
 
     @Override
@@ -32,5 +37,9 @@ public class GameBarMenu extends UserPlayerInventoryUi {
     public MenuItem addBarItem(int slot, Material material, String displayName) {
         return addBarItem(slot, material, displayName, (item, clicker, clickedBlock, clickType) ->
                 clicker.sendMessage(PluginUtility.translateMessage("&cStill under construction!")));
+    }
+
+    public MenuItem addBarItem(int slot, Material material, String displayName, InventoryUI inventoryUI) {
+        return addBarItem(slot, material, displayName, (item, clicker, clickedBlock, clickType) -> gameHandler.openInventory(clicker, inventoryUI));
     }
 }
