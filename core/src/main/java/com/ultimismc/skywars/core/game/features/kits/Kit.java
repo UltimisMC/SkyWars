@@ -12,4 +12,6 @@ public interface Kit extends Purchasable {
     KitRarity getKitRarity();
 
     List<KitItem> getItems();
+
+    List<String> getDisplayItems();
 }
