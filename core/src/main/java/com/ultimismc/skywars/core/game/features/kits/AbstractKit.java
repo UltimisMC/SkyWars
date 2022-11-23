@@ -3,7 +3,9 @@ package com.ultimismc.skywars.core.game.features.kits;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import xyz.directplan.directlib.inventory.ItemEnchantment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,5 +62,17 @@ public abstract class AbstractKit implements Kit {
             return kitRarity.getPurchasableRarity();
         }
         return null;
+    }
+
+    @Override
+    public List<String> getDisplayItems() {
+        List<String> displayItems = new ArrayList<>();
+        for(KitItem item : items) {
+            displayItems.add(ChatColor.GRAY + item.getDisplayName());
+            for(ItemEnchantment enchantment : item.getEnchantments()) {
+                displayItems.add(ChatColor.GRAY + "   * " + enchantment.getDisplayName());
+            }
+        }
+        return displayItems;
     }
 }
