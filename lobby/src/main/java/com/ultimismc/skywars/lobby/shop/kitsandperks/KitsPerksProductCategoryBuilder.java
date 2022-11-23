@@ -11,7 +11,6 @@ import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.kitsandperks.kits.KitProduct;
 import com.ultimismc.skywars.lobby.shop.kitsandperks.perks.*;
-import com.ultimismc.skywars.lobby.shop.soulwell.SoulWellProductCategory;
 import com.ultimismc.skywars.lobby.shop.soulwell.SoulWellProductCategoryBuilder;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
@@ -72,7 +71,7 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         PerkShopCategory perkShopCategory = new PerkShopCategory(50);
         PurchasedPerksCategory purchasedPerksCategory = new PurchasedPerksCategory(51);
         for(Perk perk : perkManager.getPerks()) {
-            if(perk.isSoulWellPerk()) continue;
+            if(perk.isDefault() || perk.isSoulWellPerk()) continue;
             perkShopCategory.addProduct(new ShopPerkProduct(perk));
             purchasedPerksCategory.addProduct(new PurchasedPerkProduct(perk));
         }
