@@ -22,7 +22,12 @@ public class UserSettingHandler extends UserCacheHandler<String, UserSetting> {
             values.add(value);
             return;
         }
-        addCache(key, new UserSetting(key, value));
+        setSetting(key, value);
+    }
+
+    public <T> void setSetting(String key, T value) {
+        UserSetting userSetting = userCache.computeIfAbsent(key, s -> new UserSetting(key, value));
+        userSetting.setValue(value);
     }
 
     public <T> T getSetting(Class<T> castClass, String key) {
