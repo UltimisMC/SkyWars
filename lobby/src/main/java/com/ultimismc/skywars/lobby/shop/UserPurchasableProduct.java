@@ -53,6 +53,8 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
     @Override
     public ProductItemDesign designProduct(User user) {
 
+        if(purchasable != null && purchasable.isDefault()) return null;
+
         ProductItemDesign shopProductItemDesign = designPurchasableProduct(user);
         if(shopProductItemDesign == null) return null;
 
