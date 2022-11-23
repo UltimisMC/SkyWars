@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.menubar;
 
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.game.handler.GameHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.inventory.MenuItem;
@@ -10,8 +11,8 @@ import xyz.directplan.directlib.inventory.MenuItem;
  */
 public class GameSpectatorBarMenu extends GameBarMenu {
 
-    public GameSpectatorBarMenu(User user) {
-        super(user);
+    public GameSpectatorBarMenu(GameHandler gameHandler, User user) {
+        super(gameHandler, user);
     }
 
     @Override
