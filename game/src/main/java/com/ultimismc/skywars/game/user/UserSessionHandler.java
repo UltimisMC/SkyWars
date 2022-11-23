@@ -3,6 +3,7 @@ package com.ultimismc.skywars.game.user;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.user.User;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -44,4 +45,7 @@ public class UserSessionHandler {
         return removeSession(uuid);
     }
 
+    public Collection<UserGameSession> getUserSessions() {
+        return userSessions.values();
+    }
 }
