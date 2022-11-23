@@ -143,6 +143,12 @@ public class PluginUtility {
         sendTitle(player, fadeIn, stay, fadeOut, "", subTitle);
     }
 
+    public static void sendActionBar(Player player, String actionBar) {
+        Title title = new Title(TitleSlot.ACTIONBAR);
+        title.setTitle(translateMessage(actionBar));
+        title.send(player);
+    }
+
     public static void playChestAction(Chest chest, boolean open) {
         Location location = chest.getLocation();
         World world = ((CraftWorld) location.getWorld()).getHandle();
