@@ -21,6 +21,12 @@ public abstract class GameChestRegistry {
     public void refillChest(RefillPhase refillPhase, Chest chest) {
         List<ChestItem> items = new ArrayList<>((chest.isMidChest() ? middleChestItems : chestItems));
 
+        /*
+        ^^^ Order this list from the highest percentage to the lowest
+        So that when you try to set the slots, the 100% ones
+        will be placed first, so they don't get overridden.
+         */
+
         if(refillPhase.hasEnderpearl()) {
             items.add(new ChestItem(100, Material.ENDER_PEARL));
         }
