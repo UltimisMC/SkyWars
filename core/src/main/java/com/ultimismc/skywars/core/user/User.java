@@ -18,6 +18,7 @@ import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.InventoryUser;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -73,6 +74,10 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return userAssetsHandler.getAsset(purchasable);
     }
 
+    public <T extends Purchasable> List<T> getAssets(Class<T> clazz) {
+        return userAssetsHandler.getAssets(clazz);
+    }
+
     public void addAsset(UserAsset asset) {
         userAssetsHandler.addAsset(asset);
     }
@@ -93,6 +98,10 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
 
     public <T> void addSetting(String key, T value) {
         userSettingHandler.addSetting(key, value);
+    }
+
+    public <T> void setSetting(String key, T value) {
+        userSettingHandler.setSetting(key, value);
     }
 
     public <T> T getSetting(Class<T> castClass, String key) {
