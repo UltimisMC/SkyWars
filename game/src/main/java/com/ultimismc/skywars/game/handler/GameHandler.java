@@ -37,9 +37,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.config.replacement.Replacement;
+import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
@@ -121,6 +123,8 @@ public class GameHandler implements FeatureInitializer {
             gameScoreboard = new AccompaniedGameScoreboard(scoreboardManager, this);
         }
         gameSetupHandler = new GameSetupHandler(this);
+
+        gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
         plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
     }
 
@@ -142,7 +146,7 @@ public class GameHandler implements FeatureInitializer {
         UserGameSession userGameSession = userSessionHandler.addUser(user);
         game.prepareUser(user);
 
-        menuManager.applyDesign(new UserWaitingBarMenu(user), true, false);
+        menuManager.applyDesign(new UserWaitingBarMenu(this, user), true, false);
         islandHandler.handleCageJoin(userGameSession);
         if(hasMinimumPlayers()) {
             startPreparer();
@@ -205,8 +209,6 @@ public class GameHandler implements FeatureInitializer {
         if(gameServer.isSoloGame()) {
             broadcastMessage("&c&lTeaming is not allowed on Solo Mode!");
         }
-
-        gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
     }
 
     public void endGame() {
@@ -223,7 +225,7 @@ public class GameHandler implements FeatureInitializer {
     public void addSpectator(User user) {
         game.addSpectator(user);
 
-        menuManager.applyDesign(new GameSpectatorBarMenu(user), true, false);
+        menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, false);
     }
 
     public void removeSpectator(User user) {
@@ -251,6 +253,10 @@ public class GameHandler implements FeatureInitializer {
 
     public UserGameSession getSession(User user) {
         return userSessionHandler.getSession(user);
+    }
+
+    public Collection<UserGameSession> getUserSessions() {
+        return userSessionHandler.getUserSessions();
     }
 
     public int getMaximumPlayers() {
@@ -295,6 +301,10 @@ public class GameHandler implements FeatureInitializer {
 
     public boolean isOpen() {
         return !game.hasStarted() && getOnlinePlayers() < getMaximumPlayers();
+    }
+
+    public void openInventory(Player player, InventoryUI inventoryUI) {
+        menuManager.openInventory(player, inventoryUI);
     }
 
     public void log(String message) {
