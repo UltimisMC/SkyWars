@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
+import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
@@ -13,6 +14,8 @@ import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.GameServerInitializer;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
+import com.ultimismc.skywars.game.combat.SkyWarsCombatAdapter;
+import com.ultimismc.skywars.game.combat.SkyWarsCombatManager;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import com.ultimismc.skywars.game.handler.runnable.GamePreparer;
@@ -72,6 +75,7 @@ public class GameHandler implements FeatureInitializer {
     private ChestHandler chestHandler;
     private IslandHandler islandHandler;
     private CosmeticManager cosmeticManager;
+    private SkyWarsCombatManager combatManager;
 
     private BukkitTask gamePreparer, gameTask;
 
@@ -123,6 +127,9 @@ public class GameHandler implements FeatureInitializer {
             gameScoreboard = new AccompaniedGameScoreboard(scoreboardManager, this);
         }
         gameSetupHandler = new GameSetupHandler(this);
+
+        SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(this);
+        combatManager = new SkyWarsCombatManager(plugin, combatAdapter);
 
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
         plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
@@ -188,11 +195,14 @@ public class GameHandler implements FeatureInitializer {
         game.startGame();
         skyWarsEventHandler.startNextEvent();
         chestHandler.refillAllChests();
+        combatManager.startCombatManager();
 
         broadcastFunction(user -> PluginUtility.playSound(user.getPlayer(), Sound.FIREWORK_BLAST));
         String repeatLine = StringUtils.repeat("▬", 70);
         broadcastFunction(user -> {
-
+            Player player = user.getPlayer();
+            player.closeInventory();
+            menuManager.clearInventory(user);
 
             user.sendMessage(ChatColor.GREEN + repeatLine);
             user.sendMessage("                             &f&lSkyWars");
@@ -225,7 +235,7 @@ public class GameHandler implements FeatureInitializer {
     public void addSpectator(User user) {
         game.addSpectator(user);
 
-        menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, false);
+        menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, true);
     }
 
     public void removeSpectator(User user) {
@@ -255,6 +265,10 @@ public class GameHandler implements FeatureInitializer {
         return userSessionHandler.getSession(user);
     }
 
+    public UserGameSession getSession(Player player) {
+        return userSessionHandler.getSession(player);
+    }
+
     public Collection<UserGameSession> getUserSessions() {
         return userSessionHandler.getUserSessions();
     }
@@ -266,13 +280,17 @@ public class GameHandler implements FeatureInitializer {
     public Map getServerMap() {
         return gameServer.getMap();
     }
+
     public String getServerId() {
         return gameServer.getServerId();
     }
 
-
     public String getServerName() {
         return gameServer.getName();
+    }
+
+    public TeamType getTeamType() {
+        return gameServer.getTeamType();
     }
 
     public int getRegisteredChests() {
@@ -305,6 +323,10 @@ public class GameHandler implements FeatureInitializer {
 
     public void openInventory(Player player, InventoryUI inventoryUI) {
         menuManager.openInventory(player, inventoryUI);
+    }
+
+    public FeatureHandler getFeatureHandler() {
+        return plugin.getFeatureHandler();
     }
 
     public void log(String message) {
