@@ -3,6 +3,7 @@ package com.ultimismc.skywars.core.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.Cage;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
@@ -28,8 +29,8 @@ public class CageCommand extends BaseCommand {
 
     @Subcommand("placecage")
     @Syntax("<cage>")
-    public void onPlaceCage(User user, String cageName) {
-        cageHandler.placeCage(user, cageName, true);
+    public void onPlaceCage(User user, String cageName, TeamType teamType) {
+        cageHandler.placeCage(teamType, user, cageName, true);
     }
 
     @Subcommand("listcages")
@@ -38,7 +39,7 @@ public class CageCommand extends BaseCommand {
         user.sendMessage("&aShowing cages:");
         for(Cage cage : cageHandler.getCages().values()) {
             CosmeticRarity rarity = cage.getCosmeticRarity();
-            CageSchematic schematic = cage.getSchematic();
+            CageSchematic schematic = cage.getSoloSchematic();
             user.sendMessage(" * " + cage.getName() + ", " + rarity.getDisplayName() + "&a, " + schematic.getSchematicFile().getName());
         }
     }
