@@ -83,6 +83,15 @@ public class PlayerMenuManager {
         previousInventories.remove(uuid);
     }
 
+    public void clearInventory(InventoryUser inventoryUser) {
+        Player player = inventoryUser.getPlayer();
+        UUID uuid = player.getUniqueId();
+        activePlayerInventories.remove(uuid);
+        previousInventories.remove(uuid);
+
+        player.getInventory().clear();;
+    }
+
     public InventoryUser getInventoryUser(UUID uuid) {
         return activePlayerInventories.get(uuid);
     }
