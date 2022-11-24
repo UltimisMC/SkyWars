@@ -53,8 +53,6 @@ public class UserManager {
         saveUserAsync(removed, false, null);
     }
 
-
-
     public void loadUserAsync(UUID uuid, boolean cache, Consumer<User> syncTask) {
         CompletableFuture.supplyAsync(() -> {
             long time = System.currentTimeMillis();
