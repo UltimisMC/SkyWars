@@ -12,4 +12,9 @@ public class ArmorerKit extends AbstractKit {
     public ArmorerKit() {
         super(Material.DIAMOND_CHESTPLATE, "Armorer", KitRarity.COMMON);
     }
+
+    @Override
+    public boolean isDefault() {
+        return true;
+    }
 }

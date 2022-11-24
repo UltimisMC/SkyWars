@@ -12,4 +12,9 @@ public class ArmorsmithKit extends AbstractKit {
     public ArmorsmithKit() {
         super(Material.ANVIL, "Armorsmith", KitRarity.COMMON);
     }
+
+    @Override
+    public boolean isDefault() {
+        return true;
+    }
 }

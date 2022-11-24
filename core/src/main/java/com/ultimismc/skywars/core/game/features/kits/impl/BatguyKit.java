@@ -12,4 +12,9 @@ public class BatguyKit extends AbstractKit {
     public BatguyKit() {
         super(Material.LEATHER_HELMET, "Batguy", KitRarity.COMMON);
     }
+
+    @Override
+    public boolean isDefault() {
+        return true;
+    }
 }
