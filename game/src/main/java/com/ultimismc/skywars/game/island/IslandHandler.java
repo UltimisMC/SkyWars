@@ -53,7 +53,7 @@ public class IslandHandler {
         Cage selectedCage = user.getSetting(Cage.class, "cage");
         if(selectedCage != null && selectedCage != defaultCage) {
             island.setCage(selectedCage);
-            cageHandler.placeCage(selectedCage, cageLocation, false);
+            placeCage(selectedCage, cageLocation, false);
         }
         if(selectedCage != null) {
             user.sendMessage("&aA cage was detected: " + selectedCage.getName());
@@ -79,8 +79,7 @@ public class IslandHandler {
         Cage cage = island.getCage();
         if(cage == null) return;
         Location cageLocation = island.getCageLocation();
-        cageHandler.placeCage(defaultCage, cageLocation, false);
-
+        placeCage(defaultCage, cageLocation, false);
     }
     public void removeAllCages() {
         for(Island island : islands.values()) {
@@ -94,11 +93,19 @@ public class IslandHandler {
         removeAllCages();
     }
 
-    public void addIsland(Island island) {
+    public void addIsland(TeamType teamType, Island island) {
         island.setCage(defaultCage);
         Location cageLocation = island.getCageLocation();
-        cageHandler.placeCage(defaultCage, cageLocation, false);
         islands.put(island.getCageLocation(), island);
+        if(teamType != null) {
+            cageHandler.placeCage(teamType, defaultCage, cageLocation, false);
+            return;
+        }
+        placeCage(defaultCage, cageLocation, false);
+    }
+
+    public void addIsland(Island island) {
+        addIsland(null, island);
     }
 
     public Island getIsland(Location location) {
@@ -115,6 +122,11 @@ public class IslandHandler {
 
     public int getSize() {
         return islands.size();
+    }
+
+    public void placeCage(Cage cage, Location location, boolean ignoreAir) {
+        TeamType teamType = gameHandler.getTeamType();
+        cageHandler.placeCage(teamType, cage, location, ignoreAir);
     }
 
 }
