@@ -1,18 +1,23 @@
 package com.ultimismc.skywars.game.menubar.menu;
 
-import com.ultimismc.skywars.core.game.features.PurchasableItem;
+import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
+import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemFlag;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.ActionableItem;
 import xyz.directplan.directlib.inventory.InventoryUI;
+import xyz.directplan.directlib.inventory.ItemEnchantment;
 import xyz.directplan.directlib.inventory.MenuItem;
 
 import java.util.ArrayList;
@@ -35,17 +40,47 @@ public class KitSelectorMenu extends InventoryUI {
 
     @Override
     public void build(Player player) {
+        FeatureHandler featureHandler = gameHandler.getFeatureHandler();
+        KitManager kitManager = featureHandler.getKitManager();
 
-        List<Kit> purchasedKits = user.getAssets(Kit.class);
+        Kit selectedKit = user.getSetting(Kit.class, "kit");
+        fillInventory(new MenuItem(Material.STAINED_GLASS_PANE, "&c", 15));
 
         int index = 0;
-        for(Kit kit : purchasedKits) {
-            MenuItem menuItem = new PurchasableItem(kit, ChatColor.GREEN);
-            menuItem.setAction(new KitSelectorItemAction(user, kit));
+        for(Kit kit : kitManager.getKits()) {
+            Material material = kit.getDisplayMaterial();
+            int durability = kit.getDisplayDurability();
+
+            ChatColor color = ChatColor.GREEN;
+            ActionableItem action = null;
+            boolean purchased = user.hasPurchased(kit);
+            if(!purchased) {
+                color = ChatColor.RED;
+                material = Material.STAINED_GLASS_PANE;
+                durability = 14;
+            }else {
+                action = new KitSelectorItemAction(user, kit);
+            }
+
+            String displayName = color + kit.getName();
+
+            MenuItem menuItem = new MenuItem(material, displayName, durability, action);
+
+            String status = "&eClick to select!";
+            if(!purchased) {
+                status = "&cNot unlocked yet!";
+            }else if(kit == selectedKit) {
+                status = "&aSELECTED";
+                menuItem.addEnchantments(new ItemEnchantment(Enchantment.DIG_SPEED, 1));
+                menuItem.addFlags(ItemFlag.HIDE_ENCHANTS);
+            }
 
             List<String> lore = new ArrayList<>(kit.getDisplayItems());
+            lore.add(" ");
+            lore.add(status);
 
             menuItem.setLore(lore);
+
             setSlot(index, menuItem);
             index++;
         }
@@ -63,6 +98,7 @@ public class KitSelectorMenu extends InventoryUI {
             clicker.closeInventory();
             PluginUtility.playSound(clicker, Sound.SUCCESSFUL_HIT);
             user.setSetting("kit", kit);
+            user.sendMessage("&eYou've selected " + kit.getName() + " kit!");
         }
     }
 }
