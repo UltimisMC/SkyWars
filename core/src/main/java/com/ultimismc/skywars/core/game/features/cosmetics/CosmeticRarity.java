@@ -9,9 +9,10 @@ import lombok.Getter;
 @Getter
 public enum CosmeticRarity {
 
-    LEGENDARY(PurchasableRarity.LEGENDARY, 30000), // 30000
-    RARE(PurchasableRarity.RARE, 20000), // 20000
-    COMMON(PurchasableRarity.COMMON, 15000); // 15000
+    LEGENDARY(PurchasableRarity.LEGENDARY, 100000), // 30000
+    EPIC(PurchasableRarity.EPIC, 25000), // 20000
+    RARE(PurchasableRarity.RARE, 10000), // 20000
+    COMMON(PurchasableRarity.COMMON, 5000); // 15000
 
     private final PurchasableRarity purchasableRarity;
     private final int price;
