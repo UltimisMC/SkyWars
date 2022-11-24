@@ -9,8 +9,9 @@ import org.bukkit.ChatColor;
 @Getter
 public enum PurchasableRarity {
 
-    COMMON(3, 100, ChatColor.GREEN),
-    RARE(2, 12, ChatColor.BLUE),
+    COMMON(4, 100, ChatColor.GREEN),
+    RARE(3, 15, ChatColor.BLUE),
+    EPIC(2, 10, ChatColor.DARK_PURPLE),
     LEGENDARY(1, 6, ChatColor.GOLD);
 
     private final int priority, occurrenceChance;
