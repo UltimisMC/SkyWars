@@ -59,7 +59,7 @@ public abstract class GameChestRegistry {
 
             ItemStack previousItem = chestInventory.getItem(randomSlot);
             while (previousItem != null && previousItem.getType() != Material.AIR) {
-                // Slot was not empty, finding an empty one.
+                // Slot is not empty, finding an empty one.
                 randomSlot = PluginUtility.getRandomInteger(0, inventorySize);
                 previousItem = chestInventory.getItem(randomSlot);
             }
