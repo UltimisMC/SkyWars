@@ -2,12 +2,16 @@ package com.ultimismc.skywars.game;
 
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import xyz.directplan.directlib.PluginUtility;
@@ -35,7 +39,24 @@ public class SkyWarsGameListener implements Listener {
         if(clickedBlock == null || action != Action.RIGHT_CLICK_BLOCK) return;
         if(clickedBlock.getType() != Material.CHEST) return;
 
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
         ChestHandler chestHandler = gameHandler.getChestHandler();
-        chestHandler.openChest(clickedBlock);
+        chestHandler.openChest(userGameSession, clickedBlock);
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if(gameHandler.hasStarted()) return;
+
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if(gameHandler.hasStarted()) return;
+
+        event.setBuild(false);
+        event.setCancelled(true);
     }
 }
