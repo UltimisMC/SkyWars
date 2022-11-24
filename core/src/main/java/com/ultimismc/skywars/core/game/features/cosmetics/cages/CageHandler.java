@@ -2,6 +2,7 @@ package com.ultimismc.skywars.core.game.features.cosmetics.cages;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
+import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableFeature;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
@@ -73,17 +74,24 @@ public class CageHandler implements PurchasableFeature<Cage> {
             int durability = Integer.parseInt(cageArguments[2]);
             CosmeticRarity rarity = CosmeticRarity.valueOf(cageArguments[3]);
 
-            String schematicFileString = cageArguments[4];
-            File schematicFile = new File(plugin.getDataFolder(), "/cages/" + schematicFileString);
-            if(!schematicFile.exists()) {
-                log(plugin, "Cage '" + name + "' does not have a schematic. (" + schematicFileString + ")");
+            String fileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
+            File soloSchematicFile = new File(plugin.getDataFolder(), "/cages/solo/" + fileName);
+            File teamSchematicFile = new File(plugin.getDataFolder(), "/cages/team/" + fileName);
+
+            if(!soloSchematicFile.exists()) {
+                log(plugin, "Cage '" + name + "' does not have a Solo schematic. (" + soloSchematicFile + ")");
+                continue;
+            }
+            if(!teamSchematicFile.exists()) {
+                log(plugin, "Cage '" + name + "' does not have a Team schematic. (" + teamSchematicFile + ")");
                 continue;
             }
 
-            CageSchematic schematic = schematicAdapter.loadSchematic(schematicFile);
-            PurchasableDesign design = new PurchasableDesign(material, durability);
+            CageSchematic soloSchematic = schematicAdapter.loadSchematic(soloSchematicFile);
+            CageSchematic teamSchematic = schematicAdapter.loadSchematic(teamSchematicFile);
 
-            Cage cage = new Cage(schematic, design, name, rarity);
+            PurchasableDesign design = new PurchasableDesign(material, durability);
+            Cage cage = new Cage(soloSchematic, teamSchematic, design, name, rarity);
             registerCage(name, cage);
         }
         voidSchematic = schematicAdapter.loadSchematic(new File(plugin.getDataFolder(), "/cages/void.schematic"));
@@ -100,10 +108,7 @@ public class CageHandler implements PurchasableFeature<Cage> {
             Material material = cage.getDisplayMaterial();
             int durability = cage.getDisplayDurability();
             CosmeticRarity rarity = cage.getCosmeticRarity();
-
-            String schematicFile = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
-
-            serializedCages.add(name + "/" + material.name() + "/" + durability + "/" + rarity.name() + "/" + schematicFile);
+            serializedCages.add(name + "/" + material.name() + "/" + durability + "/" + rarity.name());
         }
         CageConfigKeys.SERIALIZED_CAGES_DATA.setValue(serializedCages);
     }
@@ -115,15 +120,26 @@ public class CageHandler implements PurchasableFeature<Cage> {
             return;
         }
         String schematicFileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
-        File schematicFile = new File(plugin.getDataFolder(), "/cages/" + schematicFileName);
-        if(!schematicFile.exists()) {
-            user.sendMessage("&cCould not a schematic named '" + schematicFileName + "'");
+
+
+        File soloSchematicFile = new File(plugin.getDataFolder(), "/cages/solo/" + schematicFileName);
+        File teamSchematicFile = new File(plugin.getDataFolder(), "/cages/team/" + schematicFileName);
+        if(!soloSchematicFile.exists()) {
+            user.sendMessage("&cCould not find a solo schematic named '" + soloSchematicFile.getName() + "'");
             return;
         }
-        user.sendMessage("&aLoading schematic...");
-        CageSchematic schematic = schematicAdapter.loadSchematic(schematicFile);
-        cage.setSchematic(schematic);
-        user.sendMessage("&aCage schematic for &e" + cage.getName() + " &ahas been updated!");
+        boolean teamSchematicFileExists = teamSchematicFile.exists();
+        if(!teamSchematicFileExists) {
+            user.sendMessage("&cCould not find a team schematic named '" + teamSchematicFile.getName() + "'.");
+            return;
+        }
+        user.sendMessage("&aLoading solo schematic...");
+        CageSchematic soloSchematic = schematicAdapter.loadSchematic(soloSchematicFile);
+        cage.setSoloSchematic(soloSchematic);
+        user.sendMessage("&aLoading team schematic...");
+        CageSchematic teamSchematic = schematicAdapter.loadSchematic(teamSchematicFile);
+        cage.setTeamSchematic(teamSchematic);
+        user.sendMessage("&aCage schematics for &e" + cage.getName() + " &ahas been updated!");
     }
 
     public void createCage(User user, String name, Material material, int durability, String rarityName) {
@@ -133,24 +149,35 @@ public class CageHandler implements PurchasableFeature<Cage> {
         }
 
         String schematicFileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
-        File schematicFile = new File(plugin.getDataFolder(), "/cages/" + schematicFileName);
-        if(!schematicFile.exists()) {
-            user.sendMessage("&cCould not a schematic named '" + schematicFileName + "'");
+
+
+        File soloSchematicFile = new File(plugin.getDataFolder(), "/cages/solo/" + schematicFileName);
+        File teamSchematicFile = new File(plugin.getDataFolder(), "/cages/team/" + schematicFileName);
+        if(!soloSchematicFile.exists()) {
+            user.sendMessage("&cCould not find a solo schematic named '" + soloSchematicFile.getName() + "'");
+            return;
+        }
+        boolean teamSchematicFileExists = teamSchematicFile.exists();
+        if(!teamSchematicFileExists) {
+            user.sendMessage("&cCould not find a team schematic named '" + teamSchematicFile.getName() + "'.");
             return;
         }
 
         name = name.replace("-", " ");
-        user.sendMessage("&aLoading schematic...");
-        CageSchematic schematic = schematicAdapter.loadSchematic(schematicFile);
+        user.sendMessage("&aLoading solo schematic...");
+        CageSchematic soloSchematic = schematicAdapter.loadSchematic(soloSchematicFile);
+        user.sendMessage("&aLoading solo schematic...");
+        CageSchematic teamSchematic = schematicAdapter.loadSchematic(teamSchematicFile);
+
         CosmeticRarity rarity;
         try {
             rarity = CosmeticRarity.valueOf(rarityName.toUpperCase());
         }catch (Exception ignored) {
-
+            user.sendMessage("&cRarity '" + rarityName + "' does not exist.");
             return;
         }
         PurchasableDesign design = new PurchasableDesign(material, durability);
-        Cage cage = new Cage(schematic, design, name, rarity);
+        Cage cage = new Cage(soloSchematic, teamSchematic, design, name, rarity);
         registerCage(cage);
         user.sendMessage("&aCage &e" + name + "&a has been added! Type &e/cage placecage " + name + " &ato test!");
     }
@@ -167,23 +194,23 @@ public class CageHandler implements PurchasableFeature<Cage> {
         return cages.get(name);
     }
 
-    public void placeCage(Cage cage, Location location, boolean ignoreAir) {
+    public void placeCage(TeamType teamType, Cage cage, Location location, boolean ignoreAir) {
         log(plugin, "Placing schematic of " + cage.getName());
-        cage.placeSchematic(location, ignoreAir);
+        cage.placeSchematic(teamType, location, ignoreAir);
     }
-    public void placeCage(User user, Cage cage, boolean ignoreAir) {
+    public void placeCage(TeamType teamType, User user, Cage cage, boolean ignoreAir) {
         Player player = user.getPlayer();
-        placeCage(cage, player.getLocation(), ignoreAir);
+        placeCage(teamType, cage, player.getLocation(), ignoreAir);
     }
 
-    public void placeCage(User user, String cageName, boolean ignoreAir) {
+    public void placeCage(TeamType teamType, User user, String cageName, boolean ignoreAir) {
         Cage cage = getCage(cageName);
         if(cage == null) {
             user.sendMessage("&cA cage by this name does not exist!");
             return;
         }
         user.sendMessage("&aPlacing cage: &e" + cage.getName() + "&a...");
-        placeCage(user, cage, ignoreAir);
+        placeCage(teamType, user, cage, ignoreAir);
     }
 
     public void removeCage(Location location) {
