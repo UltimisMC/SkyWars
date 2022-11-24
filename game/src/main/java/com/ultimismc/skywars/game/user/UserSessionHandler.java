@@ -2,6 +2,7 @@ package com.ultimismc.skywars.game.user;
 
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.user.User;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,13 +32,17 @@ public class UserSessionHandler {
         return userSessions.get(uuid);
     }
 
-    public UserGameSession removeSession(UUID uuid) {
-        return userSessions.remove(uuid);
+    public UserGameSession getSession(Player player) {
+        return getSession(player.getUniqueId());
     }
 
     public UserGameSession getSession(User user) {
         UUID uuid = user.getUuid();
         return getSession(uuid);
+    }
+
+    public UserGameSession removeSession(UUID uuid) {
+        return userSessions.remove(uuid);
     }
 
     public UserGameSession removeSession(User user) {
