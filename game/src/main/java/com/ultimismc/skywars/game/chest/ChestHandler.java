@@ -1,9 +1,13 @@
 package com.ultimismc.skywars.game.chest;
 
+import com.ultimismc.skywars.core.game.GameStatistics;
+import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import com.ultimismc.skywars.game.events.SkyWarsEventUpdater;
 import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -56,9 +60,14 @@ public class ChestHandler {
         refillAllChests(RefillPhase.FIRST);
     }
 
-    public void openChest(Block block) {
+    public void openChest(UserGameSession userGameSession, Block block) {
         Chest chest = getChest(block);
+        if(chest.isOpened()) return;
         chest.setOpened(true);
+
+        GameStatistics gameStatistics = userGameSession.getGameStatistics();
+        gameStatistics.increaseChestsOpened();
+
         ChestSkyWarsEventUpdater updater = new ChestSkyWarsEventUpdater(chest);
         skyWarsEventHandler.addUpdater(updater);
     }
