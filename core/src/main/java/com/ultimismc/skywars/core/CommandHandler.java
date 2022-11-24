@@ -1,6 +1,8 @@
 package com.ultimismc.skywars.core;
 
 import co.aikar.commands.*;
+import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import org.bukkit.ChatColor;
@@ -43,6 +45,28 @@ public class CommandHandler {
                 throw new InvalidCommandArgument("&cInvalid material '" + name + "'");
             }
             return material;
+        });
+
+        commandContexts.registerContext(GameType.class, resolver -> {
+            String name = resolver.popFirstArg();
+            GameType gameType;
+            try {
+                gameType = GameType.valueOf(name.toUpperCase());
+            }catch (Exception ignored) {
+                throw new InvalidCommandArgument("&cInvalid game type '" + name + "'");
+            }
+            return gameType;
+        });
+
+        commandContexts.registerContext(TeamType.class, resolver -> {
+            String name = resolver.popFirstArg();
+            TeamType teamType;
+            try {
+                teamType = TeamType.valueOf(name.toUpperCase());
+            }catch (Exception ignored) {
+                throw new InvalidCommandArgument("&cInvalid team type '" + name + "'");
+            }
+            return teamType;
         });
 
         commandContexts.registerIssuerAwareContext(User.class, resolver -> {
