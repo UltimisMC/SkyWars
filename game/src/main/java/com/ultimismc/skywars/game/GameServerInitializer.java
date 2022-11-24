@@ -50,7 +50,7 @@ public class GameServerInitializer {
 
         String serverId = gameInfo.getServerId();
 
-        GameMap gameMap = loadGameMap();
+        GameMap gameMap = loadGameMap(teamType);
         if(gameMap == null) {
             return;
         }
@@ -87,13 +87,13 @@ public class GameServerInitializer {
         return new GameInfo(serverId, gameType, teamType);
     }
 
-    private GameMap loadGameMap() {
+    private GameMap loadGameMap(TeamType teamType) {
 
         String name = MapConfigKeys.MAP_NAME.getStringValue();
         List<String> serializedIslands = MapConfigKeys.MAP_SERIALIZED_ISLANDS.getStringList();
         List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
 
-        GameMap gameMap = new GameMap(name, islandHandler, chestHandler);
+        GameMap gameMap = new GameMap(name, teamType, islandHandler, chestHandler);
 
 
         for(String serializedIsland : serializedIslands) {
@@ -180,18 +180,20 @@ public class GameServerInitializer {
 
     private static class GameMap {
 
+        private final TeamType teamType;
         private final IslandHandler islandHandler;
         private final ChestHandler chestHandler;
         private final Map map;
 
-        public GameMap(String mapName, IslandHandler islandHandler, ChestHandler chestHandler) {
+        public GameMap(String mapName, TeamType teamType, IslandHandler islandHandler, ChestHandler chestHandler) {
             map = new Map(mapName);
+            this.teamType = teamType;
             this.islandHandler = islandHandler;
             this.chestHandler = chestHandler;
         }
 
         public void addIsland(Island island) {
-            islandHandler.addIsland(island);
+            islandHandler.addIsland(teamType, island);
         }
 
         public void addChest(Block block, boolean midChest) {
