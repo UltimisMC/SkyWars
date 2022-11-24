@@ -3,7 +3,6 @@ package com.ultimismc.skywars.game.handler.runnable;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
 
 /**
