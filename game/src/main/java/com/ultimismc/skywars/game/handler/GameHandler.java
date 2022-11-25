@@ -148,6 +148,9 @@ public class GameHandler implements FeatureInitializer {
                 new Replacement("maximum-players", gameServer.getMaximumPlayers()));
 
         Player player = user.getPlayer();
+        player.setHealth(20.0);
+        player.setFoodLevel(20);
+        player.setFireTicks(0);
         PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameServer.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
