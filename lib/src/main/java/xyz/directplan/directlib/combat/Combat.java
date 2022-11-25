@@ -15,7 +15,7 @@ public class Combat {
     private final long attackedAt;
 
     public Combat(Player player) {
-        this(player, System.currentTimeMillis());
+        this(player, System.currentTimeMillis() + 5000L);
     }
 
     public boolean hasExpired() {
