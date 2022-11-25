@@ -23,9 +23,8 @@ public interface CombatAdapter<U> {
      * @param user The victim
      * @param killer The killer
      * @param damageCause What caused this death.
-     * @return Whether this death should be allowed.
      */
-    boolean onDeath(U user, U killer, EntityDamageEvent.DamageCause damageCause);
+    void onDeath(U user, U killer, EntityDamageEvent.DamageCause damageCause);
 
     /**
      * Gets called for all players that assisted in killing {@param user}
