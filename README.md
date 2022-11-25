@@ -15,4 +15,4 @@ A custom skywars plugin developed for UltimisMC Network.
 - Cage Algorithm System including automatic Cage building upon join ***(Completed, needs to be added in lobby shop)***
 - Add a brand new damage based combat system to DirectLib ***(Completed)***
 - Damage based Death System ***(Semi Completed, need to implement death logic)***
-- Kill Messages ***(Working on them now)**
+- Kill Messages ***(Working on them now)***
