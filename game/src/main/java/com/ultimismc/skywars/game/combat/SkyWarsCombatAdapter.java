@@ -22,8 +22,8 @@ public class SkyWarsCombatAdapter implements CombatAdapter<User> {
     }
 
     @Override
-    public boolean onDeath(User user, User killer, EntityDamageEvent.DamageCause damageCause) {
-        return false;
+    public void onDeath(User user, User killer, EntityDamageEvent.DamageCause damageCause) {
+        user.sendMessage("&eYou died brother!");
     }
 
     @Override
