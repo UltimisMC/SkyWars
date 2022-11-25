@@ -68,17 +68,18 @@ public abstract class CombatManager<U> {
         }
 
         // Player is dead
-        U killer = getUser(attacker);
-        if(killer == null) {
-            Player playerKiller = pollLastAttacker(playerUuid);
-            killer = getUser(playerKiller);
+        U killer;
+        if(attacker == null) {
+            attacker = pollLastAttacker(playerUuid);
         }
+        killer = (attacker != null ? getUser(attacker) : null);
 
-        boolean cancelled = combatAdapter.onDeath(user, killer, damageCause);
-        if(cancelled) {
-            event.setCancelled(true);
-            return;
-        }
+        combatAdapter.onDeath(user, killer, damageCause);
+        event.setCancelled(true);
+        player.setHealth(20.0);
+        player.setFoodLevel(20);
+        player.setFireTicks(0);
+
         // Execute assists
         LinkedList<Combat> assists = combatMap.get(playerUuid);
         for(Combat combat : assists) {
