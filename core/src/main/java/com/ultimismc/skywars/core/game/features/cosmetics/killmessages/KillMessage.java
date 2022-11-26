@@ -31,6 +31,6 @@ public abstract class KillMessage extends Cosmetic {
         Bukkit.broadcastMessage(PluginUtility.translateMessage(killMessage));
 
         String screenMessage = messageBundle.resolveScreenMessage(user, killer);
-        PluginUtility.sendTitle(user.getPlayer(), 0, 60, 0, screenMessage, "");
+        PluginUtility.sendTitle(user.getPlayer(), 0, 60, 0, screenMessage, "&7You are now a spectator!");
     }
 }
