@@ -2,7 +2,7 @@ package com.ultimismc.skywars.core.game.features.cosmetics.cages;
 
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
-import com.ultimismc.skywars.core.game.features.cosmetics.AbstractCosmetic;
+import com.ultimismc.skywars.core.game.features.cosmetics.Cosmetic;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.CageSchematic;
 import lombok.Getter;
@@ -13,18 +13,21 @@ import org.bukkit.Location;
  * @author DirectPlan
  */
 @Getter
+public class Cage extends Cosmetic {
 
-public class Cage extends AbstractCosmetic {
+    private final PurchasableDesign design;
 
     @Setter private CageSchematic soloSchematic, teamSchematic;
     private final String category = "Cage";
     @Setter private boolean defaultCage = false;
 
     public Cage(CageSchematic soloSchematic, CageSchematic teamSchematic, PurchasableDesign design, String name, CosmeticRarity rarity) {
-        super(design.getMaterial(), design.getDurability(), name, rarity);
+        super(name, rarity);
 
         this.soloSchematic = soloSchematic;
         this.teamSchematic = teamSchematic;
+
+        this.design = design;
     }
 
     public void placeSchematic(TeamType teamType, Location location, boolean ignoreAir) {
