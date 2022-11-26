@@ -34,7 +34,9 @@ public class UserLoadedListener {
             String category = defaultPurchasable.getCategory();
             category = category.toLowerCase(Locale.ROOT);
             user.addSetting(category, defaultPurchasable);
-            user.addAsset(new UserAsset(defaultPurchasable));
+            UserAsset userAsset = new UserAsset(defaultPurchasable);
+            userAsset.setDefaultAsset(true);
+            user.addAsset(userAsset);
         }
     }
 }
