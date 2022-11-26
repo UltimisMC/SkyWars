@@ -2,7 +2,6 @@ package com.ultimismc.skywars.game.handler.runnable;
 
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.handler.GameHandler;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
