@@ -10,7 +10,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author DirectPlan
@@ -52,14 +55,17 @@ public abstract class CombatManager<U> {
                 attacker = (Player) damager;
             }
         }
-        if(combatAdapter.onAttack(player, attacker)) return;
+        if(combatAdapter.onAttack(player, attacker)) {
+            event.setCancelled(true);
+            return;
+        }
 
         EntityDamageEvent.DamageCause damageCause = event.getCause();
         UUID playerUuid = player.getUniqueId();
 
         U user = getUser(player);
 
-        addAttacker(playerUuid, attacker);
+        if(attacker != null) addAttacker(playerUuid, attacker);
 
         double finalDamage = event.getFinalDamage();
         if(player.getHealth() - finalDamage > 0) {
