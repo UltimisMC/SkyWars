@@ -40,7 +40,7 @@ public abstract class PurchasableFeature<T extends Purchasable> implements Featu
             PurchasableRarity rarity2 = perk2.getRarity();
             return Integer.compare(rarity2.getPriority(), rarity1.getPriority());
         });
-        log(plugin, "Loaded a total of " + getSize() + " " + getName() + "s.");
+        log(plugin, "Loaded a total of " + getSize() + " " + getName() + ".");
     }
 
     public int getSize() {
