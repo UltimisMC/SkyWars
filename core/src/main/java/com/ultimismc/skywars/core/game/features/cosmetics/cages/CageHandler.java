@@ -19,20 +19,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author DirectPlan
  */
 @Getter
-public class CageHandler implements PurchasableFeature<Cage> {
+public class CageHandler extends PurchasableFeature<Cage> {
 
     private final String name = "Cosmetics: Cage";
 
     private final SkyWarsPlugin plugin;
     private SchematicAdapter schematicAdapter;
-
-    private final Map<String, Cage> cages = new HashMap<>();
 
     private final World world;
     private Cage defaultCage;
@@ -92,21 +92,24 @@ public class CageHandler implements PurchasableFeature<Cage> {
 
             PurchasableDesign design = new PurchasableDesign(material, durability);
             Cage cage = new Cage(soloSchematic, teamSchematic, design, name, rarity);
-            registerCage(name, cage);
+            registerPurchasable(cage);
         }
         voidSchematic = schematicAdapter.loadSchematic(new File(plugin.getDataFolder(), "/cages/void.schematic"));
-        defaultCage = getCage("Default");
+        defaultCage = getPurchasable("Default");
         defaultCage.setDefaultCage(true);
+
+        super.initializeFeature(plugin);
     }
 
     @Override
     public void shutdownFeature(SkyWarsPlugin plugin) {
         log(plugin, "Starting cage save sequence...");
         List<String> serializedCages = new ArrayList<>();
-        for(Cage cage : cages.values()) {
+        for(Cage cage : purchasables.values()) {
             String name = cage.getName();
-            Material material = cage.getDisplayMaterial();
-            int durability = cage.getDisplayDurability();
+            PurchasableDesign design = cage.getDesign();
+            Material material = design.getMaterial();
+            int durability = design.getDurability();
             CosmeticRarity rarity = cage.getCosmeticRarity();
             serializedCages.add(name + "/" + material.name() + "/" + durability + "/" + rarity.name());
         }
@@ -114,7 +117,7 @@ public class CageHandler implements PurchasableFeature<Cage> {
     }
 
     public void updateCageSchematic(User user, String name) {
-        Cage cage = getCage(name);
+        Cage cage = getPurchasable(name);
         if(cage == null) {
             user.sendMessage("&cA cage by this name does not exist!");
             return;
@@ -143,7 +146,7 @@ public class CageHandler implements PurchasableFeature<Cage> {
     }
 
     public void createCage(User user, String name, Material material, int durability, String rarityName) {
-        if(getCage(name) != null) {
+        if(getPurchasable(name) != null) {
             user.sendMessage("&cA cage by this name already exists!");
             return;
         }
@@ -178,20 +181,8 @@ public class CageHandler implements PurchasableFeature<Cage> {
         }
         PurchasableDesign design = new PurchasableDesign(material, durability);
         Cage cage = new Cage(soloSchematic, teamSchematic, design, name, rarity);
-        registerCage(cage);
+        registerPurchasable(cage);
         user.sendMessage("&aCage &e" + name + "&a has been added! Type &e/cage placecage " + name + " &ato test!");
-    }
-
-    public void registerCage(Cage cage) {
-        registerCage(cage.getName(), cage);
-    }
-
-    public void registerCage(String name, Cage cage) {
-        cages.put(name, cage);
-    }
-
-    public Cage getCage(String name) {
-        return cages.get(name);
     }
 
     public void placeCage(TeamType teamType, Cage cage, Location location, boolean ignoreAir) {
@@ -204,7 +195,7 @@ public class CageHandler implements PurchasableFeature<Cage> {
     }
 
     public void placeCage(TeamType teamType, User user, String cageName, boolean ignoreAir) {
-        Cage cage = getCage(cageName);
+        Cage cage = getPurchasable(cageName);
         if(cage == null) {
             user.sendMessage("&cA cage by this name does not exist!");
             return;
@@ -215,10 +206,5 @@ public class CageHandler implements PurchasableFeature<Cage> {
 
     public void removeCage(Location location) {
         voidSchematic.placeSchematic(location, false);
-    }
-
-    @Override
-    public Map<String, Cage> getPurchasables() {
-        return cages;
     }
 }
