@@ -14,6 +14,7 @@ public class UserAsset {
 
     private final Purchasable purchasable;
     @Setter private boolean activated;
+    @Setter private boolean defaultAsset;
     private long acquiredAt;
 
     public UserAsset(Purchasable purchasable, long acquiredAt, boolean activated) {
@@ -28,6 +29,10 @@ public class UserAsset {
 
     public String getNameWithCategory() {
         return purchasable.getNameWithCategory();
+    }
+
+    public String getCategory() {
+        return purchasable.getCategory();
     }
 
     public int getPrice() {
