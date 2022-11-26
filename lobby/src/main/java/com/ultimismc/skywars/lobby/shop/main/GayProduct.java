@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.lobby.shop.main;
 
-import com.ultimismc.skywars.lobby.shop.UserProduct;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.lobby.shop.UserProduct;
 import org.bukkit.Material;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
