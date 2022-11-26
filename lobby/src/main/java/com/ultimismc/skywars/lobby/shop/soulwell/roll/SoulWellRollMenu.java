@@ -3,6 +3,7 @@ package com.ultimismc.skywars.lobby.shop.soulwell.roll;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.Purchasable;
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.asset.UserAsset;
@@ -87,8 +88,10 @@ public class SoulWellRollMenu extends InventoryUI {
                 currentPurchasable = purchasable;
             }
             purchaseSlotIndex++;
-            Material material = purchasable.getDisplayMaterial();
-            short durability = purchasable.getDisplayDurability();
+
+            PurchasableDesign design = purchasable.getDesign();
+            Material material = design.getMaterial();
+            int durability = design.getDurability();
             String name = purchasable.getNameWithCategory();
 
             PurchasableRarity purchasableRarity = purchasable.getRarity();
@@ -97,6 +100,7 @@ public class SoulWellRollMenu extends InventoryUI {
                 color = purchasableRarity.getColor();
             }
             MenuItem menuItem = new MenuItem(material, color + name, durability);
+            menuItem.setCustomSkullProperty(design.getTexture());
             setSlot(purchaseSlot, menuItem);
         }
         currentPurchaseIndex++;
