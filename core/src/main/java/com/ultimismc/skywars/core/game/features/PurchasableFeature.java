@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -16,6 +17,8 @@ public abstract class PurchasableFeature<T extends Purchasable> implements Featu
     protected final Map<String, T> purchasables = new HashMap<>();
     protected final LinkedList<T> orderedPurchasables = new LinkedList<>();
 
+    @Getter protected T defaultPurchasable;
+
     public T getPurchasable(String name) {
         return purchasables.get(name);
     }
@@ -30,6 +33,9 @@ public abstract class PurchasableFeature<T extends Purchasable> implements Featu
     public void registerPurchasable(T purchasable) {
         purchasables.put(purchasable.getName(), purchasable);
         orderedPurchasables.add(purchasable);
+        if(purchasable.isDefault()) {
+            this.defaultPurchasable = purchasable;
+        }
     }
 
     @Override
