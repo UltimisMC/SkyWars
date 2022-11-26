@@ -23,5 +23,6 @@ public class PurchasableDesign {
 
     public PurchasableDesign(String texture) {
         this(Material.SKULL_ITEM, 3);
+        this.texture = texture;
     }
 }
