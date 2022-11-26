@@ -1,7 +1,9 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.AbstractPerk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
+import lombok.Getter;
 import org.bukkit.Material;
 
 import java.util.Arrays;
@@ -9,10 +11,13 @@ import java.util.Arrays;
 /**
  * @author DirectPlan
  */
+@Getter
 public class NecromancerPerk extends AbstractPerk {
 
+    private final PurchasableDesign design = new PurchasableDesign(Material.ROTTEN_FLESH);
+
     public NecromancerPerk() {
-        super(Material.ROTTEN_FLESH, "Necromancer", PerkRarity.LEGENDARY,
+        super("Necromancer", PerkRarity.LEGENDARY,
                 Arrays.asList("&716% chance to spawn a friendly",
                         "&7Zombie on kill."));
     }

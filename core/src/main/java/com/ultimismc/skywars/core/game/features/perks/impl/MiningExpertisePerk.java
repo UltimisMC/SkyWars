@@ -1,16 +1,21 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.AbstractPerk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
+import lombok.Getter;
 import org.bukkit.Material;
 
 /**
  * @author DirectPlan
  */
+@Getter
 public class MiningExpertisePerk extends AbstractPerk {
 
+    private final PurchasableDesign design = new PurchasableDesign(Material.IRON_PICKAXE);
+
     public MiningExpertisePerk() {
-        super(Material.IRON_PICKAXE, "Mining Expertise", PerkRarity.COMMON,
+        super("Mining Expertise", PerkRarity.COMMON,
                 "&7Get 1 extra ore per block mined.");
     }
 }
