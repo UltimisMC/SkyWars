@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.menubar.menu;
 
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.user.User;
@@ -47,9 +48,10 @@ public class KitSelectorMenu extends InventoryUI {
         fillInventory(new MenuItem(Material.STAINED_GLASS_PANE, "&c", 15));
 
         int index = 0;
-        for(Kit kit : kitManager.getKits()) {
-            Material material = kit.getDisplayMaterial();
-            int durability = kit.getDisplayDurability();
+        for(Kit kit : kitManager) {
+            PurchasableDesign purchasableDesign = kit.getDesign();
+            Material material = purchasableDesign.getMaterial();
+            int durability = purchasableDesign.getDurability();
 
             ChatColor color = ChatColor.GREEN;
             ActionableItem action = null;
