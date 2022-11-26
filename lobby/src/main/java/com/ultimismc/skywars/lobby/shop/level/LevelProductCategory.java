@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.level;
 
 import com.ultimismc.skywars.core.game.features.level.Level;
-import com.ultimismc.skywars.core.game.features.level.Prestige;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.lobby.LobbyManager;
@@ -9,7 +8,6 @@ import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserProductCategory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import xyz.directplan.directlib.StringUtil;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
