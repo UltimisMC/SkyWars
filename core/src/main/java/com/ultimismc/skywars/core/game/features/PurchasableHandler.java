@@ -24,10 +24,6 @@ public class PurchasableHandler {
         }
     }
 
-    public void addPurchasable(Purchasable purchasable) {
-        addPurchasable(purchasable.getName(), purchasable);
-    }
-
     public Purchasable getPurchasable(String key) {
         return serverPurchasables.get(key);
     }
