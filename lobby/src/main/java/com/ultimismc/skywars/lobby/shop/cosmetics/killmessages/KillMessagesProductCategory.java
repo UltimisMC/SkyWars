@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-public class KillMessagesCategory extends UserProductCategory {
+public class KillMessagesProductCategory extends UserProductCategory {
 
-    public KillMessagesCategory(int itemSlot) {
-        super("Kill Messages", itemSlot);
+    public KillMessagesProductCategory(int itemSlot) {
+        super("Kill Messages", itemSlot, true);
     }
 
     @Override
