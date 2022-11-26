@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.core.hook.rank;
 
 import com.ultimismc.skywars.core.hook.RankHookProvider;
-
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;

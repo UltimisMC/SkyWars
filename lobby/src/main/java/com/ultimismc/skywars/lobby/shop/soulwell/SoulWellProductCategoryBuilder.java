@@ -5,7 +5,6 @@ import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
-import com.ultimismc.skywars.lobby.shop.kitsandperks.perks.PerkProduct;
 import com.ultimismc.skywars.lobby.shop.kitsandperks.perks.ShopPerkProduct;
 import lombok.RequiredArgsConstructor;
 import xyz.directplan.directlib.shop.ProductCategory;
@@ -33,8 +32,8 @@ public class SoulWellProductCategoryBuilder implements UserProductCategoryBuilde
 
 
         PerkManager perkManager = featureHandler.getPerkManager();
-        Perk xezbethLuckPerk = perkManager.getPerk("Xezbeth Luck");
-        Perk harvestingSeasonPerk = perkManager.getPerk("Harvesting Season");
+        Perk xezbethLuckPerk = perkManager.getPurchasable("Xezbeth Luck");
+        Perk harvestingSeasonPerk = perkManager.getPurchasable("Harvesting Season");
 
         productCategory.addProduct(new ShopPerkProduct(31, xezbethLuckPerk));
         productCategory.addProduct(new ShopPerkProduct(33, harvestingSeasonPerk));

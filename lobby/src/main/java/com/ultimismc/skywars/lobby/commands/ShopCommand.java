@@ -4,8 +4,8 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
-import com.ultimismc.skywars.lobby.LobbyManager;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.lobby.LobbyManager;
 
 /**
  * @author DirectPlan

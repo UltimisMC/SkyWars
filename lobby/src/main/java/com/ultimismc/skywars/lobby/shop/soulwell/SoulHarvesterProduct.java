@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

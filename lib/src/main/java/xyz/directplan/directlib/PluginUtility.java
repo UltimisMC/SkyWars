@@ -1,7 +1,7 @@
 package xyz.directplan.directlib;
 
-import net.minecraft.server.v1_8_R3.*;
 import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;

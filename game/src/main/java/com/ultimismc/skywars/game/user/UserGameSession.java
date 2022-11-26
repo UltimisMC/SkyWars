@@ -3,7 +3,6 @@ package com.ultimismc.skywars.game.user;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.user.User;
-
 import com.ultimismc.skywars.game.island.Island;
 import lombok.Data;
 import lombok.Setter;

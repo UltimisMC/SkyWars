@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.core.rank.impl;
 
 import com.ultimismc.skywars.core.rank.Rank;
-
 import lombok.Getter;
 
 

@@ -1,10 +1,10 @@
 package com.ultimismc.skywars.lobby.shop.main;
 
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.LobbyManager;
 import com.ultimismc.skywars.lobby.shop.ShopProductCategory;
 import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.cosmetics.CosmeticsProductCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.kitsandperks.KitsPerksProductCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.level.LevelProductCategoryBuilder;

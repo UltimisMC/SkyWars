@@ -2,7 +2,9 @@ package com.ultimismc.skywars.core.user.setting;
 
 import com.ultimismc.skywars.core.user.UserCacheHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author DirectPlan

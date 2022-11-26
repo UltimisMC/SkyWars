@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.game.events;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.game.chest.ChestRefillSkyWarsEvent;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.Getter;
 import org.bukkit.scheduler.BukkitTask;

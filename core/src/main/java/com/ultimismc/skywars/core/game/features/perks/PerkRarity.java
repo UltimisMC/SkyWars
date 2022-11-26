@@ -2,7 +2,6 @@ package com.ultimismc.skywars.core.game.features.perks;
 
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import lombok.Getter;
-import org.bukkit.ChatColor;
 
 /**
  * @author DirectPlan

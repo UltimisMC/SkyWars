@@ -1,7 +1,6 @@
 package xyz.directplan.directlib.shop;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
