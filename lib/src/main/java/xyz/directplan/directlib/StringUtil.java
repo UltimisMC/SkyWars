@@ -118,6 +118,7 @@ public class StringUtil {
     ChatColor.AQUA, ChatColor.LIGHT_PURPLE, ChatColor.DARK_PURPLE};
 
     public static String toRainbow(String text) {
+        text = ChatColor.stripColor(text);
         char[] chars = text.toCharArray();
         StringBuilder builder = new StringBuilder();
         int colorIndex = 0;
