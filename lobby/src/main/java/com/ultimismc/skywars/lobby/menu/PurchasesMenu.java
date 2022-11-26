@@ -46,7 +46,7 @@ public class PurchasesMenu extends PaginatedMenu<UserAsset> {
         if(texture != null) {
             menuItem.setCustomSkullProperty(texture);
         }
-        if(asset.isDefaultAsset()) {
+        if(defaultAsset) {
             menuItem.setLore(" ");
             menuItem.setLore("&aThis " + asset.getCategory() + " comes by Default.");
             return menuItem;
