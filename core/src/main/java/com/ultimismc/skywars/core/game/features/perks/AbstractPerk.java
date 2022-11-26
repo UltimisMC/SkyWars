@@ -20,8 +20,6 @@ public abstract class AbstractPerk implements Perk {
     private final Currency currency = Currency.COIN_CURRENCY;
     private final String category = "Perk";
 
-    private final Material displayMaterial;
-    private final short durability;
     private final String name;
     private final PerkRarity perkRarity;
     private final boolean soulWell;
@@ -29,43 +27,23 @@ public abstract class AbstractPerk implements Perk {
 
     @Setter private int price;
 
-    public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, boolean soulWellPerk, List<String> description) {
-        this.displayMaterial = displayMaterial;
-        this.durability = (short) durability;
+    public AbstractPerk(String name, PerkRarity rarity, boolean soulWellPerk, List<String> description) {
         this.name = name;
         this.perkRarity = rarity;
         this.soulWell = soulWellPerk;
         this.description = description;
     }
 
-    public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, boolean soulWellPerk, String description) {
-        this(displayMaterial, durability, name, rarity, soulWellPerk, new ArrayList<>(Collections.singletonList(description)));
+    public AbstractPerk(String name, PerkRarity rarity, boolean soulWellPerk, String description) {
+        this(name, rarity, soulWellPerk, new ArrayList<>(Collections.singletonList(description)));
     }
 
-    public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, List<String> description) {
-        this(displayMaterial, durability, name, rarity, true, description);
+    public AbstractPerk(String name, PerkRarity rarity, List<String> description) {
+        this(name, rarity, true, description);
     }
 
-    public AbstractPerk(Material displayMaterial, int durability, String name, PerkRarity rarity, String description) {
-        this(displayMaterial, durability, name, rarity, true, description);
-    }
-
-    public AbstractPerk(Material displayMaterial, String name, PerkRarity rarity, boolean soulWellPerk, String description) {
-        this(displayMaterial, 0, name, rarity, soulWellPerk, description);
-    }
-
-
-    public AbstractPerk(Material material, String name, PerkRarity rarity, List<String> description) {
-        this(material, 0, name, rarity, true, description);
-    }
-
-    public AbstractPerk(Material material, String name, PerkRarity rarity, String description) {
-        this(material, name, rarity, true, description);
-    }
-
-    @Override
-    public short getDisplayDurability() {
-        return durability;
+    public AbstractPerk(String name, PerkRarity rarity, String description) {
+        this(name, rarity, true, description);
     }
 
     @Override

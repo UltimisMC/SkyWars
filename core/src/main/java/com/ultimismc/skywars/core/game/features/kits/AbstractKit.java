@@ -19,32 +19,20 @@ public abstract class AbstractKit implements Kit {
     private final Currency currency = Currency.COIN_CURRENCY;
 
     private final String category = "Kit";
-    private final Material displayMaterial;
-    private final short displayDurability;
     private final String name;
     private final KitRarity kitRarity;
     private final boolean soulWell;
 
     private final List<KitItem> items = new ArrayList<>();
 
-    public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity, boolean soulWellKit) {
-        this.displayMaterial = displayMaterial;
-        this.displayDurability = (short) durability;
+    public AbstractKit(String name, KitRarity rarity, boolean soulWellKit) {
         this.name = name;
         this.kitRarity = rarity;
         this.soulWell = soulWellKit;
     }
 
-    public AbstractKit(Material displayMaterial, int durability, String name, KitRarity rarity) {
-        this(displayMaterial, durability, name, rarity, true);
-    }
-
-    public AbstractKit(Material displayMaterial, String name, KitRarity rarity, boolean soulWellKit) {
-        this(displayMaterial, 0, name, rarity, soulWellKit);
-    }
-
-    public AbstractKit(Material material, String name, KitRarity rarity) {
-        this(material, name, rarity, true);
+    public AbstractKit(String name, KitRarity rarity) {
+        this(name, rarity, true);
     }
 
     @Override
