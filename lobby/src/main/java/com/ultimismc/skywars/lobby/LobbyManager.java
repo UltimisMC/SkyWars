@@ -2,11 +2,11 @@ package com.ultimismc.skywars.lobby;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.lobby.menu.PurchasesMenu;
 import com.ultimismc.skywars.lobby.menu.UserStatsMenu;
 import com.ultimismc.skywars.lobby.shop.SkyWarsShopHandler;
-import com.ultimismc.skywars.core.user.User;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
