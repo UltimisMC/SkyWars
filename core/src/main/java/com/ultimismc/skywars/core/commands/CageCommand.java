@@ -37,7 +37,7 @@ public class CageCommand extends BaseCommand {
     @Syntax("")
     public void onListCages(User user) {
         user.sendMessage("&aShowing cages:");
-        for(Cage cage : cageHandler.getCages().values()) {
+        for(Cage cage : cageHandler) {
             CosmeticRarity rarity = cage.getCosmeticRarity();
             CageSchematic schematic = cage.getSoloSchematic();
             user.sendMessage(" * " + cage.getName() + ", " + rarity.getDisplayName() + "&a, " + schematic.getSchematicFile().getName());
