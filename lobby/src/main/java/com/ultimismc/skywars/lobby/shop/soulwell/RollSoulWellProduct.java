@@ -22,7 +22,7 @@ public class RollSoulWellProduct extends UserPurchasableProduct {
     private final MenuManager menuManager;
 
     public RollSoulWellProduct(SkyWarsPlugin plugin, int itemSlot) {
-        super("Roll Soul Well", itemSlot, 50, Currency.SOUL_CURRENCY);
+        super("Roll Soul Well", itemSlot, 25, Currency.SOUL_CURRENCY);
 
         this.plugin = plugin;
         this.menuManager = plugin.getMenuManager();
