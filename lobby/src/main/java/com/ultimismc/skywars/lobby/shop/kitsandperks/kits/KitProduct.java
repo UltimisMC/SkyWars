@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.kitsandperks.kits;
 
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.user.User;
@@ -30,8 +31,10 @@ public class KitProduct extends UserPurchasableProduct {
         lore.add(" ");
         lore.add("&7Rarity: " + rarity.getDisplayName());
 
+        PurchasableDesign design = kit.getDesign();
         // "&eClick here to preview!"
-        ProductItemDesign productItemDesign = new ProductItemDesign(kit.getDisplayMaterial(), lore);
+        ProductItemDesign productItemDesign = new ProductItemDesign(design.getMaterial(), (short) design.getDurability(), null, lore);
+        productItemDesign.setSkullTexture(design.getTexture());
         productItemDesign.setPurchasedStatus("&eClick here to preview!");
         return productItemDesign;
     }
