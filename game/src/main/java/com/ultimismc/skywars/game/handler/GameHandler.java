@@ -128,7 +128,7 @@ public class GameHandler implements FeatureInitializer {
         }
         gameSetupHandler = new GameSetupHandler(this);
 
-        SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(this);
+        SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(this, featureHandler);
         combatManager = new SkyWarsCombatManager(plugin, combatAdapter);
 
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
