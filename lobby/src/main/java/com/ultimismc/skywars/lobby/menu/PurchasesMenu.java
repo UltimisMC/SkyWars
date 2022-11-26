@@ -39,13 +39,20 @@ public class PurchasesMenu extends PaginatedMenu<UserAsset> {
         PurchasableDesign purchasableDesign = purchasable.getDesign();
         String nameWithCategory = asset.getNameWithCategory();
 
-        MenuItem menuItem = new MenuItem(purchasableDesign.getMaterial(), ChatColor.GREEN + nameWithCategory, purchasableDesign.getDurability());
+        boolean defaultAsset = asset.isDefaultAsset();
+
+        MenuItem menuItem = new MenuItem(purchasableDesign.getMaterial(), ChatColor.GREEN + nameWithCategory + (defaultAsset ? "&7 (Default) " : ""), purchasableDesign.getDurability());
         String texture = purchasableDesign.getTexture();
         if(texture != null) {
             menuItem.setCustomSkullProperty(texture);
         }
-        menuItem.setLore(Arrays.asList("&7Price: " + asset.getDisplayPrice(),
-                "&7Date: &b" + DateUtil.getFormattedDate(asset.getAcquiredAt())));
+        if(asset.isDefaultAsset()) {
+            menuItem.setLore(" ");
+            menuItem.setLore("&aThis " + asset.getCategory() + " comes by Default.");
+            return menuItem;
+        }
+        menuItem.setLore("&7Price: " + asset.getDisplayPrice());
+        menuItem.setLore("&7Date: &b" + DateUtil.getFormattedDate(asset.getAcquiredAt()));
         return menuItem;
     }
 }
