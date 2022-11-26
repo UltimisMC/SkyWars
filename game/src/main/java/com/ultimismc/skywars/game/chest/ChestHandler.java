@@ -1,8 +1,6 @@
 package com.ultimismc.skywars.game.chest;
 
 import com.ultimismc.skywars.core.game.GameStatistics;
-import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import com.ultimismc.skywars.game.events.SkyWarsEventUpdater;
 import com.ultimismc.skywars.game.handler.Game;
@@ -16,7 +14,6 @@ import xyz.directplan.directlib.PluginUtility;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author DirectPlan
