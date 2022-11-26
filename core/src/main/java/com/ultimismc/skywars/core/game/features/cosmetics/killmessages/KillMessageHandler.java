@@ -9,7 +9,7 @@ import lombok.Getter;
  * @author DirectPlan
  */
 @Getter
-public class KillMessageHandler extends  PurchasableFeature<KillMessage> {
+public class KillMessageHandler extends PurchasableFeature<KillMessage> {
 
     private final String name = "Kill Messages";
 
@@ -40,5 +40,7 @@ public class KillMessageHandler extends  PurchasableFeature<KillMessage> {
         registerPurchasable(new EggyKillMessage()); // Done
         registerPurchasable(new ToTheMoonKillMessage()); // Done
         registerPurchasable(new RoarKillMessage()); // Done
+
+//        defaultPurchasable = new kill message that doesn't have a killer message for users that died without a killer!
     }
 }
