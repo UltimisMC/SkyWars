@@ -20,5 +20,7 @@ public class KitManager extends PurchasableFeature<Kit> {
                 new EnchanterKit(), new EnderchestKit(), new EngineerKit(), new FarmerKit(), new FishermanKit(), new HunterKit(), new MagicianKit(),
                 new PharoahKit(), new PigRiderKit(), new PrincessKit(), new SlothKit(), new SnowmanKit(), new SpeleologistKit(), new WarlockKit(),
                 new CannoneerKit(), new RookieKit(), new EnergixKit());
+
+        super.initializeFeature(plugin);
     }
 }
