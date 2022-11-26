@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.game.events;
 
-import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
 
 /**
