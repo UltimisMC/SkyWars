@@ -14,6 +14,7 @@ import xyz.directplan.directlib.PluginUtility;
 @Getter
 public abstract class KillMessage extends Cosmetic {
 
+    private final String category = "Kill Message";
     private final KillMessageBundle messageBundle = new KillMessageBundle();
 
     public KillMessage(String name, CosmeticRarity rarity) {
