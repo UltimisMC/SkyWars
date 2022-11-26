@@ -1,9 +1,9 @@
 package com.ultimismc.skywars.lobby;
 
 import com.ultimismc.skywars.core.game.currency.Currency;
-import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
+import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
