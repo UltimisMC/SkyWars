@@ -32,8 +32,8 @@ public class FeatureHandler {
     public FeatureHandler(SkyWarsPlugin plugin) {
         this.plugin = plugin;
 
-        kitManager = new KitManager(plugin);
-        perkManager = new PerkManager(plugin);
+        kitManager = new KitManager();
+        perkManager = new PerkManager();
         levelManager = new LevelManager(plugin);
         cosmeticManager = new CosmeticManager(this, plugin);
         purchasableHandler = new PurchasableHandler();
