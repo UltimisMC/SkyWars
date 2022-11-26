@@ -1,9 +1,9 @@
 package com.ultimismc.skywars.core.config;
 
-import xyz.directplan.directlib.config.ConfigEntry;
-import xyz.directplan.directlib.config.replacement.ReplacementBoundary;
 import lombok.Getter;
 import lombok.Setter;
+import xyz.directplan.directlib.config.ConfigEntry;
+import xyz.directplan.directlib.config.replacement.ReplacementBoundary;
 
 import java.util.HashMap;
 import java.util.Map;
