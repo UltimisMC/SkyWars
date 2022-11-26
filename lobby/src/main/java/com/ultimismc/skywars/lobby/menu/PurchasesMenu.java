@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.lobby.menu;
 
 import com.ultimismc.skywars.core.game.features.Purchasable;
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.asset.UserAsset;
 import org.bukkit.ChatColor;
@@ -35,8 +36,14 @@ public class PurchasesMenu extends PaginatedMenu<UserAsset> {
     public MenuItem buildContent(Player player, UserAsset asset) {
 
         Purchasable purchasable = asset.getPurchasable();
+        PurchasableDesign purchasableDesign = purchasable.getDesign();
         String nameWithCategory = asset.getNameWithCategory();
-        MenuItem menuItem = new MenuItem(purchasable.getDisplayMaterial(), ChatColor.GREEN + nameWithCategory);
+
+        MenuItem menuItem = new MenuItem(purchasableDesign.getMaterial(), ChatColor.GREEN + nameWithCategory, purchasableDesign.getDurability());
+        String texture = purchasableDesign.getTexture();
+        if(texture != null) {
+            menuItem.setCustomSkullProperty(texture);
+        }
         menuItem.setLore(Arrays.asList("&7Price: " + asset.getDisplayPrice(),
                 "&7Date: &b" + DateUtil.getFormattedDate(asset.getAcquiredAt())));
         return menuItem;
