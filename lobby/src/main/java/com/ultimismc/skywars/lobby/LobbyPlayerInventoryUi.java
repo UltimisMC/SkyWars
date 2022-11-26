@@ -1,9 +1,9 @@
 package com.ultimismc.skywars.lobby;
 
-import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
-import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
 import com.ultimismc.skywars.core.user.UserStatistics;
+import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.replacement.Replacement;
