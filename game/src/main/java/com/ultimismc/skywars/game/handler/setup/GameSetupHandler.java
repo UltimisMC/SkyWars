@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.game.handler.setup;
 
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.chest.Chest;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
