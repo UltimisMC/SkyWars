@@ -5,23 +5,28 @@ import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.PurchasableFeature;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
+import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageHandler;
 import lombok.Getter;
 
 /**
  * @author DirectPlan
  */
+@Getter
 public class CosmeticManager implements FeatureInitializer {
 
-    @Getter private final String name = "Cosmetics";
+    private final String name = "Cosmetics";
 
     private final FeatureHandler featureHandler;
-    @Getter private final CageHandler cageHandler;
+    private final CageHandler cageHandler;
+    private final KillMessageHandler killMessageHandler;
 
     public CosmeticManager(FeatureHandler featureHandler, SkyWarsPlugin plugin) {
         this.featureHandler = featureHandler;
         cageHandler = new CageHandler(plugin);
+        killMessageHandler = new KillMessageHandler();
 
         registerCosmeticHandler(cageHandler);
+        registerCosmeticHandler(killMessageHandler);
     }
 
     @Override
