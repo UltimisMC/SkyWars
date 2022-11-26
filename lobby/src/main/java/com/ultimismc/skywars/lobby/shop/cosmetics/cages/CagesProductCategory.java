@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-public class CagesCategory extends UserProductCategory {
+public class CagesProductCategory extends UserProductCategory {
 
-    public CagesCategory(int itemSlot) {
-        super("Cages", itemSlot);
+    public CagesProductCategory(int itemSlot) {
+        super("Cages", itemSlot, true);
     }
 
     @Override
