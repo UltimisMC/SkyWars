@@ -68,6 +68,8 @@ public abstract class CombatManager<U> {
         if(attacker != null) addAttacker(playerUuid, attacker);
 
         double finalDamage = event.getFinalDamage();
+        if(damageCause == EntityDamageEvent.DamageCause.VOID) finalDamage = 40.0;
+
         if(player.getHealth() - finalDamage > 0) {
             // Player is attacked but not enough to kill him.
             return;
