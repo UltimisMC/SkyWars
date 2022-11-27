@@ -4,7 +4,7 @@ import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
-import com.ultimismc.skywars.core.game.features.PurchasableFeature;
+import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.CageSchematic;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.SchematicAdapter;
@@ -27,7 +27,7 @@ import java.util.Locale;
  * @author DirectPlan
  */
 @Getter
-public class CageHandler extends PurchasableFeature<Cage> {
+public class CageHandler extends PurchasableRegistry<Cage> {
 
     private final String name = "Cosmetics: Cage";
 
