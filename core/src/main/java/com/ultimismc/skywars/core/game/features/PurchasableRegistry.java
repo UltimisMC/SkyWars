@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author DirectPlan
  */
-public abstract class PurchasableFeature<T extends Purchasable> implements FeatureInitializer, PurchasableRepository<T>, Iterable<T> {
+public abstract class PurchasableRegistry<T extends Purchasable> implements FeatureInitializer, PurchasableRepository<T>, Iterable<T> {
 
     protected final Map<String, T> purchasables = new HashMap<>();
     protected final LinkedList<T> orderedPurchasables = new LinkedList<>();

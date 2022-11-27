@@ -59,7 +59,7 @@ public class FeatureHandler {
         plugin.getCommandHandler().registerDependency(featureInitializer.getClass(), featureInitializer);
 
         if(featureInitializer instanceof PurchasableRepository<?>) {
-            PurchasableRepository<?> purchasableRepository = (PurchasableFeature<?>) featureInitializer;
+            PurchasableRepository<?> purchasableRepository = (PurchasableRepository<?>) featureInitializer;
             purchasableHandler.registerPurchasableRepository(purchasableRepository);
         }
     }

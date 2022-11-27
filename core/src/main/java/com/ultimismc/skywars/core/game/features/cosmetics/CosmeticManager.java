@@ -3,7 +3,7 @@ package com.ultimismc.skywars.core.game.features.cosmetics;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
-import com.ultimismc.skywars.core.game.features.PurchasableFeature;
+import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageHandler;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class CosmeticManager implements FeatureInitializer {
 
     }
 
-    public <T extends PurchasableFeature<?>> void registerCosmeticHandler(T cosmeticHandler) {
+    public <T extends PurchasableRegistry<?>> void registerCosmeticHandler(T cosmeticHandler) {
         featureHandler.addInitializers(cosmeticHandler);
     }
 }

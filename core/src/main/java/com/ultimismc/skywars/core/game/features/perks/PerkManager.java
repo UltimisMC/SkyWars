@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.features.PurchasableFeature;
+import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.perks.impl.*;
 import com.ultimismc.skywars.core.game.features.soulwell.HarvestingSeasonSoulPerk;
 import com.ultimismc.skywars.core.game.features.soulwell.XezbethLuckSoulPerk;
@@ -11,7 +11,7 @@ import lombok.Getter;
  * @author DirectPlan
  */
 @Getter
-public class PerkManager extends PurchasableFeature<Perk> {
+public class PerkManager extends PurchasableRegistry<Perk> {
 
     private final String name = "Perks";
 

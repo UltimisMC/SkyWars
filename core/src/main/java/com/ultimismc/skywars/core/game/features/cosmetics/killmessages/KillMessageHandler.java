@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.core.game.features.cosmetics.killmessages;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.features.PurchasableFeature;
+import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.impl.*;
 import lombok.Getter;
 
@@ -9,7 +9,7 @@ import lombok.Getter;
  * @author DirectPlan
  */
 @Getter
-public class KillMessageHandler extends PurchasableFeature<KillMessage> {
+public class KillMessageHandler extends PurchasableRegistry<KillMessage> {
 
     private final String name = "Kill Messages";
 
