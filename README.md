@@ -10,8 +10,8 @@ A custom skywars plugin developed for UltimisMC Network.
 - Rewards Summary at Game End
 - Game Cosmetics Executor
 - Servers Communication
-- Automatic Server Scaling
-- Chest Algorithm System including Refills ***(Completed)***
+- Automatic Server  
+- Chest Algorithm System including Refills ***(Completed)*** ***Adding chest bundles required***
 - Cage Algorithm System including automatic Cage building upon join ***(Completed)***
 - Add a brand new damage based combat system to DirectLib ***(Completed)***
 - Damage based Death System ***(Semi Completed, need to implement death logic)***
