@@ -5,8 +5,8 @@ A custom skywars plugin developed for UltimisMC Network.
 - Implement kits
 - Implement perks
 - Game Kit Selector Menu implementation ***(Completed)***
-- Spectator Settings Menu
-- Spectator System
+- Spectator Settings Menu ***(Working on it)***
+- Spectator System ***(Working on it)***
 - Rewards Summary at Game End
 - Game Cosmetics Executor
 - Servers Communication
