@@ -14,6 +14,7 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.CustomLocation;
+import xyz.directplan.directlib.config.ConfigEntry;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.scoreboard.ScoreboardManager;
@@ -88,11 +89,15 @@ public class GameManager implements FeatureInitializer {
     }
 
     public void setWaitingSpawnLocation(Location location) {
+        this.spawnLocation = location;
+        saveSpawnLocation(location, ConfigKeys.SPAWN_LOCATION);
+    }
+
+    private void saveSpawnLocation(Location location, ConfigEntry configEntry) {
         CustomLocation spawnLocation = CustomLocation.fromBukkitLocation(location);
-        this.spawnLocation = spawnLocation.toBukkitLocation();
         String serializedSpawn = CustomLocation.locationToString(spawnLocation);
 
-        ConfigKeys.SPAWN_LOCATION.setValue(serializedSpawn);
+        configEntry.setValue(serializedSpawn);
     }
 
     public void removeScoreboard(UUID uuid) {

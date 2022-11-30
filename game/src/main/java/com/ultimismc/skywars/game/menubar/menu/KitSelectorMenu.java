@@ -44,7 +44,7 @@ public class KitSelectorMenu extends InventoryUI {
         FeatureHandler featureHandler = gameHandler.getFeatureHandler();
         KitManager kitManager = featureHandler.getKitManager();
 
-        Kit selectedKit = user.getSetting(Kit.class, "kit");
+        Kit selectedKit = user.getSetting(Kit.class, kitManager.getSettingKey());
         fillInventory(new MenuItem(Material.STAINED_GLASS_PANE, "&c", 15));
 
         int index = 0;

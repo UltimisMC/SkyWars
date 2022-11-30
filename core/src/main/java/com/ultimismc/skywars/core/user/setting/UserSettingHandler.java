@@ -34,11 +34,11 @@ public class UserSettingHandler extends UserCacheHandler<String, UserSetting> {
 
     public <T> T getSetting(Class<T> castClass, String key) {
         UserSetting userSetting = userCache.get(key);
-        if(userSetting != null) {
-            Object value = userSetting.getValue();
-            return castClass.cast(value);
+        if(userSetting == null) {
+            return null;
         }
-        return null;
+        Object value = userSetting.getValue();
+        return castClass.cast(value);
     }
 
     public boolean isEmpty() {

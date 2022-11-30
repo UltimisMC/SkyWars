@@ -11,7 +11,12 @@ public interface MessageResolver {
     String resolveMessage(String user, String killer, UserStatistics statistics);
 
     default String resolveMessage(User user, User killer) {
-        UserStatistics killerStatistics = killer.getStatistics();
-        return resolveMessage(user.getDisplayName(), killer.getDisplayName(), killerStatistics);
+        UserStatistics killerStatistics = null;
+        String killerDisplayName = "";
+        if(killer != null) {
+            killerDisplayName = killer.getDisplayName();
+            killerStatistics = killer.getStatistics();
+        }
+        return resolveMessage(user.getDisplayName(), killerDisplayName, killerStatistics);
     }
 }

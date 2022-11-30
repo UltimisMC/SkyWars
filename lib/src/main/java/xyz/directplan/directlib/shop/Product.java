@@ -1,5 +1,6 @@
 package xyz.directplan.directlib.shop;
 
+import org.bukkit.event.inventory.ClickType;
 
 /**
  * @author DirectPlan
@@ -24,5 +25,9 @@ public interface Product<U> {
 
     ProductItemDesign designProduct(U user);
 
-    void executeAction(U user);
+    void executeAction(U user, ClickType clickType);
+
+    default void onRightClick(U user) {}
+
+    default boolean hasRightClickSupport() { return false; }
 }

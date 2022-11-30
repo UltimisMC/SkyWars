@@ -3,6 +3,7 @@ package com.ultimismc.skywars.lobby.shop.main;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserProduct;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.Arrays;
@@ -32,7 +33,7 @@ public class GayProduct extends UserProduct {
     }
 
     @Override
-    public void executeAction(User user) {
+    public void executeAction(User user, ClickType clickType) {
         user.sendMessage("YOUR NAME IS " + user.getName() + " and clicked product is " + order);
     }
 }

@@ -7,6 +7,7 @@ import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
 import com.ultimismc.skywars.lobby.shop.soulwell.roll.SoulWellRollMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -42,7 +43,7 @@ public class RollSoulWellProduct extends UserPurchasableProduct {
     }
 
     @Override
-    public void executePurchasableProduct(User user) {
+    public void executePurchasableProduct(User user, ClickType clickType) {
         Player player = user.getPlayer();
         menuManager.openInventory(player, new SoulWellRollMenu(plugin, user));
     }

@@ -1,9 +1,9 @@
 package xyz.directplan.directlib.combat;
 
 import lombok.Getter;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.PluginManager;
@@ -47,9 +47,9 @@ public abstract class CombatManager<U> {
         if(event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
             Entity damager = damageByEntityEvent.getDamager();
-            if(damager instanceof Arrow) {
-                Arrow arrow = (Arrow) damager;
-                damager = (Entity) arrow.getShooter();
+            if(damager instanceof Projectile) {
+                Projectile projectile = (Projectile) damager;
+                damager = (Entity) projectile.getShooter();
             }
             if(damager instanceof Player) {
                 attacker = (Player) damager;
@@ -89,12 +89,12 @@ public abstract class CombatManager<U> {
         player.setFireTicks(0);
 
         // Execute assists
-        LinkedList<Combat> assists = combatMap.get(playerUuid);
+        LinkedList<Combat> assists = combatMap.remove(playerUuid);
+        if(assists == null) return;
         for(Combat combat : assists) {
             U assistUser = getUser(combat.getPlayer());
             combatAdapter.onAssist(user, assistUser, damageCause);
         }
-        combatMap.remove(playerUuid);
     }
 
     public void addAttacker(UUID attacked, Player attacker) {

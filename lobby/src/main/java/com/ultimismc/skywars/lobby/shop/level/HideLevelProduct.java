@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.Arrays;
@@ -43,7 +44,7 @@ public class HideLevelProduct extends UserProduct {
     }
 
     @Override
-    public void executeAction(User user) {
+    public void executeAction(User user, ClickType clickType) {
         Player player = user.getPlayer();
         player.closeInventory();
         player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);

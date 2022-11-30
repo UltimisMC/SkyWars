@@ -15,6 +15,10 @@ public class PerkManager extends PurchasableRegistry<Perk> {
 
     private final String name = "Perks";
 
+    public PerkManager() {
+        super("perk");
+    }
+
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
         registerPurchasables(new BridgerPerk(), new KnowledgePerk(), new LuckyCharmPerk(), new MiningExpertisePerk(), new NourishmentPerk(), new AnnoyOMitePerk(), new ArrowRecoveryPerk(),

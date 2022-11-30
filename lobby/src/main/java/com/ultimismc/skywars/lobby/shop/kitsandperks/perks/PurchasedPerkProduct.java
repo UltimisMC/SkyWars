@@ -7,6 +7,7 @@ import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserProduct;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -43,7 +44,7 @@ public class PurchasedPerkProduct extends UserProduct {
     }
 
     @Override
-    public void executeAction(User user) {
+    public void executeAction(User user, ClickType clickType) {
         Player player = user.getPlayer();
         player.closeInventory();
         player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);

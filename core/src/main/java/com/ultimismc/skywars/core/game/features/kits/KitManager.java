@@ -13,6 +13,10 @@ public class KitManager extends PurchasableRegistry<Kit> {
 
     private final String name = "Kits";
 
+    public KitManager() {
+        super("kit");
+    }
+
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
         registerPurchasables(new DefaultKit(), new ArmorerKit(), new ArmorsmithKit(), new BatguyKit(), new CactusKit(), new DiscoKit(), new EcologistKit(),

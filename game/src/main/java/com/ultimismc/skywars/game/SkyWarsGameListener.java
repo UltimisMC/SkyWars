@@ -34,13 +34,18 @@ public class SkyWarsGameListener implements Listener {
 
     @EventHandler
     public void onChestOpen(PlayerInteractEvent event) {
-        Block clickedBlock = event.getClickedBlock();
-        Action action = event.getAction();
-        if(clickedBlock == null || action != Action.RIGHT_CLICK_BLOCK) return;
-        if(clickedBlock.getType() != Material.CHEST) return;
-
         Player player = event.getPlayer();
         UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSpectator()) {
+            event.setCancelled(true);
+            return;
+        }
+        Block clickedBlock = event.getClickedBlock();
+        Action action = event.getAction();
+        if(clickedBlock == null) return;
+        if(action != Action.RIGHT_CLICK_BLOCK) return;
+        if(clickedBlock.getType() != Material.CHEST) return;
+
         ChestHandler chestHandler = gameHandler.getChestHandler();
         chestHandler.openChest(userGameSession, clickedBlock);
     }
@@ -49,12 +54,20 @@ public class SkyWarsGameListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if(gameHandler.hasStarted()) return;
 
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSetupMode()) return;
+
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if(gameHandler.hasStarted()) return;
+
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSetupMode()) return;
 
         event.setBuild(false);
         event.setCancelled(true);

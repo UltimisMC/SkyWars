@@ -73,6 +73,10 @@ public class FeatureHandler {
         return purchasableHandler.getPurchasable(clazz, key);
     }
 
+    public Purchasable getPurchasable(String key) {
+        return purchasableHandler.getPurchasable(key);
+    }
+
     public Collection<Purchasable> getAllPurchasables() {
         return purchasableHandler.getAllPurchasables();
     }

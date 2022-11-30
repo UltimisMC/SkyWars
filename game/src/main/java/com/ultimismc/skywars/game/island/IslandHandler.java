@@ -30,6 +30,7 @@ public class IslandHandler {
         this.gameHandler = gameHandler;
         CosmeticManager cosmeticManager = gameHandler.getCosmeticManager();
         cageHandler = cosmeticManager.getCageHandler();
+
         defaultCage = cageHandler.getDefaultCage();
     }
 
@@ -50,7 +51,7 @@ public class IslandHandler {
         // Get user cage
 
         User user = userGameSession.getUser();
-        Cage selectedCage = user.getSetting(Cage.class, "cage");
+        Cage selectedCage = user.getSetting(Cage.class, cageHandler.getSettingKey());
         if(selectedCage != null && selectedCage != defaultCage) {
             island.setCage(selectedCage);
             placeCage(selectedCage, cageLocation, false);
@@ -64,11 +65,12 @@ public class IslandHandler {
     }
 
     public void handleCageQuit(UserGameSession userGameSession) {
+        if(gameHandler.hasStarted()) return;
         Island currentIsland = userGameSession.getCurrentIsland();
         if(currentIsland == null) {
             throw new RuntimeException("No island was found for " + userGameSession.getName());
         }
-
+        currentIsland.setTaken(false);
         Cage cage = currentIsland.getCage();
         // Revert changes.
         if(cage == null) return;

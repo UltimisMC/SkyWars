@@ -59,7 +59,7 @@ public class ChestHandler {
 
     public void openChest(UserGameSession userGameSession, Block block) {
         Chest chest = getChest(block);
-        if(chest.isOpened()) return;
+        if(chest == null || chest.isOpened()) return;
         chest.setOpened(true);
 
         GameStatistics gameStatistics = userGameSession.getGameStatistics();

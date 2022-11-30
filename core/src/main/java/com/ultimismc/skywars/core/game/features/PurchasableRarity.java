@@ -28,6 +28,6 @@ public enum PurchasableRarity {
     }
 
     public boolean isRare() {
-        return priority <= 2;
+        return priority <= 3;
     }
 }

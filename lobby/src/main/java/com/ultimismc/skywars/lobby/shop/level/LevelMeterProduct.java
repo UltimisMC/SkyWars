@@ -7,6 +7,7 @@ import com.ultimismc.skywars.lobby.LobbyManager;
 import com.ultimismc.skywars.lobby.shop.UserProduct;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.ArrayList;
@@ -64,5 +65,5 @@ public class LevelMeterProduct extends UserProduct {
     }
 
     @Override
-    public void executeAction(User user) {}
+    public void executeAction(User user, ClickType clickType) {}
 }

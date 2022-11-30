@@ -145,7 +145,7 @@ public class SoulWellRollMenu extends InventoryUI {
         user.sendMessage("&7&lYou found " + purchasableDisplayName + " &7&lin the well!");
         if(rarity.isRare()) {
             String userDisplayName = user.getDisplayName();
-            Bukkit.broadcastMessage(PluginUtility.translateMessage(userDisplayName + " &7has found " + purchasableDisplayName + " &7in the &bSoul Well&7!"));
+            PluginUtility.broadcastMessage(userDisplayName + " &7has found " + purchasableDisplayName + " &7in the &bSoul Well&7!");
         }
         user.addAsset(new UserAsset(currentPurchasable));
     }

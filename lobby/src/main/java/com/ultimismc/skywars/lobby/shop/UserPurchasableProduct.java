@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -48,12 +49,11 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
 
     public abstract ProductItemDesign designPurchasableProduct(User user);
 
-    public abstract void executePurchasableProduct(User user);
+    public abstract void executePurchasableProduct(User user, ClickType clickType);
 
     @Override
     public ProductItemDesign designProduct(User user) {
-
-        if(purchasable != null && purchasable.isDefault()) return null;
+        if(purchasable != null && (ignoreDefaults() && purchasable.isDefault())) return null;
 
         ProductItemDesign shopProductItemDesign = designPurchasableProduct(user);
         if(shopProductItemDesign == null) return null;
@@ -109,11 +109,11 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
     }
 
     @Override
-    public void executeAction(User user) {
+    public void executeAction(User user, ClickType clickType) {
         Player player = user.getPlayer();
 
         if(purchasable != null && user.hasPurchased(purchasable)) {
-            executePurchasableProduct(user);
+            executePurchasableProduct(user, clickType);
             return;
         }
         currency.decreaseCurrency(user, cost);
@@ -127,10 +127,14 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
                     new Replacement("price", displayPrice));
             return;
         }
-        executePurchasableProduct(user);
+        executePurchasableProduct(user, clickType);
     }
 
     protected String getDisplayCost() {
         return currency.getDisplayAmount(cost);
+    }
+
+    public boolean ignoreDefaults() {
+        return true;
     }
 }

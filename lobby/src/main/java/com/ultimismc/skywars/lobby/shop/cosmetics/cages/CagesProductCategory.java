@@ -1,8 +1,12 @@
 package com.ultimismc.skywars.lobby.shop.cosmetics.cages;
 
+import com.ultimismc.skywars.core.game.features.PurchasableDesign;
+import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserProductCategory;
+import com.ultimismc.skywars.lobby.shop.cosmetics.AbstractCosmeticCategory;
+import lombok.Getter;
 import org.bukkit.Material;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -11,15 +15,12 @@ import java.util.List;
 /**
  * @author DirectPlan
  */
-public class CagesProductCategory extends UserProductCategory {
+@Getter
+public class CagesProductCategory extends AbstractCosmeticCategory<CageHandler> {
 
-    public CagesProductCategory(int itemSlot) {
-        super("Cages", itemSlot, true);
-    }
+    private final PurchasableDesign design = new PurchasableDesign(Material.STAINED_GLASS);
 
-    @Override
-    public ProductItemDesign designCategory(User user) {
-        List<String> lore = ShopMessageKeys.COSMETIC_CAGES_LORE.getStringList();
-        return new ProductItemDesign(Material.STAINED_GLASS, lore);
+    public CagesProductCategory(CageHandler cosmeticRegistry, int itemSlot) {
+        super(cosmeticRegistry, ShopMessageKeys.COSMETIC_CAGES_LORE.getStringList(), itemSlot);
     }
 }

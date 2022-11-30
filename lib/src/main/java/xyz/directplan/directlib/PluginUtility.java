@@ -47,6 +47,10 @@ public class PluginUtility {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    public static void broadcastMessage(String message) {
+        Bukkit.broadcastMessage(translateMessage(message));
+    }
+
     public static boolean isEmpty(Inventory inventory) {
         ItemStack[] contents = inventory.getContents();
         for(ItemStack content : contents) {
@@ -155,5 +159,16 @@ public class PluginUtility {
         BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
         TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
         world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
+    }
+
+    public static int getRowsBasedOnSlots(int slots) {
+        double divided = 9.0;
+        double rows = (slots / divided);
+        if(slots % divided != 0.0) return (int) rows + 1;
+        return (int) rows;
+    }
+
+    public static int getPercentage(int current, int max) {
+        return (current / max) * 100;
     }
 }

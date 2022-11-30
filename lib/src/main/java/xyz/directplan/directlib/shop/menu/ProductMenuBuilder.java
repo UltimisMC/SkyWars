@@ -40,15 +40,16 @@ public class ProductMenuBuilder<U> {
             lore.add(" ");
             lore.add("&eClick to browse!");
         }
-        ProductCategoryAction<U> productCategoryAction = null;
         ChatColor displayNameColor = ChatColor.RED;
-        if(itemDesign.isCanAfford()) {
-            productCategoryAction = new ProductCategoryAction<>(shopHandler, user, product, currentMenu, itemDesign.isIgnoreConfirmation());
+        boolean canAfford = itemDesign.isCanAfford();
+        if(canAfford) {
             displayNameColor = ChatColor.GREEN;
             if(itemDesign.getColor() != null) {
                 displayNameColor = itemDesign.getColor();
             }
         }
+        ProductCategoryAction<U> productCategoryAction = new ProductCategoryAction<>(shopHandler, user, product, currentMenu, itemDesign.isIgnoreConfirmation(), canAfford);
+
         String displayName = displayNameColor + productName;
         if(itemDesign.hasDisplayName()) {
             displayName = itemDesign.getDisplayName();

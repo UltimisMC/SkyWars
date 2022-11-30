@@ -25,10 +25,16 @@ public class ProductCategoryAction<U> implements ActionableItem {
     private final Product<U> product;
     private final InventoryUI currentMenu;
     private final boolean ignoreConfirmation;
+    private final boolean canAfford;
 
     @Override
     public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType) {
         if(product.isDisplay()) return;
+        if(product.hasRightClickSupport() && clickType == ClickType.RIGHT) {
+            product.onRightClick(user);
+            return;
+        }
+        if(!canAfford) return;
         if(product.isCategory()) {
             ProductCategory<U> productCategory = (ProductCategory<U>) product;
             shopHandler.openProductCategory(clicker, user, currentMenu, productCategory);
@@ -42,9 +48,9 @@ public class ProductCategoryAction<U> implements ActionableItem {
         }
 
         if(!ignoreConfirmation && product instanceof ConfirmableProduct) {
-            shopHandler.openInventory(clicker, new ConfirmableActionMenu(item, () -> product.executeAction(user)));
+            shopHandler.openInventory(clicker, new ConfirmableActionMenu(item, () -> product.executeAction(user, clickType)));
             return;
         }
-        product.executeAction(user);
+        product.executeAction(user, clickType);
     }
 }

@@ -54,6 +54,10 @@ public class ProductItemDesign {
         this(material, null, lore, canAfford);
     }
 
+    public ProductItemDesign(Material material, short durability, List<String> lore) {
+        this(material, durability, null, lore, true);
+    }
+
     public ProductItemDesign(Material material, List<String> lore) {
         this(material, null, lore, true);
     }

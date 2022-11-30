@@ -24,6 +24,7 @@ import com.ultimismc.skywars.game.handler.scoreboard.AccompaniedGameScoreboard;
 import com.ultimismc.skywars.game.handler.scoreboard.GameScoreboard;
 import com.ultimismc.skywars.game.handler.scoreboard.SoloGameScoreboard;
 import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
+import com.ultimismc.skywars.game.island.Island;
 import com.ultimismc.skywars.game.island.IslandHandler;
 import com.ultimismc.skywars.game.menubar.GameSpectatorBarMenu;
 import com.ultimismc.skywars.game.menubar.UserWaitingBarMenu;
@@ -36,7 +37,10 @@ import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.config.replacement.Replacement;
@@ -64,8 +68,8 @@ public class GameHandler implements FeatureInitializer {
     private GameServerInitializer gameServerInitializer;
     private Game game;
     private GameScoreboard gameScoreboard;
+    private World gameWorld;
 
-    private final long preparerCountdown = (1000L * 15);
     @Setter private long prepareCountdownLeft;
     @Setter private long gameTime;
 
@@ -84,8 +88,6 @@ public class GameHandler implements FeatureInitializer {
         this.gameManager = gameManager;
         menuManager = plugin.getMenuManager();
         userManager = plugin.getUserManager();
-
-        prepareCountdownLeft = preparerCountdown;
     }
 
     @Override
@@ -101,6 +103,7 @@ public class GameHandler implements FeatureInitializer {
 
         gameServerInitializer.initializeServer();
         gameServer = gameServerInitializer.getGameServer();
+        gameWorld = gameServerInitializer.getGameWorld();
 
         GameType gameType = gameServer.getGameType();
         switch (gameType) {
@@ -130,6 +133,7 @@ public class GameHandler implements FeatureInitializer {
 
         SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(this, featureHandler);
         combatManager = new SkyWarsCombatManager(plugin, combatAdapter);
+        combatManager.startCombatManager();
 
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
         plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
@@ -151,6 +155,7 @@ public class GameHandler implements FeatureInitializer {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setFireTicks(0);
+        player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
         PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameServer.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
@@ -181,11 +186,16 @@ public class GameHandler implements FeatureInitializer {
         updateScoreboard();
     }
 
-    public void startPreparer() {
+    public void startPreparer(int seconds) {
         game.setGameState(GameState.STARTING);
-        gamePreparer = plugin.getServer().getScheduler().runTaskTimer(plugin, new GamePreparer(this), 0, 20L);
+        gamePreparer = plugin.getServer().getScheduler().runTaskTimer(plugin, new GamePreparer(this, seconds), 0, 20L);
 
     }
+
+    public void startPreparer() {
+        startPreparer(15);
+    }
+
     public void cancelPreparer() {
         game.setGameState(GameState.WAITING);
         gamePreparer.cancel();
@@ -198,7 +208,6 @@ public class GameHandler implements FeatureInitializer {
         game.startGame();
         skyWarsEventHandler.startNextEvent();
         chestHandler.refillAllChests();
-        combatManager.startCombatManager();
 
         broadcastFunction(user -> PluginUtility.playSound(user.getPlayer(), Sound.FIREWORK_BLAST));
         String repeatLine = StringUtils.repeat("▬", 70);
@@ -231,14 +240,27 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public void terminateUser(User user) {
+        MessageConfigKeys.DEATH_MESSAGE.sendMessage(user.getPlayer());
         UserGameSession userGameSession = getSession(user);
-
+        addSpectator(userGameSession);
     }
 
-    public void addSpectator(User user) {
-        game.addSpectator(user);
+    public void addSpectator(UserGameSession userGameSession) {
+        User user = userGameSession.getUser();
+        Player player = user.getPlayer();
 
-        menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, true);
+        userGameSession.setSpectator(true);
+
+        Island userIsland = userGameSession.getCurrentIsland();
+        user.teleport(userIsland.getCageLocation());
+
+        player.setAllowFlight(true);
+        player.setFlying(true);
+
+        // Make player invisible and that he can see
+        // spectators too
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));
+        menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, false);
     }
 
     public void removeSpectator(User user) {
@@ -314,6 +336,11 @@ public class GameHandler implements FeatureInitializer {
 
     public int getPlayersLeft() {
         return game.getPlayers().size();
+    }
+
+    public boolean hasTimePassed(int seconds) {
+        long millis = (seconds * 1000L);
+        return gameTime >= millis;
     }
 
     public boolean hasStarted() {

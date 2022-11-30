@@ -2,22 +2,25 @@ package com.ultimismc.skywars.core.game.features;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author DirectPlan
  */
 public abstract class PurchasableRegistry<T extends Purchasable> implements FeatureInitializer, PurchasableRepository<T>, Iterable<T> {
 
-    protected final Map<String, T> purchasables = new HashMap<>();
+    protected final Map<String, T> purchasables = new LinkedHashMap<>();
     protected final LinkedList<T> orderedPurchasables = new LinkedList<>();
 
-    @Getter protected T defaultPurchasable;
+    @Setter protected T defaultPurchasable;
+    @Getter private final String settingKey;
+
+    public PurchasableRegistry(String settingKey) {
+        this.settingKey = settingKey;
+    }
 
     public T getPurchasable(String name) {
         return purchasables.get(name);

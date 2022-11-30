@@ -16,6 +16,7 @@ public enum ConfigKeys implements ConfigEntry {
 
     /* config.yml keys */
     SPAWN_LOCATION("spawn-location", "0, 0, 0"),
+    WORLD_NAME("world-name", "world"),
 
     STORAGE_HOST("mongodb.host", "localhost"),
     STORAGE_PORT("mongodb.port", 0, false),

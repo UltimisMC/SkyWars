@@ -5,7 +5,6 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessa
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
-import com.ultimismc.skywars.lobby.shop.cosmetics.CosmeticPurchasableProduct;
 import lombok.RequiredArgsConstructor;
 import xyz.directplan.directlib.shop.ProductCategory;
 
@@ -22,9 +21,9 @@ public class KillMessagesCategoryBuilder implements UserProductCategoryBuilder {
 
         KillMessageHandler killMessageHandler = cosmeticManager.getKillMessageHandler();
 
-        KillMessagesProductCategory productCategory = new KillMessagesProductCategory(32);
+        KillMessagesProductCategory productCategory = new KillMessagesProductCategory(killMessageHandler, 32);
         for(KillMessage killMessage : killMessageHandler) {
-            productCategory.addProduct(new CosmeticPurchasableProduct(killMessage));
+            productCategory.addProduct(new KillMessagePurchasableProduct(killMessage));
         }
         return productCategory;
     }

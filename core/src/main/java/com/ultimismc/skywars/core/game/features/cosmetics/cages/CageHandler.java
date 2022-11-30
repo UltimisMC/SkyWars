@@ -2,6 +2,7 @@ package com.ultimismc.skywars.core.game.features.cosmetics.cages;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
+import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
@@ -34,14 +35,16 @@ public class CageHandler extends PurchasableRegistry<Cage> {
     private final SkyWarsPlugin plugin;
     private SchematicAdapter schematicAdapter;
 
-    private final World world;
     private Cage defaultCage;
     private CageSchematic voidSchematic;
 
+    private final World gameWorld;
+
     public CageHandler(SkyWarsPlugin plugin) {
+        super("cage");
         this.plugin = plugin;
 
-        world = Bukkit.getWorld("world");
+        gameWorld = Bukkit.getWorld(ConfigKeys.WORLD_NAME.getStringValue());
     }
 
     @Override
@@ -52,7 +55,7 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             plugin.shutdown("WorldEdit is not detected.");
             return;
         }
-        schematicAdapter = new WorldEditSchematicAdapter(world);
+        schematicAdapter = new WorldEditSchematicAdapter(gameWorld);
         log(plugin, "Using " + schematicAdapter.getName() + " as a schematic adapter!");
 
         // Loading schematics
@@ -200,7 +203,7 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             user.sendMessage("&cA cage by this name does not exist!");
             return;
         }
-        user.sendMessage("&aPlacing cage: &e" + cage.getName() + "&a...");
+        user.sendMessage("&aPlacing cage: &e" + teamType.getName() + " " + cage.getName() + "&a...");
         placeCage(teamType, user, cage, ignoreAir);
     }
 

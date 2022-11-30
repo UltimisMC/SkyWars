@@ -7,6 +7,7 @@ import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
@@ -41,7 +42,7 @@ public class SoulHarvesterProduct extends UserPurchasableProduct {
     }
 
     @Override
-    public void executePurchasableProduct(User user) {
+    public void executePurchasableProduct(User user, ClickType clickType) {
         UserStatistics userStatistics = user.getStatistics();
         int sumSouls = userStatistics.getSouls() + souls;
         if(sumSouls >= userStatistics.getMaximumSouls()) {

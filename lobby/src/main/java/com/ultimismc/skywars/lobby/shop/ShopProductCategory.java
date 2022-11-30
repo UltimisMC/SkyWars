@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.lobby.shop;
 
 import com.ultimismc.skywars.core.user.User;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 /**
@@ -19,5 +20,5 @@ public class ShopProductCategory extends UserProductCategory {
     }
 
     @Override
-    public void executeAction(User user) {}
+    public void executeAction(User user, ClickType clickType) {}
 }

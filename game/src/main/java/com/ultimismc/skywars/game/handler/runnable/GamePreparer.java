@@ -14,10 +14,13 @@ import xyz.directplan.directlib.config.replacement.Replacement;
 public class GamePreparer implements Runnable {
 
     private final GameHandler gameHandler;
+    private final long startSeconds;
 
-    public GamePreparer(GameHandler gameHandler) {
+    public GamePreparer(GameHandler gameHandler, int startSeconds) {
         this.gameHandler = gameHandler;
+        this.startSeconds = (startSeconds * 1000L);
     }
+
 
     @Override
     public void run() {
@@ -35,7 +38,7 @@ public class GamePreparer implements Runnable {
         if(seconds <= 5) {
             timeColor = ChatColor.RED;
         }
-        if(seconds == 15 || seconds == 10 || seconds <= 5) {
+        if((seconds >= 30 && seconds % 10 == 0) || (seconds <= 20 && seconds % 5 == 0) || seconds <= 5) {
             gameHandler.broadcastFunction(user -> {
                 Player player = user.getPlayer();
                 String title = "&c" + seconds;

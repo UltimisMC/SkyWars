@@ -5,6 +5,7 @@ import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.Cosmetic;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
+import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.ArrayList;
@@ -16,11 +17,17 @@ import java.util.Locale;
  */
 public class CosmeticPurchasableProduct extends UserPurchasableProduct {
 
-    private final Cosmetic cosmetic;
+    protected final Cosmetic cosmetic;
+    protected final boolean rightclickable;
 
-    public CosmeticPurchasableProduct(Cosmetic cosmetic) {
+    public CosmeticPurchasableProduct(Cosmetic cosmetic, boolean rightclickable) {
         super(0, cosmetic);
         this.cosmetic = cosmetic;
+        this.rightclickable = rightclickable;
+    }
+
+    public CosmeticPurchasableProduct(Cosmetic cosmetic) {
+        this(cosmetic, true);
     }
 
     @Override
@@ -34,13 +41,15 @@ public class CosmeticPurchasableProduct extends UserPurchasableProduct {
         lore.add(" ");
         lore.add("&7Select the " + cosmetic.getNameWithCategory());
         lore.add("&7for in-game chat messages!");
-        lore.add(" ");
-        lore.add("&eRight-Click to preview!");
+        if(rightclickable) {
+            lore.add(" ");
+            lore.add("&eRight-Click to preview!");
+        }
         lore.add(" ");
         lore.add("&7Rarity: " + rarity.getDisplayName());
 
         PurchasableDesign design = cosmetic.getDesign();
-        ProductItemDesign productItemDesign = new ProductItemDesign(design.getMaterial(), (short) design.getDurability(), null, lore);
+        ProductItemDesign productItemDesign = new ProductItemDesign(design.getMaterial(), (short) design.getDurability(), lore);
         productItemDesign.setSkullTexture(design.getTexture());
 
         String settingKey = category.toLowerCase(Locale.ROOT).replace(" ", "");
@@ -54,7 +63,17 @@ public class CosmeticPurchasableProduct extends UserPurchasableProduct {
     }
 
     @Override
-    public void executePurchasableProduct(User user) {
+    public void executePurchasableProduct(User user, ClickType clickType) {
+        // cosmetic selection code here
+    }
 
+    @Override
+    public boolean hasRightClickSupport() {
+        return rightclickable;
+    }
+
+    @Override
+    public boolean ignoreDefaults() {
+        return false;
     }
 }

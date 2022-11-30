@@ -1,6 +1,7 @@
 package xyz.directplan.directlib.shop;
 
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 
 import java.util.List;
 
@@ -29,5 +30,5 @@ public class DisplayProduct<U> extends AbstractProduct<U> {
     }
 
     @Override
-    public void executeAction(U unused) {}
+    public void executeAction(U unused, ClickType clickType) {}
 }

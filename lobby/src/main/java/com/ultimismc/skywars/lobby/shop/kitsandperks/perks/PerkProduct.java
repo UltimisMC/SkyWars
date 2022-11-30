@@ -34,7 +34,7 @@ public class PerkProduct {
             lore.add("&7Rarity: " + rarity.getDisplayName());
             lore.add(" ");
         }
-        ProductItemDesign productItemDesign = new ProductItemDesign(material, (short) durability, null, lore);
+        ProductItemDesign productItemDesign = new ProductItemDesign(material, (short) durability, lore);
         productItemDesign.setSkullTexture(purchasableDesign.getTexture());
         return productItemDesign;
     }

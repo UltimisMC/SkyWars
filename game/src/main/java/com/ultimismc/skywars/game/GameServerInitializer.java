@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
@@ -33,9 +34,19 @@ public class GameServerInitializer {
 
     private final IslandHandler islandHandler;
     private final ChestHandler chestHandler;
+    @Getter private final World gameWorld;
 
     public GameServerInitializer(SkyWarsPlugin plugin, GameHandler gameHandler) {
         this.plugin = plugin;
+        String worldName = ConfigKeys.WORLD_NAME.getStringValue();
+        plugin.log("Existing worlds:");
+        for(World world : Bukkit.getWorlds()) {
+            plugin.log(" - " + world.getName());
+        }
+        gameWorld = Bukkit.getWorld(worldName);
+        if(gameWorld == null) {
+            plugin.shutdown("World '" + worldName + "' does not exist. Shutting down");
+        }
         this.islandHandler = gameHandler.getIslandHandler();
         this.chestHandler = gameHandler.getChestHandler();
     }
@@ -51,9 +62,6 @@ public class GameServerInitializer {
         String serverId = gameInfo.getServerId();
 
         GameMap gameMap = loadGameMap(teamType);
-        if(gameMap == null) {
-            return;
-        }
         gameServer = new GameServer(serverId, gameType, teamType, gameMap.toMap());
 
         if(gameServer.isSetupMode()) {
@@ -102,12 +110,6 @@ public class GameServerInitializer {
 //            String[] args = serializedIsland.split("/");
             gameMap.addIsland(serializedIsland);
         }
-        String worldName = MapConfigKeys.WORLD_NAME.getStringValue();
-        World world = Bukkit.getWorld(worldName);
-        if(world == null) {
-            plugin.shutdown("World '" + worldName + "' does not exist. Shutting down");
-            return null;
-        }
 
         for(String serializedChest : serializedChests) {
             if(serializedChest.isEmpty()) continue;
@@ -116,7 +118,7 @@ public class GameServerInitializer {
             CustomLocation customLocation = CustomLocation.stringToLocation(serializedLocation);
             boolean midChest = Boolean.parseBoolean(args[1]);
 
-            Block block = world.getBlockAt(customLocation.toBukkitLocation());
+            Block block = gameWorld.getBlockAt(customLocation.toBukkitLocation());
             if(block.getType() != Material.CHEST) continue;
             gameMap.addChest(block, midChest);
         }

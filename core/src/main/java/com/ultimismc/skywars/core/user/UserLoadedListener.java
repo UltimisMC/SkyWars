@@ -33,6 +33,7 @@ public class UserLoadedListener {
         for(Purchasable defaultPurchasable : featureHandler.getDefaultPurchasables()) {
             String category = defaultPurchasable.getCategory();
             category = category.toLowerCase(Locale.ROOT);
+            category = category.replace(" ", "");
             user.addSetting(category, defaultPurchasable);
             UserAsset userAsset = new UserAsset(defaultPurchasable);
             userAsset.setDefaultAsset(true);

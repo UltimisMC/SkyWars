@@ -13,6 +13,12 @@ public class KillMessageHandler extends PurchasableRegistry<KillMessage> {
 
     private final String name = "Kill Messages";
 
+    private KillMessage noKillerKillMessage;
+
+    public KillMessageHandler() {
+        super("killmessage");
+    }
+
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
         registerPurchasable(new DefaultKillMessage()); // Done
@@ -42,5 +48,7 @@ public class KillMessageHandler extends PurchasableRegistry<KillMessage> {
         registerPurchasable(new RoarKillMessage()); // Done
 
 //        defaultPurchasable = new kill message that doesn't have a killer message for users that died without a killer!
+        noKillerKillMessage = new NoKillerKillMessage();
+        super.initializeFeature(plugin);
     }
 }

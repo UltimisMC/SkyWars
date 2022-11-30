@@ -1,8 +1,10 @@
 package com.ultimismc.skywars.core.game.features.cosmetics.killmessages;
 
 import com.ultimismc.skywars.core.user.User;
+import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Map;
  */
 public class KillMessageBundle {
 
-    private final Map<MessageType, MessageResolver> messageResolvers = new HashMap<>();
+    @Getter private final Map<MessageType, MessageResolver> messageResolvers = new LinkedHashMap<>();
 
     public void addResolver(MessageType messageType, MessageResolver resolver) {
         messageResolvers.put(messageType, resolver);
@@ -24,4 +26,5 @@ public class KillMessageBundle {
         MessageResolver messageResolver = getResolver(MessageType.SCREEN);
         return messageResolver.resolveMessage(user, killer);
     }
+
 }

@@ -2,6 +2,7 @@ package com.ultimismc.skywars.lobby.shop.cosmetics.cages;
 
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.Cage;
+import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserProductCategoryBuilder;
 import com.ultimismc.skywars.lobby.shop.cosmetics.CosmeticPurchasableProduct;
@@ -18,9 +19,10 @@ public class CagesProductCategoryBuilder implements UserProductCategoryBuilder {
 
     @Override
     public ProductCategory<User> buildCategory() {
-        CagesProductCategory cagesProductCategory = new CagesProductCategory(12);
-        for(Cage cage : cosmeticManager.getCageHandler()) {
-            cagesProductCategory.addProduct(new CosmeticPurchasableProduct(cage));
+        CageHandler cageHandler = cosmeticManager.getCageHandler();
+        CagesProductCategory cagesProductCategory = new CagesProductCategory(cageHandler, 12);
+        for(Cage cage : cageHandler) {
+            cagesProductCategory.addProduct(new CosmeticPurchasableProduct(cage, false));
         }
         return cagesProductCategory;
     }
