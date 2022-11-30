@@ -22,7 +22,7 @@ public class FireKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lYOU'RE TOASTED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lYOU'RE TOASTED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was struck down by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was turned to dust by " + killer + "&e.");

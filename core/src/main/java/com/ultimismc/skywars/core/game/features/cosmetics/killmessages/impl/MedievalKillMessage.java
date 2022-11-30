@@ -22,7 +22,7 @@ public class MedievalKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lSIR, YOU DIED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lSIR, YOU DIED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was crusaded by the knight " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was jousted by " + killer + "&e.");

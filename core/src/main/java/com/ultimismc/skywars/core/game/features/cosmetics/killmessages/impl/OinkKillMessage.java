@@ -22,7 +22,7 @@ public class OinkKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&d&lOINK");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&d&lOINK");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was oinked by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e slipped into void for " + killer + "&e.");

@@ -21,7 +21,7 @@ public class BBQKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lYOU'RE BBQed!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lYOU'RE BBQed!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was glazed in BBQ sauce by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e slipped in BBQ sauce off the edge spilled by " + killer + "&e.");

@@ -22,7 +22,7 @@ public class DefaultKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lYOU DIED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lYOU DIED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was killed by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was thrown into the void by " + killer + "&e.");

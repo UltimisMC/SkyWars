@@ -6,7 +6,6 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessa
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageBundle;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.MessageType;
 import lombok.Getter;
-import org.bukkit.Material;
 
 /**
  * @author DirectPlan
@@ -22,7 +21,7 @@ public class PirateKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lYARR YOU DIED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lYARR YOU DIED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e be sent to Davy Jones' locker by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e be cannonballed to death by " + killer + "&e.");

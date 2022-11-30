@@ -22,7 +22,7 @@ public class EggyKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&e&lSCRAMBLED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&e&lSCRAMBLED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was painted pretty by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was flipped off the edge by " + killer + "&e.");

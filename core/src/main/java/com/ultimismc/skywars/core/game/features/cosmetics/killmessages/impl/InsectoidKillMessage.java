@@ -22,7 +22,7 @@ public class InsectoidKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lSQUASHED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lSQUASHED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was exterminated by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was scared off an edge by " + killer + "&e.");

@@ -22,7 +22,7 @@ public class HonourableKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lWITH HONOR");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lWITH HONOR");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e died in close combat to " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e fought to the edge with " + killer + "&e.");

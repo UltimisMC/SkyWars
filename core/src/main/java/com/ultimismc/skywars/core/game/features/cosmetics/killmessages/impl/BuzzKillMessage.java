@@ -6,7 +6,6 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessa
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageBundle;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.MessageType;
 import lombok.Getter;
-import org.bukkit.Material;
 
 /**
  * @author DirectPlan
@@ -22,7 +21,7 @@ public class BuzzKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&e&lBUZZ!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&e&lBUZZ!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was buzzed to death by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was bzzz'd off the edge by " + killer + "&e.");

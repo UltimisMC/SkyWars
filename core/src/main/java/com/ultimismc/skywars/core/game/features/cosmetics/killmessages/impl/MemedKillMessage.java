@@ -21,7 +21,7 @@ public class MemedKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lGET REKT!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lGET REKT!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e got rekt by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e took the L to " + killer + "&e.");

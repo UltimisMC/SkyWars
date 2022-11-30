@@ -21,7 +21,7 @@ public class OxdKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&eIMPALED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&eIMPALED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was trampled by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was back kicked into the void by " + killer + "&e.");

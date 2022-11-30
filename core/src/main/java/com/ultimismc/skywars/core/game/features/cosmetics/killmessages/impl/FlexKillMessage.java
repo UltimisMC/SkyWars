@@ -24,7 +24,7 @@ public class FlexKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lDEATH #" + totalKills(statistics));
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lDEATH #" + totalKills(statistics));
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e became victim #" + totalKills(statistics) + " of " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was void victim #" + totalKills(statistics) +" of " + killer + "&e.");
@@ -33,6 +33,9 @@ public class FlexKillMessage extends KillMessage {
     }
 
     private String totalKills(UserStatistics statistics) {
+        if(statistics == null) {
+            return "N/A";
+        }
         return StringUtil.getReadableNumber(statistics.getTotalKills());
     }
 }

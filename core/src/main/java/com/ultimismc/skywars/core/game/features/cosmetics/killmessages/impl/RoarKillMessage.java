@@ -22,7 +22,7 @@ public class RoarKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&6ROAR!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&6ROAR!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was ripped to shreds by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was charged by " + killer + "&e.");

@@ -22,7 +22,7 @@ public class ToTheMoonKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&eDUSTED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&eDUSTED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was crushed into moon dust by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was sent the wrong way by " + killer + "&e.");

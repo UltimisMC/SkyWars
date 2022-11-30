@@ -22,7 +22,7 @@ public class WesternKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lBLAM!!!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lBLAM!!!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was filled full of lead by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e met their end by " + killer + "&e.");

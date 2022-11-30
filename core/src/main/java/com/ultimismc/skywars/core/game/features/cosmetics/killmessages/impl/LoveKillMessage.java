@@ -6,7 +6,6 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessa
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageBundle;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.MessageType;
 import lombok.Getter;
-import org.bukkit.Material;
 
 /**
  * @author DirectPlan
@@ -22,7 +21,7 @@ public class LoveKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lYOU DIED!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lYOU DIED!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was given the cold shoulder by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e was out of the league of " + killer + "&e.");

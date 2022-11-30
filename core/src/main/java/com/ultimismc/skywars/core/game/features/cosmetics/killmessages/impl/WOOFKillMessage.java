@@ -6,7 +6,6 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessa
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageBundle;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.MessageType;
 import lombok.Getter;
-import org.bukkit.Material;
 
 /**
  * @author DirectPlan
@@ -22,7 +21,7 @@ public class WOOFKillMessage extends KillMessage {
 
     @Override
     public void buildBundle(KillMessageBundle messageBundle) {
-        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> user + "&c&lWOOF!");
+        messageBundle.addResolver(MessageType.SCREEN, (user, killer, statistics) -> "&c&lWOOF!");
 
         messageBundle.addResolver(MessageType.KILL, (user, killer, statistics) -> user + "&e was bit by " + killer + "&e.");
         messageBundle.addResolver(MessageType.VOID, (user, killer, statistics) -> user + "&e got WOOF'd by " + killer + "&e into the void.");
