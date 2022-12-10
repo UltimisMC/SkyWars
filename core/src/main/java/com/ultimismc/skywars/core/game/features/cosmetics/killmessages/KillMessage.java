@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.entity.EntityDamageEvent;
 import xyz.directplan.directlib.PluginUtility;
+import xyz.directplan.directlib.combat.AttackCause;
 
 /**
  * @author DirectPlan
@@ -25,8 +26,8 @@ public abstract class KillMessage extends Cosmetic {
 
     public abstract void buildBundle(KillMessageBundle messageBundle);
 
-    public void triggerKillMessage(EntityDamageEvent.DamageCause damageCause, User user, User killer) {
-        MessageType messageType = MessageType.translate(damageCause);
+    public void triggerKillMessage(AttackCause attackCause, User user, User killer) {
+        MessageType messageType = MessageType.translate(attackCause);
         MessageResolver messageResolver = messageBundle.getResolver(messageType);
         String killMessage = messageResolver.resolveMessage(user, killer);
         Bukkit.broadcastMessage(PluginUtility.translateMessage(killMessage));

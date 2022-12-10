@@ -70,11 +70,6 @@ public class GameManager implements FeatureInitializer {
             user.sendMessage("&7You've been teleported to waiting spawn!");
             return;
         }
-        Player player = user.getPlayer();
-        player.getInventory().clear();
-
-
-
         gameHandler.prepareUser(user);
     }
 

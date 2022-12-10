@@ -8,6 +8,7 @@ import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
+import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.game.GameManager;
@@ -24,7 +25,7 @@ import com.ultimismc.skywars.game.handler.scoreboard.AccompaniedGameScoreboard;
 import com.ultimismc.skywars.game.handler.scoreboard.GameScoreboard;
 import com.ultimismc.skywars.game.handler.scoreboard.SoloGameScoreboard;
 import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
-import com.ultimismc.skywars.game.island.Island;
+import com.ultimismc.skywars.game.handler.team.GameTeamHandler;
 import com.ultimismc.skywars.game.island.IslandHandler;
 import com.ultimismc.skywars.game.menubar.GameSpectatorBarMenu;
 import com.ultimismc.skywars.game.menubar.UserWaitingBarMenu;
@@ -49,6 +50,7 @@ import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -80,6 +82,8 @@ public class GameHandler implements FeatureInitializer {
     private IslandHandler islandHandler;
     private CosmeticManager cosmeticManager;
     private SkyWarsCombatManager combatManager;
+    private GameTeamHandler teamHandler;
+    private KitManager kitManager;
 
     private BukkitTask gamePreparer, gameTask;
 
@@ -94,6 +98,7 @@ public class GameHandler implements FeatureInitializer {
     public void initializeFeature(SkyWarsPlugin plugin) {
         FeatureHandler featureHandler = plugin.getFeatureHandler();
         cosmeticManager = featureHandler.getCosmeticManager();
+        kitManager = featureHandler.getKitManager();
 
         skyWarsEventHandler = new SkyWarsEventHandler(plugin, this);
         islandHandler = new IslandHandler(this);
@@ -132,8 +137,9 @@ public class GameHandler implements FeatureInitializer {
         gameSetupHandler = new GameSetupHandler(this);
 
         SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(this, featureHandler);
-        combatManager = new SkyWarsCombatManager(plugin, combatAdapter);
+        combatManager = new SkyWarsCombatManager(plugin, this, combatAdapter);
         combatManager.startCombatManager();
+        teamHandler = new GameTeamHandler(this);
 
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
         plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
@@ -152,6 +158,7 @@ public class GameHandler implements FeatureInitializer {
                 new Replacement("maximum-players", gameServer.getMaximumPlayers()));
 
         Player player = user.getPlayer();
+        player.getInventory().clear();
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setFireTicks(0);
@@ -159,10 +166,11 @@ public class GameHandler implements FeatureInitializer {
         PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameServer.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
-        game.prepareUser(user);
+        game.prepareUser(userGameSession);
+        teamHandler.handleTeamJoin(userGameSession);
+        islandHandler.handleCageJoin(userGameSession);
 
         menuManager.applyDesign(new UserWaitingBarMenu(this, user), true, false);
-        islandHandler.handleCageJoin(userGameSession);
         if(hasMinimumPlayers()) {
             startPreparer();
         }
@@ -175,9 +183,10 @@ public class GameHandler implements FeatureInitializer {
 
         UserGameSession userGameSession = userSessionHandler.removeSession(user);
         gameManager.removeScoreboard(user.getUuid());
-        game.quitUser(user);
+        game.quitUser(userGameSession);
 
         islandHandler.handleCageQuit(userGameSession);
+        teamHandler.handleTeamQuit(userGameSession);
         if(game.isStarting() && !hasMinimumPlayers()) {
             broadcastMessage("&cNot enough players!");
             cancelPreparer();
@@ -215,6 +224,8 @@ public class GameHandler implements FeatureInitializer {
             Player player = user.getPlayer();
             player.closeInventory();
             menuManager.clearInventory(user);
+            GameType gameType = getGameType();
+            kitManager.giveKit(user, gameType);
 
             user.sendMessage(ChatColor.GREEN + repeatLine);
             user.sendMessage("                             &f&lSkyWars");
@@ -228,7 +239,7 @@ public class GameHandler implements FeatureInitializer {
         });
         // All cages gets opened
         broadcastMessage("&eCages opened! &cFIGHT!");
-        if(gameServer.isSoloGame()) {
+        if(isSoloGame()) {
             broadcastMessage("&c&lTeaming is not allowed on Solo Mode!");
         }
     }
@@ -236,6 +247,8 @@ public class GameHandler implements FeatureInitializer {
     public void endGame() {
         game.setGameState(GameState.ENDED);
         game.endGame();
+
+        // Print messages, give players rewards based on their perks & stuff
 
     }
 
@@ -251,19 +264,30 @@ public class GameHandler implements FeatureInitializer {
 
         userGameSession.setSpectator(true);
 
-        Island userIsland = userGameSession.getCurrentIsland();
-        user.teleport(userIsland.getCageLocation());
+        userGameSession.teleportToIsland();
 
+        PluginUtility.removeStuckArrowsFromPlayer(player);
         player.setAllowFlight(true);
         player.setFlying(true);
 
-        // Make player invisible and that he can see
         // spectators too
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));
         menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, false);
+
+        // Make player invisible and that he can see
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));
+        for(UserGameSession session : getUserSessions()) {
+            Player otherPlayer = session.getPlayer();
+            if(session.isSpectator()) {
+                otherPlayer.showPlayer(player);
+                continue;
+            }
+            otherPlayer.hidePlayer(player);
+        }
+        // Set a gray name tag
+
     }
 
-    public void removeSpectator(User user) {
+    public void removeSpectator(UserGameSession user) {
         game.removeSpectator(user);
 
     }
@@ -318,6 +342,10 @@ public class GameHandler implements FeatureInitializer {
         return gameServer.getTeamType();
     }
 
+    public GameType getGameType() {
+        return gameServer.getGameType();
+    }
+
     public int getRegisteredChests() {
         return chestHandler.getSize();
     }
@@ -334,8 +362,12 @@ public class GameHandler implements FeatureInitializer {
         return game.getPlayers().size() >= game.getMinimumPlayers();
     }
 
-    public int getPlayersLeft() {
-        return game.getPlayers().size();
+    public int getCurrentPlayersSize() {
+        return getCurrentPlayers().size();
+    }
+
+    public List<UserGameSession> getCurrentPlayers() {
+        return game.getPlayers();
     }
 
     public boolean hasTimePassed(int seconds) {
@@ -349,6 +381,10 @@ public class GameHandler implements FeatureInitializer {
 
     public boolean isOpen() {
         return !game.hasStarted() && getOnlinePlayers() < getMaximumPlayers();
+    }
+
+    public boolean isSoloGame() {
+        return gameServer.isSoloGame();
     }
 
     public void openInventory(Player player, InventoryUI inventoryUI) {

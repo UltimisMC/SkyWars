@@ -14,13 +14,11 @@ import xyz.directplan.directlib.config.replacement.Replacement;
 public class GamePreparer implements Runnable {
 
     private final GameHandler gameHandler;
-    private final long startSeconds;
 
     public GamePreparer(GameHandler gameHandler, int startSeconds) {
         this.gameHandler = gameHandler;
-        this.startSeconds = (startSeconds * 1000L);
+        gameHandler.setPrepareCountdownLeft(startSeconds * 1000L);
     }
-
 
     @Override
     public void run() {

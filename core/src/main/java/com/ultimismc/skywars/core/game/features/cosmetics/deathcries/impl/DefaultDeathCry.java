@@ -17,4 +17,9 @@ public class DefaultDeathCry extends DeathCry {
     public DefaultDeathCry() {
         super("None", CosmeticRarity.COMMON, null);
     }
+
+    @Override
+    public boolean isDefault() {
+        return true;
+    }
 }

@@ -43,7 +43,7 @@ public abstract class GameScoreboard {
         }
 
         String serverId = gameServer.getServerId();
-        int currentPlayers = gameHandler.getPlayersLeft();
+        int currentPlayers = gameHandler.getCurrentPlayersSize();
         int maximumPlayers = gameServer.getMaximumPlayers();
         String gameStatus = MessageConfigKeys.SKYWARS_GAME_WAITING_STATUS_SCOREBOARD.getStringValue();
         if(game.isStarting()) {

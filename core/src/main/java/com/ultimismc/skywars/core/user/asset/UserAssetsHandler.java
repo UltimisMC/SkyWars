@@ -17,11 +17,11 @@ public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
     }
 
     public UserAsset getAsset(Purchasable purchasable) {
-        return getAsset(purchasable.getName());
+        return getAsset(purchasable.getNameWithCategory());
     }
 
     public void addAsset(UserAsset asset) {
-        addCache(asset.getName(), asset);
+        addCache(asset.getNameWithCategory(), asset);
     }
 
     public void purchaseAsset(Purchasable purchasable) {

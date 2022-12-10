@@ -46,11 +46,13 @@ public class UserSettingHandler extends UserCacheHandler<String, UserSetting> {
     }
 
     public boolean isActivated(String key) {
-        return getSetting(Boolean.class, key);
+        Boolean activated = getSetting(Boolean.class, key);
+        return activated != null ? activated : false;
     }
 
     public int getSettingInt(String key) {
-        return getSetting(Integer.class, key);
+        Integer integer = getSetting(Integer.class, key);
+        return integer != null ? integer : 0;
     }
 
     public String getSettingString(String key) {

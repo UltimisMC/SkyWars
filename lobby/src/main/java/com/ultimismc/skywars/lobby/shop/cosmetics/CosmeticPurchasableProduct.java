@@ -45,8 +45,10 @@ public class CosmeticPurchasableProduct extends UserPurchasableProduct {
             lore.add(" ");
             lore.add("&eRight-Click to preview!");
         }
-        lore.add(" ");
-        lore.add("&7Rarity: " + rarity.getDisplayName());
+        if(!cosmetic.isDefault()) {
+            lore.add(" ");
+            lore.add("&7Rarity: " + rarity.getDisplayName());
+        }
 
         PurchasableDesign design = cosmetic.getDesign();
         ProductItemDesign productItemDesign = new ProductItemDesign(design.getMaterial(), (short) design.getDurability(), lore);

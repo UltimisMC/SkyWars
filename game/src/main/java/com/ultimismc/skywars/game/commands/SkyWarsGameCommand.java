@@ -43,7 +43,7 @@ public class SkyWarsGameCommand extends BaseCommand {
 
     @Subcommand("forcestart")
     @Syntax("[countdown]")
-    public void onForceStart(User user, @Optional int seconds) {
+    public void onForceStart(User user, @Default("0") Integer seconds) {
         if(gameHandler.hasStarted()) {
             user.sendMessage("&cThis game has already started!");
             return;

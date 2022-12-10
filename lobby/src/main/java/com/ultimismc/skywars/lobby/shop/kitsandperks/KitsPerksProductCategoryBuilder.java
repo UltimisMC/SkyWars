@@ -48,21 +48,21 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
 
         int perkSlot = (kitSlot + 9);
         KitsPerksShowcaseProductCategory kitShowcaseCategory = new KitsPerksShowcaseProductCategory(kitMaterial, gameType, "Kits", true, kitSlot);
-        addKitProducts(kitShowcaseCategory, kitManager);
+        addKitProducts(kitShowcaseCategory, kitManager, gameType);
         productCategory.addProduct(kitShowcaseCategory);
 
         KitsPerksShowcaseProductCategory perkShowcaseCategory = new KitsPerksShowcaseProductCategory(perkMaterial, gameType, "Perks", perkSlot);
-        addPerkProducts(perkShowcaseCategory, perkManager);
+        addPerkProducts(perkShowcaseCategory, perkManager, gameType);
         productCategory.addProduct(perkShowcaseCategory);
     }
 
-    public void addKitProducts(KitsPerksShowcaseProductCategory productCategory, KitManager kitManager) {
+    public void addKitProducts(KitsPerksShowcaseProductCategory productCategory, KitManager kitManager, GameType gameType) {
         for(Kit kit : kitManager) {
-            productCategory.addProduct(new KitProduct(kit));
+            productCategory.addProduct(new KitProduct(kit, gameType));
         }
     }
 
-    public void addPerkProducts(KitsPerksShowcaseProductCategory productCategory, PerkManager perkManager) {
+    public void addPerkProducts(KitsPerksShowcaseProductCategory productCategory, PerkManager perkManager, GameType gameType) {
 
         List<String> perksSlotsLore = ShopMessageKeys.PERKS_SLOTS_ITEM_LORE.getStringList();
         productCategory.addProduct(new DisplayProduct<>(Material.REDSTONE_TORCH_ON, "Perks Slots", perksSlotsLore, 19));

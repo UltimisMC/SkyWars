@@ -51,15 +51,15 @@ public class MenuItem implements Cloneable {
     }
 
     public MenuItem(Material type, String displayName, int durability, ActionableItem action){
-        if(displayName == null) {
-            displayName = "";
+        this.builder = new ItemBuilder(type);
+        if(displayName != null) {
+            builder.name(displayName);
         }
-        this.builder = new ItemBuilder(type).name(displayName);
         if(durability > 0){
             this.builder.durability(durability);
         }
         this.itemStack = builder.build();
-        this.displayName = itemStack.getItemMeta().getDisplayName();
+        this.displayName = displayName;
         this.action = action;
     }
 

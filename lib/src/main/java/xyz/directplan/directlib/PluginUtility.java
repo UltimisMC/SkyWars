@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +16,7 @@ import xyz.directplan.directlib.misc.title.Title;
 import xyz.directplan.directlib.misc.title.TitleSlot;
 
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,6 +26,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PluginUtility {
 
     private final static ThreadLocalRandom random = ThreadLocalRandom.current();
+
+    private final static DecimalFormat decimalFormat = new DecimalFormat("##.#");
 
     public static boolean hasChanceOccurred(int percentChance) {
         return getRandomInteger(1, 101) <= percentChance;
@@ -104,7 +108,11 @@ public class PluginUtility {
     }
 
     public static void playSound(Player player, Sound sound) {
-        player.playSound(player.getLocation(), sound, 1f, 1f);
+        playSound(player, player.getLocation(), sound);
+    }
+
+    public static void playSound(Player player, Location location, Sound sound) {
+        player.playSound(location, sound, 1f, 1f);
     }
 
     public static void spawnParticle(Location location, EnumParticle particle) {
@@ -170,5 +178,35 @@ public class PluginUtility {
 
     public static int getPercentage(int current, int max) {
         return (current / max) * 100;
+    }
+
+    public static String formatDoubleDecimal(double d) {
+        return decimalFormat.format(d);
+    }
+
+    public static String getItemNativeName(ItemStack item) {
+        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        return nmsStack.getItem().a(nmsStack);
+    }
+
+    public static int getItemArmorSlot(ItemStack itemStack) {
+        String[] arr = itemStack.getType().name().split("_");
+        if(arr.length < 2) return -1;
+        switch (arr[1]) {
+            case "HELMET":
+                return 39;
+            case "CHESTPLATE":
+                return 38;
+            case "LEGGINGS":
+                return 37;
+            case "BOOTS":
+                return 36;
+            default:
+                return -1;
+        }
+    }
+
+    public static void removeStuckArrowsFromPlayer(Player player) {
+        ((CraftPlayer)player).getHandle().getDataWatcher().watch(9, (byte) 0);
     }
 }

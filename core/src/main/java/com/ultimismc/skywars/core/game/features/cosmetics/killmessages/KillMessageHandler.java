@@ -3,7 +3,10 @@ package com.ultimismc.skywars.core.game.features.cosmetics.killmessages;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.impl.*;
+import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
+import org.bukkit.event.entity.EntityDamageEvent;
+import xyz.directplan.directlib.combat.AttackCause;
 
 /**
  * @author DirectPlan
@@ -50,5 +53,13 @@ public class KillMessageHandler extends PurchasableRegistry<KillMessage> {
 //        defaultPurchasable = new kill message that doesn't have a killer message for users that died without a killer!
         noKillerKillMessage = new NoKillerKillMessage();
         super.initializeFeature(plugin);
+    }
+
+    public void triggerKillMessage(AttackCause attackCause, User user, User killer) {
+        KillMessage killMessage = noKillerKillMessage;
+        if(killer != null) {
+            killMessage = killer.getSetting(KillMessage.class, getSettingKey());
+        }
+        killMessage.triggerKillMessage(attackCause, user, killer);
     }
 }

@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.kitsandperks.kits;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
@@ -18,24 +19,26 @@ import java.util.List;
 public class KitProduct extends UserPurchasableProduct {
 
     private final Kit kit;
+    private final GameType gameType;
 
-    public KitProduct(Kit kit) {
+    public KitProduct(Kit kit, GameType gameType) {
         super(0, kit);
         this.kit = kit;
+        this.gameType = gameType;
     }
 
     @Override
     public ProductItemDesign designPurchasableProduct(User user) {
-        List<String> lore = new ArrayList<>(kit.getDisplayItems()); // <- Kit display items
+        List<String> lore = new ArrayList<>(kit.getDisplayItems(gameType)); // <- Kit display items
 
         PurchasableRarity rarity = kit.getRarity();
         lore.add(" ");
         lore.add("&7Rarity: " + rarity.getDisplayName());
 
-        PurchasableDesign design = kit.getDesign();
+        PurchasableDesign kitDesign = kit.getKitDesign(gameType);
         // "&eClick here to preview!"
-        ProductItemDesign productItemDesign = new ProductItemDesign(design.getMaterial(), (short) design.getDurability(), lore);
-        productItemDesign.setSkullTexture(design.getTexture());
+        ProductItemDesign productItemDesign = new ProductItemDesign(kitDesign.getMaterial(), (short) kitDesign.getDurability(), lore);
+        productItemDesign.setSkullTexture(kitDesign.getTexture());
         productItemDesign.setPurchasedStatus("&eClick here to preview!");
         return productItemDesign;
     }

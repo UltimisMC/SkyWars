@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.game.mode;
 
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.AbstractGame;
 import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.user.UserGameSession;
 
 /**
  * @author DirectPlan
@@ -14,7 +14,7 @@ public class NormalGame extends AbstractGame {
     }
 
     @Override
-    public void prepareUser(User user) {
+    public void prepareUser(UserGameSession user) {
         super.prepareUser(user);
 
     }

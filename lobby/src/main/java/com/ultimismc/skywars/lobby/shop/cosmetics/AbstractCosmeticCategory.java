@@ -30,7 +30,7 @@ public abstract class AbstractCosmeticCategory<T extends PurchasableRegistry<?>>
     public ProductItemDesign designCategory(User user) {
         String settingKey = cosmeticRegistry.getSettingKey();
         Cosmetic cosmetic = user.getSetting(Cosmetic.class, settingKey);
-        List<Cosmetic> ownedCosmetics = user.getAssets(Cosmetic.class);
+        List<? extends Cosmetic> ownedCosmetics = user.getAssets(cosmetic.getClass());
 
         PurchasableDesign design = getDesign();
         List<String> lore = new ArrayList<>(this.description);
@@ -38,10 +38,10 @@ public abstract class AbstractCosmeticCategory<T extends PurchasableRegistry<?>>
         int registrySize = cosmeticRegistry.getSize();
         int completionPercentage = PluginUtility.getPercentage(ownedCosmeticsSize, registrySize);
 
-        description.add(" ");
-        description.add("&7Unlocked: &a" + ownedCosmeticsSize + "/" + registrySize + " &8(" + completionPercentage + "%)");
-        description.add("&7Currently Selected:");
-        description.add(ChatColor.GREEN + cosmetic.getName());
+        lore.add(" ");
+        lore.add("&7Unlocked: &a" + ownedCosmeticsSize + "/" + registrySize + " &8(" + completionPercentage + "%)");
+        lore.add("&7Currently Selected:");
+        lore.add(ChatColor.GREEN + cosmetic.getName());
 
         ProductItemDesign productItemDesign = new ProductItemDesign(design.getMaterial(), (short) design.getDurability(), lore);
         productItemDesign.setSkullTexture(design.getTexture());

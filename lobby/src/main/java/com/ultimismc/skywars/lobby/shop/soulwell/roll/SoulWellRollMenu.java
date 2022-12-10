@@ -140,7 +140,9 @@ public class SoulWellRollMenu extends InventoryUI {
         if(rarity == PurchasableRarity.LEGENDARY) {
             sound = Sound.ENDERDRAGON_GROWL;
         }
-        player.playSound(player.getLocation(), sound, 1f, 1f);
+        for(Player online : Bukkit.getOnlinePlayers()) {
+            online.playSound(player.getLocation(), sound, 1f, 1f);
+        }
 
         user.sendMessage("&7&lYou found " + purchasableDisplayName + " &7&lin the well!");
         if(rarity.isRare()) {

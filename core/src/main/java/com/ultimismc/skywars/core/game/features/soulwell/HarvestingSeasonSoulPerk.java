@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.core.game.features.soulwell;
 
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
-import com.ultimismc.skywars.core.game.features.perks.AbstractPerk;
+import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author DirectPlan
  */
 @Getter
-public class HarvestingSeasonSoulPerk extends AbstractPerk {
+public class HarvestingSeasonSoulPerk extends Perk {
 
     private final PurchasableDesign design = new PurchasableDesign(Material.GHAST_TEAR);
 

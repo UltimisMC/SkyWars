@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.game.combat;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserManager;
+import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.user.UserGameSession;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.combat.CombatAdapter;
 import xyz.directplan.directlib.combat.CombatManager;
@@ -10,17 +10,17 @@ import xyz.directplan.directlib.combat.CombatManager;
 /**
  * @author DirectPlan
  */
-public class SkyWarsCombatManager extends CombatManager<User> {
+public class SkyWarsCombatManager extends CombatManager<UserGameSession> {
 
-    private final UserManager userManager;
+    private final GameHandler gameHandler;
 
-    public SkyWarsCombatManager(SkyWarsPlugin plugin, CombatAdapter<User> combatAdapter) {
+    public SkyWarsCombatManager(SkyWarsPlugin plugin, GameHandler gameHandler, CombatAdapter<UserGameSession> combatAdapter) {
         super(plugin, combatAdapter);
-        userManager = plugin.getUserManager();
+        this.gameHandler = gameHandler;
     }
 
     @Override
-    public User getUser(Player player) {
-        return userManager.getCachedUser(player);
+    public UserGameSession getUser(Player player) {
+        return gameHandler.getSession(player);
     }
 }

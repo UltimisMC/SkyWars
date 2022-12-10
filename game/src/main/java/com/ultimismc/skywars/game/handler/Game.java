@@ -2,6 +2,7 @@ package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
+import com.ultimismc.skywars.game.user.UserGameSession;
 
 import java.util.List;
 
@@ -19,21 +20,21 @@ public interface Game {
 
     void endGame();
 
-    void prepareUser(User user);
+    void prepareUser(UserGameSession user);
 
-    void quitUser(User user);
+    void quitUser(UserGameSession user);
 
     GameState getGameState();
 
     void setGameState(GameState gameState);
 
-    List<User> getSpectators();
+    List<UserGameSession> getSpectators();
 
-    List<User> getPlayers();
+    List<UserGameSession> getPlayers();
 
-    void addSpectator(User user);
+    void addSpectator(UserGameSession user);
 
-    void removeSpectator(User user);
+    void removeSpectator(UserGameSession user);
 
     boolean isWaiting();
 

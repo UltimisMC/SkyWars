@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import xyz.directplan.directlib.PluginUtility;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +21,7 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
     private final PaginatedModel paginatedModel;
 
     public PaginatedMenu(String title, int rows, PaginatedModel paginatedModel) {
-        super(title, rows);
+        super(title, (rows != -1 ? rows : PluginUtility.getRowsBasedOnSlots(paginatedModel.getPageSize())));
         this.pageSize = paginatedModel.getPageSize();
         this.paginatedModel = paginatedModel;
     }

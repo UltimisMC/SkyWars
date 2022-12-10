@@ -22,7 +22,12 @@ public interface Currency {
 
     default void increaseCurrencyWithMessage(User user, int amount) {
         increaseCurrency(user, amount);
-        sendMessage(user, amount);
+        sendMessage(user, amount, null);
+    }
+
+    default void increaseCurrencyReason(User user, int amount, String reason) {
+        increaseCurrency(user, amount);
+        sendMessage(user, amount, reason);
     }
 
     default void increaseCurrency(User user, Purchasable purchasable) {
@@ -35,9 +40,9 @@ public interface Currency {
         decreaseCurrency(user, purchasable.getPrice());
     }
 
-    default void sendMessage(User user, int amount) {
+    default void sendMessage(User user, int amount, String reason) {
         String displayAmount = getDisplayAmount(amount);
-        user.sendMessage(getCurrencyColor() + "+ " + displayAmount);
+        user.sendMessage(getCurrencyColor() + "+ " + displayAmount + (reason != null ? " (" + reason + ")" : ""));
     }
 
     default String getDisplayAmount(int amount) {

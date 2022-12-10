@@ -6,14 +6,15 @@ import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import xyz.directplan.directlib.PluginUtility;
 
 /**
@@ -52,24 +53,55 @@ public class SkyWarsGameListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if(gameHandler.hasStarted()) return;
-
+        if(!gameHandler.hasStarted()) {
+            event.setCancelled(true);
+            return;
+        }
         Player player = event.getPlayer();
         UserGameSession userGameSession = gameHandler.getSession(player);
         if(userGameSession.isSetupMode()) return;
-
+        if(!userGameSession.isSpectator()) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if(gameHandler.hasStarted()) return;
-
+        if(!gameHandler.hasStarted()) {
+            event.setCancelled(true);
+            return;
+        }
         Player player = event.getPlayer();
         UserGameSession userGameSession = gameHandler.getSession(player);
         if(userGameSession.isSetupMode()) return;
+        if(!userGameSession.isSpectator()) return;
 
         event.setBuild(false);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSpectator()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemPickup(PlayerPickupItemEvent event) {
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSpectator()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        Entity entity = event.getRightClicked();
+        if(entity instanceof ArmorStand) {
+            event.setCancelled(true);
+        }
     }
 }

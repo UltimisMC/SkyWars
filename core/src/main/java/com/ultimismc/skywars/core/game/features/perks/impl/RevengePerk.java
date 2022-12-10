@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
-import com.ultimismc.skywars.core.game.features.perks.AbstractPerk;
+import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -10,7 +10,7 @@ import org.bukkit.Material;
  * @author DirectPlan
  */
 @Getter
-public class RevengePerk extends AbstractPerk {
+public class RevengePerk extends Perk {
 
     private final PurchasableDesign design = new PurchasableDesign(Material.IRON_SWORD);
 

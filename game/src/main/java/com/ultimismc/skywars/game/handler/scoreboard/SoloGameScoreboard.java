@@ -25,7 +25,7 @@ public class SoloGameScoreboard extends GameScoreboard {
         int kills = userGameSession.getKills();
 
         String serverId = gameServer.getServerId();
-        int playersLeft = gameHandler.getPlayersLeft();;
+        int playersLeft = gameHandler.getCurrentPlayersSize();
         String mapName = gameServer.getMapName();
         String modeDisplayName = gameServer.getGameDisplayName();
 

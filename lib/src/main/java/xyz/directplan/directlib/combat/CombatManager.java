@@ -1,19 +1,19 @@
 package xyz.directplan.directlib.combat;
 
 import lombok.Getter;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author DirectPlan
@@ -44,31 +44,33 @@ public abstract class CombatManager<U> {
         if(!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         Player attacker = null;
+        Projectile projectile = null;
         if(event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent damageByEntityEvent = (EntityDamageByEntityEvent) event;
             Entity damager = damageByEntityEvent.getDamager();
             if(damager instanceof Projectile) {
-                Projectile projectile = (Projectile) damager;
+                projectile = (Projectile) damager;
                 damager = (Entity) projectile.getShooter();
             }
             if(damager instanceof Player) {
                 attacker = (Player) damager;
             }
         }
-        if(combatAdapter.onAttack(player, attacker)) {
+        EntityDamageEvent.DamageCause AdamageCause = event.getCause();
+        AttackCause attackCause = AttackCause.translate(AdamageCause, projectile);
+        U user = getUser(player);
+        U attackerUser = (attacker != null ? getUser(attacker) : null);
+        if(combatAdapter.onAttack(user, attackerUser, attackCause)) {
             event.setCancelled(true);
             return;
         }
 
-        EntityDamageEvent.DamageCause damageCause = event.getCause();
         UUID playerUuid = player.getUniqueId();
-
-        U user = getUser(player);
 
         if(attacker != null) addAttacker(playerUuid, attacker);
 
         double finalDamage = event.getFinalDamage();
-        if(damageCause == EntityDamageEvent.DamageCause.VOID) finalDamage = 40.0;
+        if(attackCause.isVoid()) finalDamage = 40.0;
 
         if(player.getHealth() - finalDamage > 0) {
             // Player is attacked but not enough to kill him.
@@ -76,13 +78,22 @@ public abstract class CombatManager<U> {
         }
 
         // Player is dead
-        U killer;
-        if(attacker == null) {
+        if(attackerUser == null) {
             attacker = pollLastAttacker(playerUuid);
+            if(attacker != null) {
+                attackerUser = getUser(attacker);
+            }
         }
-        killer = (attacker != null ? getUser(attacker) : null);
-
-        combatAdapter.onDeath(user, killer, damageCause);
+        List<ItemStack> drops = new ArrayList<>();
+        for(ItemStack content : player.getInventory()) {
+            if(content == null || content.getType() == Material.AIR) continue;
+            drops.add(content);
+        }
+        combatAdapter.onDeath(user, attackerUser, drops, attackCause);
+        for(ItemStack item : drops) {
+            World world = player.getWorld();
+            world.dropItem(player.getLocation(), item);
+        }
         event.setCancelled(true);
         player.setHealth(20.0);
         player.setFoodLevel(20);
@@ -92,14 +103,18 @@ public abstract class CombatManager<U> {
         LinkedList<Combat> assists = combatMap.remove(playerUuid);
         if(assists == null) return;
         for(Combat combat : assists) {
+            Player assistant = combat.getPlayer();
+            if(assistant == attacker) continue;
             U assistUser = getUser(combat.getPlayer());
-            combatAdapter.onAssist(user, assistUser, damageCause);
+            combatAdapter.onAssist(user, assistUser, attackCause);
         }
     }
 
     public void addAttacker(UUID attacked, Player attacker) {
         LinkedList<Combat> assists = combatMap.computeIfAbsent(attacked, uuid -> new LinkedList<>());
-        assists.addLast(new Combat(attacker));
+        Combat combat = new Combat(attacker);
+        if(assists.contains(combat)) return;
+        assists.addLast(combat);
     }
 
     public Player pollLastAttacker(UUID attacked) {

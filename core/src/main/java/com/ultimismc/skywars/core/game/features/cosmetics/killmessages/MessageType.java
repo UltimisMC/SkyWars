@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.core.game.features.cosmetics.killmessages;
 
-import org.bukkit.event.entity.EntityDamageEvent;
+import xyz.directplan.directlib.combat.AttackCause;
 
 /**
  * @author DirectPlan
@@ -13,15 +13,16 @@ public enum MessageType {
     FALL_DAMAGE,
     BOW;
 
-    public static MessageType translate(EntityDamageEvent.DamageCause damageCause) {
-        switch (damageCause) {
+    public static MessageType translate(AttackCause attackCause) {
+        switch (attackCause) {
             case VOID: {
                 return VOID;
             }
-            case FALL: {
+            case FALL_DAMAGE: {
                 return FALL_DAMAGE;
             }
-            case PROJECTILE: {
+            case PROJECTILE:
+            case BOW: {
                 return BOW;
             }
             default: {

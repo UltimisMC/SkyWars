@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.game.features.cosmetics.Cosmetic;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
@@ -26,6 +27,8 @@ public abstract class DeathCry extends Cosmetic {
         if(crySound == null) return;
         if(!user.isOnline()) return;
         Player player = user.getPlayer();
-        PluginUtility.playSound(player, crySound);
+        for(Player online : Bukkit.getOnlinePlayers()) {
+            PluginUtility.playSound(online, player.getLocation(), crySound);
+        }
     }
 }

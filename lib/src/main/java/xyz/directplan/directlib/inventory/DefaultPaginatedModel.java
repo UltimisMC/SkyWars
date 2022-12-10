@@ -5,9 +5,12 @@ package xyz.directplan.directlib.inventory;
  */
 public class DefaultPaginatedModel extends PaginatedModel {
 
+    public DefaultPaginatedModel(int pageSize) {
+        super(pageSize, 8, 0, true);
+    }
 
     public DefaultPaginatedModel() {
-        super(18, 8, 0, true);
+        this(18);
     }
 
     @Override

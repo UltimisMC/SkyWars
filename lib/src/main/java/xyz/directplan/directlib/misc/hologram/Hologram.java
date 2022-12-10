@@ -55,6 +55,7 @@ public class Hologram {
                 armorStand.setCustomNameVisible(!line.isEmpty());
                 armorStand.setCustomName(line);
                 armorStand.setCanPickupItems(false);
+                armorStand.setRemoveWhenFarAway(true);
                 armorStands.add(armorStand);
                 lastLocation = updatedLastLocation;
             }

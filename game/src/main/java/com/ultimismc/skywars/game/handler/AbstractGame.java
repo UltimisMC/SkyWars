@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.game.handler;
 
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
+import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -22,8 +22,8 @@ public abstract class AbstractGame implements Game {
 
     private final int minimumPlayers = 8;
     private GameState gameState = GameState.WAITING;
-    private final List<User> players = new ArrayList<>();
-    private final List<User> spectators = new ArrayList<>();
+    private final List<UserGameSession> players = new ArrayList<>();
+    private final List<UserGameSession> spectators = new ArrayList<>();
 
 
     @Override
@@ -37,23 +37,23 @@ public abstract class AbstractGame implements Game {
     }
 
     @Override
-    public void prepareUser(User user) {
+    public void prepareUser(UserGameSession user) {
         players.add(user);
     }
 
     @Override
-    public void quitUser(User user) {
+    public void quitUser(UserGameSession user) {
         players.remove(user);
         removeSpectator(user);
     }
 
     @Override
-    public void addSpectator(User user) {
+    public void addSpectator(UserGameSession user) {
         spectators.add(user);
     }
 
     @Override
-    public void removeSpectator(User user) {
+    public void removeSpectator(UserGameSession user) {
         spectators.remove(user);
     }
 

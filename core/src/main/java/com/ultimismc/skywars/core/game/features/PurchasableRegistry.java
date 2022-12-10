@@ -16,7 +16,7 @@ public abstract class PurchasableRegistry<T extends Purchasable> implements Feat
     protected final LinkedList<T> orderedPurchasables = new LinkedList<>();
 
     @Setter protected T defaultPurchasable;
-    @Getter private final String settingKey;
+    @Getter protected final String settingKey;
 
     public PurchasableRegistry(String settingKey) {
         this.settingKey = settingKey;

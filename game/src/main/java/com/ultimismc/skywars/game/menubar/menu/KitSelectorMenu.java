@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game.menubar.menu;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
@@ -31,12 +32,14 @@ public class KitSelectorMenu extends InventoryUI {
 
     private final GameHandler gameHandler;
     private final User user;
+    private final GameType gameType;
 
     public KitSelectorMenu(GameHandler gameHandler, User user) {
         super("Kit Selector", 6);
 
         this.gameHandler = gameHandler;
         this.user = user;
+        this.gameType = gameHandler.getGameType();
     }
 
     @Override
@@ -49,7 +52,7 @@ public class KitSelectorMenu extends InventoryUI {
 
         int index = 0;
         for(Kit kit : kitManager) {
-            PurchasableDesign purchasableDesign = kit.getDesign();
+            PurchasableDesign purchasableDesign = kit.getKitDesign(gameType);
             Material material = purchasableDesign.getMaterial();
             int durability = purchasableDesign.getDurability();
 
@@ -77,7 +80,7 @@ public class KitSelectorMenu extends InventoryUI {
                 menuItem.addFlags(ItemFlag.HIDE_ENCHANTS);
             }
 
-            List<String> lore = new ArrayList<>(kit.getDisplayItems());
+            List<String> lore = new ArrayList<>(kit.getDisplayItems(gameType));
             lore.add(" ");
             lore.add(status);
 
