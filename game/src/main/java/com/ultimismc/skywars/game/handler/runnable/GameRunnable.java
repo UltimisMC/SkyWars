@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.game.handler.runnable;
 
 import com.ultimismc.skywars.core.game.features.kits.Kit;
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import lombok.RequiredArgsConstructor;
 import xyz.directplan.directlib.PluginUtility;
@@ -17,7 +18,8 @@ public class GameRunnable implements Runnable {
     public void run() {
 
         if(!gameHandler.hasStarted()) {
-            gameHandler.broadcastFunction(user -> {
+            gameHandler.broadcastFunction(userGameSession -> {
+                User user = userGameSession.getUser();
                 Kit kit = user.getSetting(Kit.class, "kit");
                 PluginUtility.sendActionBar(user.getPlayer(), "&eSelected Kit: &a" + kit.getName());
             });

@@ -1,6 +1,7 @@
 package xyz.directplan.directlib.combat;
 
 import lombok.Getter;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -89,10 +90,11 @@ public abstract class CombatManager<U> {
             if(content == null || content.getType() == Material.AIR) continue;
             drops.add(content);
         }
+        Location location = player.getLocation();
         combatAdapter.onDeath(user, attackerUser, drops, attackCause);
         for(ItemStack item : drops) {
             World world = player.getWorld();
-            world.dropItem(player.getLocation(), item);
+            world.dropItem(location, item);
         }
         event.setCancelled(true);
         player.setHealth(20.0);

@@ -41,7 +41,7 @@ public abstract class GameChestRegistry {
 
         int randomItemsLength = PluginUtility.getRandomInteger(minimumChestItems, maximumChestItems);
 
-        Inventory chestInventory = chest.getChestInventory();
+        Inventory chestInventory = chest.getInventory();
         chestInventory.clear();
 
         int inventorySize = chestInventory.getSize();

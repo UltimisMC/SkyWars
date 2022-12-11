@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * @author DirectPlan
@@ -22,8 +21,8 @@ public abstract class AbstractGame implements Game {
 
     private final int minimumPlayers = 8;
     private GameState gameState = GameState.WAITING;
-    private final List<UserGameSession> players = new ArrayList<>();
-    private final List<UserGameSession> spectators = new ArrayList<>();
+    private final LinkedList<UserGameSession> players = new LinkedList<>();
+    private final LinkedList<UserGameSession> spectators = new LinkedList<>();
 
 
     @Override
@@ -50,6 +49,7 @@ public abstract class AbstractGame implements Game {
     @Override
     public void addSpectator(UserGameSession user) {
         spectators.add(user);
+        players.remove(user);
     }
 
     @Override
@@ -70,5 +70,10 @@ public abstract class AbstractGame implements Game {
     @Override
     public boolean hasStarted() {
         return gameState == GameState.STARTED;
+    }
+
+    @Override
+    public boolean hasEnded() {
+        return gameState == GameState.ENDED;
     }
 }

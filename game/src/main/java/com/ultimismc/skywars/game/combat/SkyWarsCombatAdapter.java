@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game.combat;
 
+import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.cosmetics.deathcries.DeathCryHandler;
@@ -7,6 +8,7 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killeffects.KillEffect
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -33,11 +35,22 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
     public boolean onAttack(UserGameSession userGameSession, UserGameSession attackerGameSession, AttackCause attackCause) {
         User user = userGameSession.getUser();
         User attacker = (attackerGameSession != null ? attackerGameSession.getUser() : null);
+        if(userGameSession.isSetupMode()) return true;
 
+        if(gameHandler.hasEnded()) {
+            if(attackCause.isVoid()) {
+                userGameSession.teleportToIsland();
+            }
+            return true;
+        }
+        if(!gameHandler.isSoloGame() && attacker != null) {
+            GameTeam team = attackerGameSession.getGameTeam();
+            if(team.isMember(userGameSession)) return true;
+        }
         if(!gameHandler.hasStarted()) return true;
         if(!gameHandler.hasTimePassed(5)) return true;
 
-        if(userGameSession.isSetupMode()) return true;
+        if(attacker != null && attackerGameSession.isSpectator()) return true;
         if(userGameSession.isSpectator()) {
             if(attackCause.isVoid()) {
                 userGameSession.teleportToIsland();
@@ -67,9 +80,13 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
         killEffectHandler.playKillEffect(user, killer);
         deathCryHandler.playDeathCry(user);
 
-        gameHandler.terminateUser(user);
+        gameHandler.terminateUser(userGameSession);
         if(killer == null) return;
         Player killerPlayer = killer.getPlayer();
+
+        killerGameSession.increaseKill();
+        killerGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 100, "Kill");
+        killerGameSession.addCurrencyStat(Currency.EXP_CURRENCY, 1, "Kill");
 
         if(attackCause.isProjectile()) {
             double shootDistance = killerPlayer.getLocation().distanceSquared(player.getLocation());

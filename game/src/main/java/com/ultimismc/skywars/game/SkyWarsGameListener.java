@@ -1,10 +1,13 @@
 package com.ultimismc.skywars.game;
 
+import com.mysql.jdbc.ServerPreparedStatement;
+import com.ultimismc.skywars.game.chest.Chest;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -14,6 +17,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import xyz.directplan.directlib.PluginUtility;
 
@@ -47,8 +53,10 @@ public class SkyWarsGameListener implements Listener {
         if(action != Action.RIGHT_CLICK_BLOCK) return;
         if(clickedBlock.getType() != Material.CHEST) return;
 
+        event.setCancelled(true);
         ChestHandler chestHandler = gameHandler.getChestHandler();
         chestHandler.openChest(userGameSession, clickedBlock);
+        PluginUtility.playSound(player, Sound.CHEST_OPEN);
     }
 
     @EventHandler

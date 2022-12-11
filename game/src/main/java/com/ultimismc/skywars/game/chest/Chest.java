@@ -1,8 +1,10 @@
 package com.ultimismc.skywars.game.chest;
 
 import lombok.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import xyz.directplan.directlib.PluginUtility;
 
@@ -18,6 +20,8 @@ public class Chest {
     private boolean opened;
     private ChestSkyWarsEventUpdater updater;
 
+    private final Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST);
+
     public Location getLocation() {
         return block.getLocation();
     }
@@ -27,12 +31,6 @@ public class Chest {
     }
 
     public boolean isEmpty() {
-        Inventory inventory = getChestInventory();
         return PluginUtility.isEmpty(inventory);
-    }
-
-    public Inventory getChestInventory() {
-        org.bukkit.block.Chest chest = getBlockChest();
-        return chest.getBlockInventory();
     }
 }

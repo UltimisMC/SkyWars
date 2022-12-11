@@ -9,6 +9,7 @@ import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import xyz.directplan.directlib.PluginUtility;
 
@@ -59,7 +60,11 @@ public class ChestHandler {
 
     public void openChest(UserGameSession userGameSession, Block block) {
         Chest chest = getChest(block);
-        if(chest == null || chest.isOpened()) return;
+        if(chest == null) return;
+        Player player = userGameSession.getPlayer();
+        player.openInventory(chest.getInventory());
+
+        if(chest.isOpened()) return;
         chest.setOpened(true);
 
         GameStatistics gameStatistics = userGameSession.getGameStatistics();
@@ -71,12 +76,6 @@ public class ChestHandler {
 
     public void shutdown() {
         for(Chest chest : chests.values()) {
-            org.bukkit.block.Chest blockChest = chest.getBlockChest();
-            Inventory blockInventory = blockChest.getBlockInventory();
-            if(blockInventory != null) {
-                blockInventory.clear();
-            }
-
             ChestHologram hologram = chest.getChestHologram();
             hologram.destroy();
         }

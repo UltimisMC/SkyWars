@@ -10,15 +10,15 @@ import org.bukkit.scoreboard.Team;
  */
 public class TagUtil {
 
-    private final static String TAG_PREFIX = "skywars_team_";
+    private final static String TAG_PREFIX = "_directlib_team";
 
     public static void setTag(Player player, Player other, String group, String tag) {
         Scoreboard scoreboard = player.getScoreboard();
         if(scoreboard == null) {
-            scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         }
 
-        String teamTag = TAG_PREFIX + group;
+        String teamTag = group + TAG_PREFIX;
         Team team = scoreboard.getTeam(teamTag);
         if(team == null) {
             team = scoreboard.registerNewTeam(teamTag);
@@ -32,5 +32,15 @@ public class TagUtil {
         team.addEntry(otherName);
 
         player.setScoreboard(scoreboard);
+    }
+
+    public static void clearTag(Player player, String group) {
+        Scoreboard scoreboard = player.getScoreboard();
+        if(scoreboard == null) return;
+
+        String teamTag = group + TAG_PREFIX;
+        Team team = scoreboard.getTeam(teamTag);
+        if(team == null) return;
+        team.removeEntry(player.getName());
     }
 }

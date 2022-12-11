@@ -1,9 +1,9 @@
 package com.ultimismc.skywars.game.handler;
 
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.user.UserGameSession;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,7 +30,7 @@ public interface Game {
 
     List<UserGameSession> getSpectators();
 
-    List<UserGameSession> getPlayers();
+    LinkedList<UserGameSession> getPlayers();
 
     void addSpectator(UserGameSession user);
 
@@ -41,6 +41,8 @@ public interface Game {
     boolean isStarting();
 
     boolean hasStarted();
+
+    boolean hasEnded();
 
     int getMinimumPlayers();
 }

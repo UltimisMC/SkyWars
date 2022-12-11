@@ -42,7 +42,6 @@ public class GameTeamHandler {
 
         userGameSession.setGameTeam(availableTeam);
 
-        // Tab shit
         User user = userGameSession.getUser();
         user.sendMessage("&aTeam Tag Group: &e" + availableTeam.getTagGroup());
         setupTeamTag(userGameSession);
@@ -53,11 +52,15 @@ public class GameTeamHandler {
         if(gameTeam == null) return; // Strange
         gameTeam.removePlayer(userGameSession);
         if(gameTeam.isEmpty()) gameTeams.remove(gameTeam);
+
+        Player player = userGameSession.getPlayer();
+        TagUtil.clearTag(player, gameTeam.getTagGroup());
     }
 
     private GameTeam getAvailableTeam() {
         GameTeam lastTeam = null;
         for(GameTeam gameTeam : gameTeams) {
+            gameHandler.log("Iterating at: " + gameTeam.getTagGroup());
             lastTeam = gameTeam;
             if(gameTeam.isFull()) continue;
             return gameTeam;
@@ -80,14 +83,19 @@ public class GameTeamHandler {
 
         String tagGroup = gameTeam.getTagGroup();
         for(UserGameSession online : gameHandler.getUserSessions()) {
+            Player other = online.getPlayer();
+            if(user.isSpectator()) {
+                TagUtil.setTag(player, other, "SPECTATOR", ChatColor.GRAY + "");
+                continue;
+            }
             ChatColor tagColor = ChatColor.RED;
-            String tag;
+            String tag = "";
             if(gameTeam.isMember(online)) {
                 tagColor = ChatColor.GREEN;
             }
-//            if(gameHandler.isSoloGame()) tag = "[" + tagGroup + "]";
-            tag = "[" + tagGroup + "]";
-            TagUtil.setTag(player, online.getPlayer(), tagGroup, tagColor + tag);
+            if(gameHandler.isSoloGame()) tag = "[" + tagGroup + "] ";
+
+            TagUtil.setTag(player, other, tagGroup, tagColor + tag);
         }
     }
 

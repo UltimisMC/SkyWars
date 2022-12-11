@@ -2,6 +2,7 @@ package com.ultimismc.skywars.game.user;
 
 import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameStatistics;
+import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.island.Island;
@@ -26,6 +27,7 @@ public class UserGameSession {
     private boolean setupMode;
     private Island currentIsland;
     private GameTeam gameTeam;
+    private final UserRewardSummary rewardSummary = new UserRewardSummary();
 
     private final GameStatistics gameStatistics = new GameStatistics();
 
@@ -51,6 +53,14 @@ public class UserGameSession {
         teleport(location);
     }
 
+    public void addCurrencyStat(Currency currency, int amount, String reason, boolean silent) {
+        rewardSummary.addCurrencyStat(user, currency, amount, reason, silent);
+    }
+
+    public void addCurrencyStat(Currency currency, int amount, String reason) {
+        addCurrencyStat(currency, amount, reason, false);
+    }
+
     public void sendMessage(String message) {
         user.sendMessage(message);
     }
@@ -61,6 +71,10 @@ public class UserGameSession {
 
     public Player getPlayer() {
         return user.getPlayer();
+    }
+
+    public boolean isOnline() {
+        return user.isOnline();
     }
 
     public void increaseKill() {

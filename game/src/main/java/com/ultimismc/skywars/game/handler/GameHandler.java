@@ -5,6 +5,7 @@ import com.ultimismc.skywars.core.game.GameServer;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
@@ -19,6 +20,7 @@ import com.ultimismc.skywars.game.combat.SkyWarsCombatAdapter;
 import com.ultimismc.skywars.game.combat.SkyWarsCombatManager;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
+import com.ultimismc.skywars.game.handler.runnable.GameEndRunnable;
 import com.ultimismc.skywars.game.handler.runnable.GamePreparer;
 import com.ultimismc.skywars.game.handler.runnable.GameRunnable;
 import com.ultimismc.skywars.game.handler.scoreboard.AccompaniedGameScoreboard;
@@ -50,7 +52,7 @@ import xyz.directplan.directlib.inventory.manager.MenuManager;
 import xyz.directplan.directlib.scoreboard.ScoreboardManager;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.function.Consumer;
 
 /**
@@ -167,7 +169,6 @@ public class GameHandler implements FeatureInitializer {
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
         game.prepareUser(userGameSession);
-        teamHandler.handleTeamJoin(userGameSession);
         islandHandler.handleCageJoin(userGameSession);
 
         menuManager.applyDesign(new UserWaitingBarMenu(this, user), true, false);
@@ -220,12 +221,15 @@ public class GameHandler implements FeatureInitializer {
 
         broadcastFunction(user -> PluginUtility.playSound(user.getPlayer(), Sound.FIREWORK_BLAST));
         String repeatLine = StringUtils.repeat("▬", 70);
-        broadcastFunction(user -> {
+        broadcastFunction(userGameSession -> {
+            User user = userGameSession.getUser();
             Player player = user.getPlayer();
             player.closeInventory();
             menuManager.clearInventory(user);
             GameType gameType = getGameType();
             kitManager.giveKit(user, gameType);
+            teamHandler.handleTeamJoin(userGameSession);
+            PluginUtility.sendActionBar(user.getPlayer(), "");
 
             user.sendMessage(ChatColor.GREEN + repeatLine);
             user.sendMessage("                             &f&lSkyWars");
@@ -249,16 +253,28 @@ public class GameHandler implements FeatureInitializer {
         game.endGame();
 
         // Print messages, give players rewards based on their perks & stuff
+        UserGameSession winner = getCurrentPlayers().getLast();
+        winner.increaseWin();
 
+        winner.addCurrencyStat(Currency.SOUL_CURRENCY, (winner.getKills() * 2), "Win", true);
+        for(UserGameSession everyone : getUserSessions()) {
+            everyone.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
+        }
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(this, winner, getUserSessions()), 0, 20L);
     }
 
-    public void terminateUser(User user) {
-        MessageConfigKeys.DEATH_MESSAGE.sendMessage(user.getPlayer());
-        UserGameSession userGameSession = getSession(user);
+    public void terminateUser(UserGameSession userGameSession) {
+        MessageConfigKeys.DEATH_MESSAGE.sendMessage(userGameSession.getPlayer());
+        System.out.println("bef-current players size: " + getCurrentPlayersSize());
         addSpectator(userGameSession);
+        System.out.println("current players size: " + getCurrentPlayersSize());
+        if(getCurrentPlayersSize() <= 1) {
+            endGame();
+        }
     }
 
     public void addSpectator(UserGameSession userGameSession) {
+        game.addSpectator(userGameSession);
         User user = userGameSession.getUser();
         Player player = user.getPlayer();
 
@@ -284,7 +300,6 @@ public class GameHandler implements FeatureInitializer {
             otherPlayer.hidePlayer(player);
         }
         // Set a gray name tag
-
     }
 
     public void removeSpectator(UserGameSession user) {
@@ -293,15 +308,16 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public void updateScoreboard() {
-        broadcastFunction(user -> gameScoreboard.updateScoreboard(user));
+        broadcastFunction(userGameSession -> gameScoreboard.updateScoreboard(userGameSession.getUser()));
     }
 
     public void broadcastMessage(String message) {
         broadcastFunction(user -> user.sendMessage(message));
     }
 
-    public void broadcastFunction(Consumer<User> consumer) {
-        for(User user : userManager.getUsers().values()) {
+    public void broadcastFunction(Consumer<UserGameSession> consumer) {
+        for(UserGameSession user : getUserSessions()) {
+            if(!user.isOnline()) continue;
             consumer.accept(user);
         }
     }
@@ -366,7 +382,7 @@ public class GameHandler implements FeatureInitializer {
         return getCurrentPlayers().size();
     }
 
-    public List<UserGameSession> getCurrentPlayers() {
+    public LinkedList<UserGameSession> getCurrentPlayers() {
         return game.getPlayers();
     }
 
@@ -377,6 +393,10 @@ public class GameHandler implements FeatureInitializer {
 
     public boolean hasStarted() {
         return game.hasStarted();
+    }
+
+    public boolean hasEnded() {
+        return game.hasEnded();
     }
 
     public boolean isOpen() {
