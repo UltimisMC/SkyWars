@@ -2,8 +2,8 @@
 A custom skywars plugin developed for UltimisMC Network.
 
 # Features Left
-- Implement kits
-- Implement perks
+- Implement kit items ***(Working on it)***
+- Implement perk functionalities ***(Working on it)***
 - Game Kit Selector Menu implementation ***(Completed)***
 - Spectator Settings Menu ***(Completed)***
 - Spectator System ***(Completed)***
