@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.game.features.kits.impl;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.game.features.kits.KitRarity;
@@ -16,5 +17,8 @@ public class ProKit extends Kit {
 
     public ProKit() {
         super("Pro", KitRarity.COMMON);
+
+        addBundle(GameType.NORMAL, null);
+        addBundle(GameType.INSANE, null);
     }
 }

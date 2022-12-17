@@ -30,6 +30,11 @@ public class KitItem {
         this(material, 0);
     }
 
+    public KitItem(String texture) {
+        this(Material.SKULL_ITEM, 3);
+        menuItem.setCustomSkullProperty(texture);
+    }
+
     public ItemStack getItemStack() {
         return menuItem.getItemStack();
     }
@@ -66,8 +71,8 @@ public class KitItem {
         return this;
     }
 
-    public KitItem itemEnchantment(Enchantment enchantment, String name, int level) {
-        return itemEnchantment(new ItemEnchantment(enchantment, name, level));
+    public KitItem itemEnchantment(Enchantment enchantment, int level) {
+        return itemEnchantment(new ItemEnchantment(enchantment, level));
     }
 
     public KitItem itemAbility(ItemAbility ability) {

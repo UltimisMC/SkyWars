@@ -30,8 +30,8 @@ public class KitManager extends PurchasableRegistry<Kit> {
         registerPurchasables(new DefaultKit(), new ArmorerKit(), new ArmorsmithKit(), new BatguyKit(), new CactusKit(), new DiscoKit(), new EcologistKit(),
                 new FrogKit(), new GrenadeKit(), new HealerKit(), new KnightKit(), new ProKit(), new ScoutKit(), new BaseballPlayerKit(),
                 new EnchanterKit(), new EnderchestKit(), new EngineerKit(), new FarmerKit(), new FishermanKit(), new HunterKit(), new MagicianKit(),
-                new PharoahKit(), new PigRiderKit(), new PrincessKit(), new SlothKit(), new SnowmanKit(), new SpeleologistKit(), new WarlockKit(),
-                new CannoneerKit(), new RookieKit(), new EnergixKit());
+                new PharaohKit(), new PigRiderKit(), new PrincessKit(), new SlothKit(), new SnowmanKit(), new SpeleologistKit(), new WarlockKit(),
+                new CannoneerKit(), new PyroKit(), new SalmonKit(), new SlimeKit(), new TrollKit(), new RookieKit(), new EnergixKit());
 
         for(Kit kit : this) {
             for(GameType gameType : GameType.values()) {

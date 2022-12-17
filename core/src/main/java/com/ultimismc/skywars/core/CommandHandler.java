@@ -12,9 +12,6 @@ import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.ConfigHandler;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
 
-import java.util.Map;
-import java.util.UUID;
-
 /**
  * @author DirectPlan
  */

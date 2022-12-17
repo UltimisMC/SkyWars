@@ -10,41 +10,39 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
-/**
- * @author DirectPlan
- */
 @Getter
-public class HunterKit extends Kit {
+public class SlimeKit extends Kit {
 
-    private final PurchasableDesign design = new PurchasableDesign(Material.BOW);
+    private final PurchasableDesign design = new PurchasableDesign(Material.SLIME_BLOCK);
 
-    public HunterKit() {
-        super("Hunter", KitRarity.RARE);
+    public SlimeKit() {
+        super("Slime", KitRarity.LEGENDARY);
 
-        addBundle(GameType.NORMAL, new NormalHunterBundle());
-        addBundle(GameType.INSANE, new InsaneHunterBundle());
+        addBundle(GameType.NORMAL, new NormalSlimeBundle());
+        addBundle(GameType.INSANE, new InsaneSlimeBundle());
     }
 
-    static class NormalHunterBundle extends KitBundle {
+    static class NormalSlimeBundle extends KitBundle {
 
         @Getter private final PurchasableDesign design = null;
+
         @Override
         public void buildGameItems() {
-            addItem(new KitItem(Material.BOW)
-                    .itemEnchantment(Enchantment.ARROW_DAMAGE, 1));
-            addItem(new KitItem(Material.ARROW).amount(16));
+            addItem(new KitItem(Material.IRON_BOOTS)
+                    .itemEnchantment(Enchantment.PROTECTION_FALL, 4));
+            addItem(new KitItem(Material.SLIME_BLOCK).amount(16));
         }
     }
 
-    static class InsaneHunterBundle extends KitBundle {
+    static class InsaneSlimeBundle extends KitBundle {
 
         @Getter private final PurchasableDesign design = null;
 
         @Override
         public void buildGameItems() {
-            addItem(new KitItem(Material.BOW)
-                    .itemEnchantment(Enchantment.ARROW_DAMAGE, 1));
-            addItem(new KitItem(Material.ARROW).amount(16));
+            addItem(new KitItem(Material.DIAMOND_BOOTS)
+                    .itemEnchantment(Enchantment.PROTECTION_FALL, 4));
+            addItem(new KitItem(Material.SLIME_BLOCK).amount(16));
         }
     }
 }

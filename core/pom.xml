@@ -25,6 +25,10 @@
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -55,7 +59,7 @@
             <artifactId>worldedit-bukkit</artifactId>
             <version>6.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>E:/0Downloads/worldedit-bukkit-6.1.jar</systemPath>
+            <systemPath>C:/Users/Nordine/Downloads/worldedit-bukkit-6.1.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

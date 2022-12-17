@@ -9,35 +9,31 @@ import com.ultimismc.skywars.core.game.features.kits.KitRarity;
 import lombok.Getter;
 import org.bukkit.Material;
 
-/**
- * @author DirectPlan
- */
 @Getter
-public class SlothKit extends Kit {
+public class TrollKit extends Kit  {
 
-    private final PurchasableDesign design = new PurchasableDesign(Material.POTION, 9);
+    private final PurchasableDesign design = new PurchasableDesign(Material.WEB);
 
-    public SlothKit() {
-        super("Sloth", KitRarity.RARE);
+    public TrollKit() {
+        super("Troll", KitRarity.LEGENDARY);
 
-        addBundle(GameType.NORMAL, new SlothBundle());
-        addBundle(GameType.INSANE, new SlothBundle());
+        addBundle(GameType.NORMAL, new TrollBundle());
+        addBundle(GameType.INSANE, new TrollBundle());
     }
 
-    static class SlothBundle extends KitBundle {
+    static class TrollBundle extends KitBundle {
 
         @Getter private final PurchasableDesign design = null;
 
         @Override
         public void buildGameItems() {
 
-            addItem(new KitItem(Material.POTION, 9).displayName("Sloth Potion").amount(3));
+            addItem(new KitItem(Material.WEB).amount(16));
+            addItem(new KitItem(Material.FIREWORK).amount(5));
             addItem(new KitItem(Material.LEATHER_HELMET));
             addItem(new KitItem(Material.LEATHER_CHESTPLATE));
             addItem(new KitItem(Material.LEATHER_LEGGINGS));
             addItem(new KitItem(Material.LEATHER_BOOTS));
-            addItem(new KitItem(Material.WOOD, 1).amount(4)); // Jungle Wood btw check
-            addItem(new KitItem(Material.AIR).displayName("Has permanent slowness II"));
         }
     }
 }
