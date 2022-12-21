@@ -24,7 +24,7 @@ public class SpectatorListMenu extends PaginatedMenu<UserGameSession> {
 
     @Override
     public Collection<UserGameSession> getList() {
-        return gameHandler.getCurrentPlayers();
+        return gameHandler.getPlayersLeft();
     }
 
     @Override
