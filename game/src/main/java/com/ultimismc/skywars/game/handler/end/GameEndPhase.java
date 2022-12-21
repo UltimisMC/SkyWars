@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.game.handler.end;
 
 import com.ultimismc.skywars.game.handler.GameHandler;
-import com.ultimismc.skywars.game.user.UserGameSession;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,8 +17,8 @@ public abstract class GameEndPhase {
     /**
      * Execute phase function
      *
-     * @param winner Game winner
-     * @param participators Game participators
+     * @param winnerTeam Game winner team
+     * @param gameTeams Game teams
      */
-    public abstract void executePhase(UserGameSession winner, Collection<UserGameSession> participators);
+    public abstract void executePhase(GameTeam winnerTeam, Collection<GameTeam> gameTeams);
 }
