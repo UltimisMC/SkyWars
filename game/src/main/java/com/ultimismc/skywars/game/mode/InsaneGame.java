@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.game.mode;
 
-import com.ultimismc.skywars.game.handler.AbstractGame;
+import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import xyz.directplan.directlib.PluginUtility;
 /**
  * @author DirectPlan
  */
-public class InsaneGame extends AbstractGame {
+public class InsaneGame extends Game {
 
     public InsaneGame(GameHandler gameHandler) {
         super(gameHandler, new InsaneChestRegistry());
