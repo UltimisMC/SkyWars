@@ -10,7 +10,6 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import xyz.directplan.directlib.PluginUtility;
 
 import java.util.HashMap;
