@@ -2,7 +2,7 @@ package com.ultimismc.skywars.game.handler.end;
 
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.GameState;
-import com.ultimismc.skywars.game.user.UserGameSession;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ public class GameEndRebootPhase extends GameEndPhase {
     }
 
     @Override
-    public void executePhase(UserGameSession winner, Collection<UserGameSession> players) {
+    public void executePhase(GameTeam winnerTeam, Collection<GameTeam> teams) {
 
 
         // - Notify other servers about this change too, to not cause saving conflicts.
