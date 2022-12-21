@@ -3,6 +3,7 @@ package com.ultimismc.skywars.game.handler.team;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 @Getter
-public class GameTeam {
+public class GameTeam implements Iterable<UserGameSession> {
 
     private final String tagGroup;
     private final int maximumTeam;
@@ -32,8 +33,25 @@ public class GameTeam {
         return players.size() >= maximumTeam;
     }
 
+    public boolean isAlive() {
+        return players.values().stream().anyMatch(userGameSession -> !userGameSession.isSpectator());
+    }
+
+    public int getCombinedKills() {
+        int combinedKills = 0;
+        for(UserGameSession user : players.values()) {
+            combinedKills += user.getKills();
+        }
+        return combinedKills;
+    }
+
     public boolean isEmpty() {
         return players.isEmpty();
     }
 
+    @NotNull
+    @Override
+    public Iterator<UserGameSession> iterator() {
+        return players.values().iterator();
+    }
 }
