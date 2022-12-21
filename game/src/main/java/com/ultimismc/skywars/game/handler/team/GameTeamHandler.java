@@ -41,17 +41,17 @@ public class GameTeamHandler {
         availableTeam.addPlayer(userGameSession);
 
         userGameSession.setGameTeam(availableTeam);
+        gameHandler.addGameTeam(availableTeam);
 
         User user = userGameSession.getUser();
         user.sendMessage("&aTeam Tag Group: &e" + availableTeam.getTagGroup());
-        setupTeamTag(userGameSession);
     }
 
     public void handleTeamQuit(UserGameSession userGameSession) {
         GameTeam gameTeam = userGameSession.getGameTeam();
         if(gameTeam == null) return; // Strange
         gameTeam.removePlayer(userGameSession);
-        if(gameTeam.isEmpty()) gameTeams.remove(gameTeam);
+        if(gameTeam.isEmpty()) gameHandler.removeGameTeam(gameTeam);
 
         Player player = userGameSession.getPlayer();
         TagUtil.clearTag(player, gameTeam.getTagGroup());
