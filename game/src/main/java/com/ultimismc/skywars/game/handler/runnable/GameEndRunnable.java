@@ -4,8 +4,8 @@ import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.end.GameEndPhase;
 import com.ultimismc.skywars.game.handler.end.GameEndRebootPhase;
 import com.ultimismc.skywars.game.handler.end.GameEndRewardsPhase;
-import com.ultimismc.skywars.game.handler.end.GameEndStatsPhase;
-import com.ultimismc.skywars.game.user.UserGameSession;
+import com.ultimismc.skywars.game.handler.end.GameEndWinPhase;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -15,17 +15,17 @@ import java.util.LinkedList;
  */
 public class GameEndRunnable implements Runnable {
 
-    private final UserGameSession winner;
-    private final Collection<UserGameSession> participators;
+    private final GameTeam winnerTeam;
+    private final Collection<GameTeam> teams;
 
     private long currentTime = System.currentTimeMillis();
     private final LinkedList<GameEndPhase> endPhases = new LinkedList<>();
 
-    public GameEndRunnable(GameHandler gameHandler, UserGameSession winner, Collection<UserGameSession> participators) {
-        this.winner = winner;
-        this.participators = participators;
+    public GameEndRunnable(GameHandler gameHandler, GameTeam winnerTeam, Collection<GameTeam> teams) {
+        this.winnerTeam = winnerTeam;
+        this.teams = teams;
 
-        endPhases.addLast(new GameEndStatsPhase(gameHandler));
+        endPhases.addLast(new GameEndWinPhase(gameHandler));
         endPhases.addLast(new GameEndRewardsPhase(gameHandler));
         endPhases.addLast(new GameEndRebootPhase(gameHandler));
     }
@@ -37,7 +37,7 @@ public class GameEndRunnable implements Runnable {
         int executeIn = phase.getExecuteIn();
         boolean timePassed = hasTimePassed(executeIn);
         if(!timePassed) return;
-        phase.executePhase(winner, participators);
+        phase.executePhase(winnerTeam, teams);
         endPhases.removeFirst();
         currentTime = System.currentTimeMillis();
     }
