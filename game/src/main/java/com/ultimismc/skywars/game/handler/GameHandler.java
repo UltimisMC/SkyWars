@@ -28,6 +28,7 @@ import com.ultimismc.skywars.game.handler.scoreboard.AccompaniedGameScoreboard;
 import com.ultimismc.skywars.game.handler.scoreboard.GameScoreboard;
 import com.ultimismc.skywars.game.handler.scoreboard.SoloGameScoreboard;
 import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.handler.team.GameTeamHandler;
 import com.ultimismc.skywars.game.island.IslandHandler;
 import com.ultimismc.skywars.game.menubar.GameSpectatorBarMenu;
@@ -169,6 +170,7 @@ public class GameHandler implements FeatureInitializer {
         PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameServer.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
+        teamHandler.handleTeamJoin(userGameSession);
         game.prepareUser(userGameSession);
         islandHandler.handleCageJoin(userGameSession);
 
@@ -185,16 +187,18 @@ public class GameHandler implements FeatureInitializer {
 
         UserGameSession userGameSession;
         if(hasStarted()) {
-            userGameSession = userSessionHandler.removeSession(user);
-        }else {
             userGameSession = getSession(user);
+        }else {
+            userGameSession = userSessionHandler.removeSession(user);
         }
 
         gameManager.removeScoreboard(user.getUuid());
         game.quitUser(userGameSession);
 
-        islandHandler.handleCageQuit(userGameSession);
-        teamHandler.handleTeamQuit(userGameSession);
+        if(!game.hasStarted()) {
+            islandHandler.handleCageQuit(userGameSession);
+            teamHandler.handleTeamQuit(userGameSession);
+        }
         if(game.isStarting() && !hasMinimumPlayers()) {
             broadcastMessage("&cNot enough players!");
             cancelPreparer();
@@ -235,7 +239,7 @@ public class GameHandler implements FeatureInitializer {
             menuManager.clearInventory(user);
             GameType gameType = getGameType();
             kitManager.giveKit(user, gameType);
-            teamHandler.handleTeamJoin(userGameSession);
+            teamHandler.setupTeamTag(userGameSession);
             PluginUtility.sendActionBar(user.getPlayer(), "");
 
             user.sendMessage(ChatColor.GREEN + repeatLine);
@@ -259,35 +263,21 @@ public class GameHandler implements FeatureInitializer {
         game.setGameState(GameState.ENDED);
         game.endGame();
 
-        // Print messages, give players rewards based on their perks & stuff
-        UserGameSession winner = getCurrentPlayers().getLast();
-        winner.increaseWin();
-
-        int expReward = (winner.getKills() * 3);
-        if(expReward < 10) {
-            expReward = 10;
-        }
-        VictoryDanceHandler victoryDanceHandler = cosmeticManager.getVictoryDanceHandler();
-        victoryDanceHandler.playVictoryDance(winner.getUser());
-
-        winner.addCurrencyStat(Currency.EXP_CURRENCY, expReward, "Win", true);
-        winner.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
-        PluginUtility.sendTitle(winner.getPlayer(), 0, 60, 0, "&6&lVICTORY!", "&7You were the last man standing!");
-        for(UserGameSession everyone : getUserSessions()) {
-            if(everyone != winner && everyone.isOnline()) {
-                PluginUtility.sendTitle(everyone.getPlayer(), 0, 60, 0, "&c&lGAME END", "&7You weren't victorious this time");
-            }
-        }
-        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(this, winner, getUserSessions()), 0, 20L);
+        GameTeam winnerTeam = game.getLastTeamAlive();
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(this, winnerTeam, game.getGameTeams()), 0, 20L);
     }
 
     public void terminateUser(UserGameSession userGameSession) {
         MessageConfigKeys.DEATH_MESSAGE.sendMessage(userGameSession.getPlayer());
-        if(getCurrentPlayersSize() <= 1 && !hasEnded()) {
+
+        game.terminatePlayer(userGameSession);
+        addSpectator(userGameSession);
+
+        userGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
+
+        if(game.getTeamsLeft() <= 1 && !hasEnded()) {
             endGame();
         }
-        addSpectator(userGameSession); // TODO: THIS SHOULDN'T BE HERE
-        userGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
     }
 
     public void addSpectator(UserGameSession userGameSession) {
@@ -394,24 +384,32 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public boolean hasMinimumPlayers() {
-        return game.getPlayers().size() >= game.getMinimumPlayers();
+        return getOnlinePlayers() >= game.getMinimumPlayers();
     }
 
-    public int getCurrentPlayersSize() {
-        return getCurrentPlayers().size();
+    public int getPlayersLeftSize() {
+        return getPlayersLeft().size();
     }
 
     public void setGameState(GameState gameState) {
         game.setGameState(gameState);
     }
 
-    public LinkedList<UserGameSession> getCurrentPlayers() {
-        return game.getPlayers();
+    public LinkedList<UserGameSession> getPlayersLeft() {
+        return game.getPlayersLeft();
     }
 
     public boolean hasTimePassed(int seconds) {
         long millis = (seconds * 1000L);
         return gameTime >= millis;
+    }
+
+    public void addGameTeam(GameTeam gameTeam) {
+        game.addGameTeam(gameTeam);
+    }
+
+    public void removeGameTeam(GameTeam gameTeam) {
+        game.removeGameTeam(gameTeam);
     }
 
     public boolean hasStarted() {
