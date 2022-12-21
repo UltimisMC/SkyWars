@@ -3,7 +3,7 @@ package com.ultimismc.skywars.game.handler.end;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
-import com.ultimismc.skywars.game.user.UserGameSession;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserRewardSummary;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -18,7 +18,7 @@ public class GameEndRewardsPhase extends GameEndPhase {
     }
     
     @Override
-    public void executePhase(UserGameSession winner, Collection<UserGameSession> players) {
+    public void executePhase(GameTeam winnerTeam, Collection<GameTeam> teams) {
         String repeatLine = StringUtils.repeat("▬", 70);
 
         gameHandler.broadcastFunction(userGameSession -> {
