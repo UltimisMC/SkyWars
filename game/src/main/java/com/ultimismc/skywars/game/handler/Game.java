@@ -1,50 +1,101 @@
 package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
+import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @author DirectPlan
  */
-public interface Game {
+@RequiredArgsConstructor
+@Getter
+@Setter
+public abstract class Game {
 
-    // I'm starting to believe that All the methods down here are useless and can be
-    // put on the GameHandler only
+    protected final GameHandler gameHandler;
+    private final GameChestRegistry chestRegistry;
 
-    GameChestRegistry getChestRegistry();
+    private final int minimumPlayers = 8;
+    private GameState gameState = GameState.WAITING;
+    private final LinkedList<GameTeam> gameTeams = new LinkedList<>();
 
-    void startGame();
+    private final LinkedList<UserGameSession> playersLeft = new LinkedList<>();
+    private final LinkedList<UserGameSession> spectators = new LinkedList<>();
 
-    void endGame();
 
-    void prepareUser(UserGameSession user);
+    public void startGame() {}
 
-    void quitUser(UserGameSession user);
+    public void endGame() {}
 
-    GameState getGameState();
+    public void addGameTeam(GameTeam gameTeam) {
+        gameTeams.add(gameTeam);
+    }
 
-    void setGameState(GameState gameState);
+    public void removeGameTeam(GameTeam gameTeam) {
+        gameTeams.remove(gameTeam);
+    }
 
-    List<UserGameSession> getSpectators();
+    public void prepareUser(UserGameSession user) {
+        playersLeft.add(user);
+    }
 
-    LinkedList<UserGameSession> getPlayers();
+    public void quitUser(UserGameSession user) {
+        playersLeft.remove(user);
+        removeSpectator(user);
+    }
 
-    void addSpectator(UserGameSession user);
+    public void addSpectator(UserGameSession user) {
+        spectators.add(user);
+    }
 
-    void removeSpectator(UserGameSession user);
+    public void terminatePlayer(UserGameSession userGameSession) {
 
-    boolean isWaiting();
+    }
 
-    boolean isStarting();
+    public GameTeam getLastTeamAlive() {
+        Optional<GameTeam> lastTeamOptional = gameTeams.stream().filter(GameTeam::isAlive).findFirst();
+        if(!lastTeamOptional.isPresent()) {
+            throw new RuntimeException("Could not find any alive team. Game Teams is empty? Size: " + gameTeams.size());
+        }
+        return lastTeamOptional.get();
+    }
 
-    boolean hasStarted();
+    public int getTeamsLeft() {
+        int teamsLeft = 0;
+        for(GameTeam gameTeam : gameTeams) {
+            if(!gameTeam.isAlive()) continue;
+            teamsLeft++;
+        }
+        return teamsLeft;
+    }
 
-    boolean hasEnded();
+    public void removeSpectator(UserGameSession user) {
+        spectators.remove(user);
+    }
 
-    boolean isRestarting();
+    public boolean isWaiting() {
+        return gameState == GameState.WAITING;
+    }
 
-    int getMinimumPlayers();
+    public boolean isStarting() {
+        return gameState == GameState.STARTING;
+    }
+
+    public boolean hasStarted() {
+        return gameState != GameState.WAITING && gameState != GameState.STARTING;
+    }
+
+    public boolean hasEnded() {
+        return gameState == GameState.ENDED;
+    }
+
+    public boolean isRestarting() {
+        return gameState == GameState.RESTARTING;
+    }
 }
