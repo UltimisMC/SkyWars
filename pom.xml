@@ -13,6 +13,7 @@
         <module>api</module>
         <module>game</module>
         <module>lib</module>
+        <module>scaler</module>
     </modules>
     <packaging>pom</packaging>
 
