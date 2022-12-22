@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.TeamType;
@@ -70,7 +70,7 @@ public class GameHandler implements FeatureInitializer {
     private final GameManager gameManager;
     private final MenuManager menuManager;
 
-    private GameServer gameServer;
+    private GameConfig gameConfig;
     private GameServerInitializer gameServerInitializer;
     private Game game;
     private GameScoreboard gameScoreboard;
@@ -111,10 +111,10 @@ public class GameHandler implements FeatureInitializer {
         gameServerInitializer = new GameServerInitializer(plugin, this);
 
         gameServerInitializer.initializeServer();
-        gameServer = gameServerInitializer.getGameServer();
+        gameConfig = gameServerInitializer.getGameConfig();
         gameWorld = gameServerInitializer.getGameWorld();
 
-        GameType gameType = gameServer.getGameType();
+        GameType gameType = gameConfig.getGameType();
         switch (gameType) {
             case NORMAL: {
                 game = new NormalGame(this);
@@ -131,11 +131,11 @@ public class GameHandler implements FeatureInitializer {
         chestRegistry.buildItems();
 
         log(plugin, "Loaded " + chestRegistry.getSize() + " chest items for " + gameType.getName() + " mode.");
-        userSessionHandler = new UserSessionHandler(gameServer);
+        userSessionHandler = new UserSessionHandler(gameConfig);
 
         ScoreboardManager scoreboardManager = gameManager.getScoreboardManager();
         gameScoreboard = new SoloGameScoreboard(scoreboardManager, this);
-        if(!gameServer.isSoloGame()) {
+        if(!gameConfig.isSoloGame()) {
             gameScoreboard = new AccompaniedGameScoreboard(scoreboardManager, this);
         }
         gameSetupHandler = new GameSetupHandler(this);
@@ -146,7 +146,7 @@ public class GameHandler implements FeatureInitializer {
         teamHandler = new GameTeamHandler(this);
 
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
-        plugin.log("Game Server for SkyWars " + gameServer.getName() + " has started.");
+        plugin.log("Game Server for SkyWars " + gameConfig.getName() + " has started.");
     }
 
     public void shutdown() {
@@ -159,7 +159,7 @@ public class GameHandler implements FeatureInitializer {
         String userDisplayName = user.getDisplayName();
         MessageConfigKeys.JOIN_MESSAGE.broadcastMessage(new Replacement("player", userDisplayName),
                 new Replacement("current-players", getOnlinePlayers()),
-                new Replacement("maximum-players", gameServer.getMaximumPlayers()));
+                new Replacement("maximum-players", gameConfig.getMaximumPlayers()));
 
         Player player = user.getPlayer();
         player.getInventory().clear();
@@ -167,7 +167,7 @@ public class GameHandler implements FeatureInitializer {
         player.setFoodLevel(20);
         player.setFireTicks(0);
         player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
-        PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameServer.getGameDisplayName() + " mode");
+        PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameConfig.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
         teamHandler.handleTeamJoin(userGameSession);
@@ -348,27 +348,27 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public int getMaximumPlayers() {
-        return gameServer.getMaximumPlayers();
+        return gameConfig.getMaximumPlayers();
     }
 
     public Map getServerMap() {
-        return gameServer.getMap();
+        return gameConfig.getMap();
     }
 
     public String getServerId() {
-        return gameServer.getServerId();
+        return gameConfig.getServerId();
     }
 
     public String getServerName() {
-        return gameServer.getName();
+        return gameConfig.getName();
     }
 
     public TeamType getTeamType() {
-        return gameServer.getTeamType();
+        return gameConfig.getTeamType();
     }
 
     public GameType getGameType() {
-        return gameServer.getGameType();
+        return gameConfig.getGameType();
     }
 
     public int getRegisteredChests() {
@@ -429,7 +429,7 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public boolean isSoloGame() {
-        return gameServer.isSoloGame();
+        return gameConfig.isSoloGame();
     }
 
     public void openInventory(Player player, InventoryUI inventoryUI) {

@@ -17,8 +17,8 @@ public class AccompaniedGameScoreboard extends GameScoreboard {
 
     @Override
     public GameScoreboardInfo getGameScoreboard(User user) {
-        String mapName = gameServer.getMapName();
-        String modeDisplayName = gameServer.getGameDisplayName();
+        String mapName = gameConfig.getMapName();
+        String modeDisplayName = gameConfig.getGameDisplayName();
 
         return new GameScoreboardInfo("&bGiga Chad", Arrays.asList("Cool man",
                 " ",

@@ -3,7 +3,7 @@ package com.ultimismc.skywars.game.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
@@ -44,13 +44,13 @@ public class SkyWarsSetupCommand extends BaseCommand {
     @CommandAlias("mapinfo")
     @Syntax("")
     public void onMapInfo(User user) {
-        GameServer gameServer = gameManager.getGameServer();
-        Map map = gameServer.getMap();
+        GameConfig gameConfig = gameManager.getGameConfig();
+        Map map = gameConfig.getMap();
 
         String mapName = map.getName();
         int chestsAmount = gameHandler.getRegisteredChests();
         int islandsAmount = gameHandler.getRegisteredIslands();
-        user.sendMessage("&bShowing &3" + gameServer.getServerId() + "&b server map info:");
+        user.sendMessage("&bShowing &3" + gameConfig.getServerId() + "&b server map info:");
         user.sendMessage(" ");
         user.sendMessage(" &7- &bName: &3" + mapName);
         user.sendMessage(" &7- &bIslands: &3" + islandsAmount);
@@ -61,24 +61,24 @@ public class SkyWarsSetupCommand extends BaseCommand {
 
     @CommandAlias("showchests")
     public void onShowChests(Player player) {
-        GameServer gameServer = gameManager.getGameServer();
+        GameConfig gameConfig = gameManager.getGameConfig();
         ChestHandler chestHandler = gameHandler.getChestHandler();
-        gameManager.openMenu(player, new GameChestsMenu(chestHandler, gameServer));
+        gameManager.openMenu(player, new GameChestsMenu(chestHandler, gameConfig));
     }
 
     @CommandAlias("showislands")
     public void onShowIslands(Player player) {
-        GameServer gameServer = gameManager.getGameServer();
+        GameConfig gameConfig = gameManager.getGameConfig();
         IslandHandler islandHandler = gameHandler.getIslandHandler();
-        gameManager.openMenu(player, new GameIslandsMenu(gameHandler.getIslandHandler(), gameServer));
+        gameManager.openMenu(player, new GameIslandsMenu(gameHandler.getIslandHandler(), gameConfig));
     }
 
     @CommandAlias("renamemap")
     @Syntax("<name>")
     public void onRenameMap(User user, String name) {
-        GameServer gameServer = gameManager.getGameServer();
-        String previousName = gameServer.getMapName();
-        gameServer.setMapName(name);
+        GameConfig gameConfig = gameManager.getGameConfig();
+        String previousName = gameConfig.getMapName();
+        gameConfig.setMapName(name);
         user.sendMessage("&aYou've changed map name from &e" + previousName + " &ato &e" + name + "&a.");
     }
 }

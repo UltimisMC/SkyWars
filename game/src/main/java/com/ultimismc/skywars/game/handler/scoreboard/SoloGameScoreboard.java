@@ -24,10 +24,10 @@ public class SoloGameScoreboard extends GameScoreboard {
 
         int kills = userGameSession.getKills();
 
-        String serverId = gameServer.getServerId();
+        String serverId = gameConfig.getServerId();
         int playersLeft = gameHandler.getPlayersLeftSize();
-        String mapName = gameServer.getMapName();
-        String modeDisplayName = gameServer.getGameDisplayName();
+        String mapName = gameConfig.getMapName();
+        String modeDisplayName = gameConfig.getGameDisplayName();
 
         String displayName = MessageConfigKeys.SKYWARS_GAME_SCOREBOARD_DISPLAYNAME.getStringValue();
 

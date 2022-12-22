@@ -6,7 +6,7 @@ import lombok.Data;
  * @author DirectPlan
  */
 @Data
-public class GameServer {
+public class GameConfig {
 
     private final String serverId;
     private final GameType gameType;

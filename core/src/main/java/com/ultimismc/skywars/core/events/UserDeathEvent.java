@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 
@@ -12,13 +12,13 @@ public class UserDeathEvent extends AbstractUserEvent {
 
     private final User killer;
 
-    public UserDeathEvent(GameServer gameServer, User user, User killer) {
-        super(gameServer, user);
+    public UserDeathEvent(GameConfig gameConfig, User user, User killer) {
+        super(gameConfig, user);
 
         this.killer = killer;
     }
 
-    public UserDeathEvent(GameServer gameServer, User user) {
-        this(gameServer, user, null);
+    public UserDeathEvent(GameConfig gameConfig, User user) {
+        this(gameConfig, user, null);
     }
 }

@@ -3,7 +3,7 @@ package com.ultimismc.skywars.game.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.user.User;
@@ -82,9 +82,9 @@ public class SkyWarsGameCommand extends BaseCommand {
 
     @CommandAlias("whereami")
     public void onWhereAmi(Player player) {
-        GameServer gameServer = gameHandler.getGameServer();
-        String name = gameServer.getName();
-        sendMessage(player, "&aYou are currently connected to &e" + name + " - " +  gameServer.getServerId() +"&a.");
+        GameConfig gameConfig = gameHandler.getGameConfig();
+        String name = gameConfig.getName();
+        sendMessage(player, "&aYou are currently connected to &e" + name + " - " +  gameConfig.getServerId() +"&a.");
     }
     private void sendMessage(Player player, String message) {
         player.sendMessage(PluginUtility.translateMessage(message));

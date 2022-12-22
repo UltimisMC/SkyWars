@@ -12,4 +12,5 @@ import lombok.Setter;
 public class UserPerk {
 
     @Setter private boolean enabled;
+    @Setter private int threshold;
 }

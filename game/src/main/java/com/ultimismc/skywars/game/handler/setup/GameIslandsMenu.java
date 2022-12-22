@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.game.handler.setup;
 
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.game.island.Island;
 import com.ultimismc.skywars.game.island.IslandHandler;
@@ -22,8 +22,8 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
 
     private final IslandHandler islandHandler;
 
-    public GameIslandsMenu(IslandHandler islandHandler, GameServer gameServer) {
-        super("Islands " + gameServer.getServerId() + " (" + islandHandler.getSize() + "/" + TeamType.SOLO.getMaximumPlayers() + ")", 3, PaginatedModel.DEFAULT_MODEL);
+    public GameIslandsMenu(IslandHandler islandHandler, GameConfig gameConfig) {
+        super("Islands " + gameConfig.getServerId() + " (" + islandHandler.getSize() + "/" + TeamType.SOLO.getMaximumPlayers() + ")", 3, PaginatedModel.DEFAULT_MODEL);
         this.islandHandler = islandHandler;
     }
 

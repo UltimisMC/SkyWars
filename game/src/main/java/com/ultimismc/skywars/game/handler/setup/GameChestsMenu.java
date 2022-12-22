@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.game.handler.setup;
 
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.game.chest.Chest;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import org.bukkit.Location;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 public class GameChestsMenu extends PaginatedMenu<Chest> {
 
     private final ChestHandler chestHandler;
-    public GameChestsMenu(ChestHandler chestHandler, GameServer gameServer) {
-        super("Chests " + gameServer.getName() + " - " + gameServer.getServerId(), 3, PaginatedModel.DEFAULT_MODEL);
+    public GameChestsMenu(ChestHandler chestHandler, GameConfig gameConfig) {
+        super("Chests " + gameConfig.getName() + " - " + gameConfig.getServerId(), 3, PaginatedModel.DEFAULT_MODEL);
         this.chestHandler = chestHandler;
     }
 

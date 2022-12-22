@@ -2,7 +2,7 @@ package com.ultimismc.skywars.game;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.TeamType;
@@ -51,7 +51,7 @@ public class GameServerInitializer {
         this.chestHandler = gameHandler.getChestHandler();
     }
 
-    @Getter private GameServer gameServer;
+    @Getter private GameConfig gameConfig;
 
     public void initializeServer() {
 
@@ -62,9 +62,9 @@ public class GameServerInitializer {
         String serverId = gameInfo.getServerId();
 
         GameMap gameMap = loadGameMap(teamType);
-        gameServer = new GameServer(serverId, gameType, teamType, gameMap.toMap());
+        gameConfig = new GameConfig(serverId, gameType, teamType, gameMap.toMap());
 
-        if(gameServer.isSetupMode()) {
+        if(gameConfig.isSetupMode()) {
             plugin.log("Server is on Setup Mode. ");
             return;
         }
@@ -78,7 +78,7 @@ public class GameServerInitializer {
         plugin.log("Saving game map...");
         saveGameMap();
 
-        plugin.log("Sending shutdown payload for server " + gameServer.getServerId() + "...");
+        plugin.log("Sending shutdown payload for server " + gameConfig.getServerId() + "...");
         // Send shutdown message to lobby.
 
         plugin.log("Saving configuration files...");
@@ -144,7 +144,7 @@ public class GameServerInitializer {
 
     private void saveGameMap() {
 
-        Map map = gameServer.getMap();
+        Map map = gameConfig.getMap();
         MapConfigKeys.MAP_NAME.setValue(map.getName());
 
         List<String> serializedChests = new ArrayList<>();

@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.game.handler.scoreboard;
 
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.handler.Game;
@@ -21,20 +21,20 @@ public abstract class GameScoreboard {
     private final ScoreboardManager scoreboardManager;
 
     protected final GameHandler gameHandler;
-    protected final GameServer gameServer;
+    protected final GameConfig gameConfig;
     protected final Game game;
 
     public GameScoreboard(ScoreboardManager scoreboardManager, GameHandler gameHandler) {
         this.scoreboardManager = scoreboardManager;
         this.gameHandler = gameHandler;
-        gameServer = gameHandler.getGameServer();
+        gameConfig = gameHandler.getGameConfig();
         game = gameHandler.getGame();
     }
 
     public abstract GameScoreboardInfo getGameScoreboard(User user);
 
     public void updateScoreboard(User user) {
-        GameServer gameServer = gameHandler.getGameServer();
+        GameConfig gameConfig = gameHandler.getGameConfig();
         Game game = gameHandler.getGame();
         if(game.hasStarted()) {
             GameScoreboardInfo scoreboardInfo = getGameScoreboard(user);
@@ -42,9 +42,9 @@ public abstract class GameScoreboard {
             return;
         }
 
-        String serverId = gameServer.getServerId();
+        String serverId = gameConfig.getServerId();
         int currentPlayers = gameHandler.getPlayersLeftSize();
-        int maximumPlayers = gameServer.getMaximumPlayers();
+        int maximumPlayers = gameConfig.getMaximumPlayers();
         String gameStatus = MessageConfigKeys.SKYWARS_GAME_WAITING_STATUS_SCOREBOARD.getStringValue();
         if(game.isStarting()) {
             long prepareCountdownLeft = gameHandler.getPrepareCountdownLeft();
@@ -52,8 +52,8 @@ public abstract class GameScoreboard {
             gameStatus = MessageConfigKeys.SKYWARS_GAME_STARTING_STATUS_SCOREBOARD.
                     getStringValue(new Replacement("time", countdownLeftSeconds + "s"));
         }
-        String mapName = gameServer.getMapName();
-        String modeDisplayName = gameServer.getGameDisplayName();
+        String mapName = gameConfig.getMapName();
+        String modeDisplayName = gameConfig.getGameDisplayName();
 
         String displayName = MessageConfigKeys.SKYWARS_GAME_SCOREBOARD_DISPLAYNAME.getStringValue();
 

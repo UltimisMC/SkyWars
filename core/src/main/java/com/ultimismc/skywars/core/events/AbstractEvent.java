@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.Event;
@@ -15,7 +15,7 @@ public abstract class AbstractEvent extends Event {
 
     private static final HandlerList handlerList = new HandlerList();
 
-    private final GameServer gameServer;
+    private final GameConfig gameConfig;
 
     public static HandlerList getHandlerList() {
         return handlerList;

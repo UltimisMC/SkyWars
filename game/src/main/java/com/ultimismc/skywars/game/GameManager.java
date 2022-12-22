@@ -2,7 +2,7 @@ package com.ultimismc.skywars.game;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
-import com.ultimismc.skywars.core.game.GameServer;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
@@ -31,7 +31,7 @@ public class GameManager implements FeatureInitializer {
     private final MenuManager menuManager;
 
     private GameHandler gameHandler;
-    private GameServer gameServer;
+    private GameConfig gameConfig;
     private final ScoreboardManager scoreboardManager;
 
     private final UserSessionHandler userSessionHandler;
@@ -44,7 +44,7 @@ public class GameManager implements FeatureInitializer {
         menuManager = plugin.getMenuManager();
 
         scoreboardManager = new ScoreboardManager(plugin, "Ultimis SkyWars Scoreboard");
-        userSessionHandler = new UserSessionHandler(gameServer);
+        userSessionHandler = new UserSessionHandler(gameConfig);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class GameManager implements FeatureInitializer {
         gameHandler = new GameHandler(plugin, this);
         featureHandler.initializeFeature(gameHandler);
 
-        gameServer = gameHandler.getGameServer();
+        gameConfig = gameHandler.getGameConfig();
     }
 
     public void shutdown() {
@@ -63,7 +63,7 @@ public class GameManager implements FeatureInitializer {
     }
 
     public void handleJoin(User user) {
-        if(gameServer.isSetupMode()) {
+        if(gameConfig.isSetupMode()) {
             teleportWaitingLocation(user);
             user.sendMessage("&b&lSETUP MODE:");
             user.sendMessage("&7This server is under setup mode. Only thing that's functional is the commands.");
@@ -108,11 +108,11 @@ public class GameManager implements FeatureInitializer {
     }
 
     public String getServerName() {
-        return gameServer.getName();
+        return gameConfig.getName();
     }
 
     public Map getServerMap() {
-        return gameServer.getMap();
+        return gameConfig.getMap();
     }
 
     @Override
