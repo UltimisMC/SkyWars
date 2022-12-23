@@ -100,10 +100,14 @@ public class KitSelectorMenu extends InventoryUI {
 
         @Override
         public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType) {
-            clicker.closeInventory();
-            PluginUtility.playSound(clicker, Sound.SUCCESSFUL_HIT);
+            PluginUtility.playSound(clicker, Sound.CLICK);
             user.setSetting("kit", kit);
             user.sendMessage("&eYou've selected " + kit.getName() + " kit!");
+        }
+
+        @Override
+        public boolean updateButtons(Player clicker, ClickType clickType) {
+            return true;
         }
     }
 }

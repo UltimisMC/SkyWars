@@ -20,6 +20,7 @@ public class KitItem {
     private final MenuItem menuItem;
     private final List<ItemEnchantment> enchantments = new ArrayList<>();
 
+    private String description;
     private ItemAbility itemAbility;
 
     public KitItem(Material material, int durability) {
@@ -53,6 +54,15 @@ public class KitItem {
 
     public List<ItemEnchantment> getEnchantments() {
         return enchantments;
+    }
+
+    public KitItem description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public boolean isDescriptionItem() {
+        return (menuItem.getType() == Material.AIR && description != null);
     }
 
     public KitItem displayName(String displayName) {

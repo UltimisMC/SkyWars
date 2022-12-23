@@ -68,7 +68,7 @@ public class GameEndWinPhase extends GameEndPhase {
 
             winner.addCurrencyStat(com.ultimismc.skywars.core.game.currency.Currency.EXP_CURRENCY, expReward, "Win", true);
             winner.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
-            PluginUtility.sendTitle(winner.getPlayer(), 0, 60, 0, "&6&lVICTORY!", "&7You were the last man standing!");
+            PluginUtility.sendTitle(winner.getPlayer(), 0, 100, 0, "&6&lVICTORY!", "&7You were the last man standing!");
         }
         for(UserGameSession everyone : gameHandler.getUserSessions()) {
             if(everyone.isOnline() && !winnerTeam.isMember(everyone)) {
@@ -84,24 +84,22 @@ public class GameEndWinPhase extends GameEndPhase {
 
         Collection<UserGameSession> teamPlayers = gameTeam.getPlayers().values();
 
-        List<String> playerDisplayNames = getPlayerDisplayNames(teamPlayers);
-
-        String displayName = String.join("&7, ", playerDisplayNames);
+        String playerDisplayNames = getPlayerDisplayNames(teamPlayers);
         int kills = gameTeam.getCombinedKills();
-        return displayName + " &7- " + kills;
+        return playerDisplayNames + " &7- " + kills;
     }
 
-    private List<String> getPlayerDisplayNames(GameTeam gameTeam) {
+    private String getPlayerDisplayNames(GameTeam gameTeam) {
         Map<UUID, UserGameSession> teamPlayers = gameTeam.getPlayers();
         return getPlayerDisplayNames(teamPlayers.values());
     }
 
-    private List<String> getPlayerDisplayNames(Collection<UserGameSession> teamPlayers) {
+    private String getPlayerDisplayNames(Collection<UserGameSession> teamPlayers) {
 
         List<String> playerDisplayNames = new ArrayList<>();
         for(UserGameSession player : teamPlayers) {
             playerDisplayNames.add(player.getDisplayName());
         }
-        return playerDisplayNames;
+        return String.join("&7, ", playerDisplayNames);
     }
 }

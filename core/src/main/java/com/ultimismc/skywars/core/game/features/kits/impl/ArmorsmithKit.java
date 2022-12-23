@@ -6,7 +6,6 @@ import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.game.features.kits.KitBundle;
 import com.ultimismc.skywars.core.game.features.kits.KitItem;
 import com.ultimismc.skywars.core.game.features.kits.KitRarity;
-import jdk.internal.foreign.abi.ABIDescriptor;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

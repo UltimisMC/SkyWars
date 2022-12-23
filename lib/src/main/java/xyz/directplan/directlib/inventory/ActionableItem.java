@@ -10,4 +10,6 @@ import org.bukkit.event.inventory.ClickType;
 public interface ActionableItem {
 
     void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType);
+
+    default boolean updateButtons(Player clicker, ClickType clickType) { return false; }
 }

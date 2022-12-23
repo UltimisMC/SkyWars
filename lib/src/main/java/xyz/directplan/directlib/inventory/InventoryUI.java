@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -111,7 +112,9 @@ public abstract class InventoryUI {
         if(!item.hasAction()){
             return;
         }
+        ClickType clickType = event.getClick();
         item.performAction(item, clicker, event.getClick());
+        if(item.updateButtons(clicker, clickType)) updateButtons(clicker);
     }
 
     public void onClose(Inventory inventory) {}

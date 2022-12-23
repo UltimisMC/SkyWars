@@ -54,7 +54,7 @@ public class GameTeamHandler {
         if(gameTeam.isEmpty()) gameHandler.removeGameTeam(gameTeam);
 
         Player player = userGameSession.getPlayer();
-        TagUtil.clearTag(player, gameTeam.getTagGroup());
+        TagUtil.clearTag(player);
     }
 
     private GameTeam getAvailableTeam() {

@@ -64,7 +64,7 @@
             <artifactId>worldedit-bukkit</artifactId>
             <version>6.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>C:/Users/Nordine/Downloads/worldedit-bukkit-6.1.jar</systemPath>
+            <systemPath>E:/0Downloads/worldedit-bukkit-6.1.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

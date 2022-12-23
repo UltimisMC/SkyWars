@@ -1,9 +1,11 @@
 package com.ultimismc.skywars.core;
 
 import co.aikar.commands.*;
+import com.ultimismc.gamescaler.ServerManager;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import org.bukkit.ChatColor;
@@ -26,11 +28,13 @@ public class CommandHandler {
         UserManager userManager = plugin.getUserManager();
         MenuManager menuManager = plugin.getMenuManager();
         FeatureHandler featureHandler = plugin.getFeatureHandler();
+        SkyWarsServerManager serverManager = plugin.getServerManager();
 
         registerDependency(ConfigHandler.class, configHandler);
         registerDependency(UserManager.class, userManager);
         registerDependency(MenuManager.class, menuManager);
         registerDependency(FeatureHandler.class, featureHandler);
+        registerDependency(SkyWarsServerManager.class, serverManager);
 
         commandManager.enableUnstableAPI("help");
 

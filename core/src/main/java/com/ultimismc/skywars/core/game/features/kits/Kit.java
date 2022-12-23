@@ -68,7 +68,9 @@ public abstract class Kit implements Purchasable {
 
         for(KitItem item : items) {
             int amount = item.getAmount();
-            displayItems.add(ChatColor.GRAY + item.getDisplayName() + (amount > 1 ? " x" + amount : ""));
+            String displayName = item.getDisplayName();
+            if(item.isDescriptionItem()) displayName = item.getDescription();
+            displayItems.add(ChatColor.GRAY + displayName + (amount > 1 ? " x" + amount : ""));
             for(ItemEnchantment enchantment : item.getEnchantments()) {
                 displayItems.add(ChatColor.GRAY + "   * " + enchantment.getDisplayName());
             }

@@ -3,6 +3,7 @@ package xyz.directplan.directlib;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.*;
+import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -186,6 +187,9 @@ public class PluginUtility {
     }
 
     public static String getItemNativeName(ItemStack item) {
+        if(item.getType() == Material.AIR) {
+            return ""; // Air
+        }
         net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         return nmsStack.getItem().a(nmsStack);
     }

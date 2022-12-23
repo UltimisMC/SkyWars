@@ -56,7 +56,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         storage = new UserStorage(this);
         storage.connect();
 
-        serverManager = new SkyWarsServerManager();
+        serverManager = new SkyWarsServerManager(null);
 
 
         userManager = new UserManager(this);

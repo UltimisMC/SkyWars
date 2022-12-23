@@ -54,9 +54,7 @@ public abstract class Game {
         spectators.add(user);
     }
 
-    public void terminatePlayer(UserGameSession userGameSession) {
-
-    }
+    public void terminatePlayer(UserGameSession userGameSession) {}
 
     public GameTeam getLastTeamAlive() {
         Optional<GameTeam> lastTeamOptional = gameTeams.stream().filter(GameTeam::isAlive).findFirst();

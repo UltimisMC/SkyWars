@@ -100,6 +100,10 @@ public class MenuItem implements Cloneable {
         itemStack.setItemMeta(meta);
     }
 
+    public Material getType() {
+        return itemStack.getType();
+    }
+
     public List<String> getLore() {
         return itemStack.getItemMeta().getLore();
     }
@@ -148,6 +152,10 @@ public class MenuItem implements Cloneable {
 
     public void performAction(MenuItem item, Player clicker, ClickType clickType){
         performAction(item, clicker, null, clickType);
+    }
+
+    public boolean updateButtons(Player clicker, ClickType clickType) {
+        return (action != null && action.updateButtons(clicker, clickType));
     }
 
     public void removeCompoundKey(String compoundKey) {

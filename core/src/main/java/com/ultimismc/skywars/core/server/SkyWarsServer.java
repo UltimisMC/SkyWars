@@ -5,7 +5,7 @@ import com.ultimismc.gamescaler.GameServer;
 
 public class SkyWarsServer extends GameServer {
 
-    public SkyWarsServer(String name) {
-        super(name);
+    public SkyWarsServer(String displayName, String id) {
+        super(displayName, id);
     }
 }

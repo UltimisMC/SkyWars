@@ -37,7 +37,7 @@ public class SlothKit extends Kit {
             addItem(new KitItem(Material.LEATHER_LEGGINGS));
             addItem(new KitItem(Material.LEATHER_BOOTS));
             addItem(new KitItem(Material.WOOD, 1).amount(4)); // Jungle Wood btw check
-            addItem(new KitItem(Material.AIR).displayName("Has permanent slowness II"));
+            addItem(new KitItem(Material.AIR).description("Has permanent slowness II"));
         }
     }
 }

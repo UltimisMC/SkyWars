@@ -270,14 +270,14 @@ public class GameHandler implements FeatureInitializer {
     public void terminateUser(UserGameSession userGameSession) {
         MessageConfigKeys.DEATH_MESSAGE.sendMessage(userGameSession.getPlayer());
 
-        game.terminatePlayer(userGameSession);
-        addSpectator(userGameSession);
+        game.terminatePlayer(userGameSession); // Currently, useless as fuck
 
         userGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
 
         if(game.getTeamsLeft() <= 1 && !hasEnded()) {
             endGame();
         }
+        addSpectator(userGameSession);
     }
 
     public void addSpectator(UserGameSession userGameSession) {

@@ -48,6 +48,10 @@ public class SkyWarsDebugCommand extends BaseCommand {
         help.showHelp();
     }
 
+    @Subcommand("servers")
+    public void onShowServers(User user) {
+
+    }
 
     @Subcommand("displaylevels")
     public void onLevelsDisplay(User user) {
@@ -116,8 +120,9 @@ public class SkyWarsDebugCommand extends BaseCommand {
     }
 
     @Subcommand("showsettings")
-    @Syntax("")
-    public void onShowSettings(User user) {
+    @Syntax("[player]")
+    public void onShowSettings(User sender, @Optional @Flags("other") User user) {
+        if(user == null) user = sender;
         user.sendMessage("&aShowing " + user.getDisplayName() + " &asettings:");
         for(UserSetting userSetting : user.getSettings()) {
             String key = userSetting.getKey();

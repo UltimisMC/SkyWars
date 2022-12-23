@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Collection;
+
 /**
  * @author DirectPlan
  */
@@ -34,13 +36,13 @@ public class TagUtil {
         player.setScoreboard(scoreboard);
     }
 
-    public static void clearTag(Player player, String group) {
+    public static void clearTag(Player player) {
         Scoreboard scoreboard = player.getScoreboard();
         if(scoreboard == null) return;
 
-        String teamTag = group + TAG_PREFIX;
-        Team team = scoreboard.getTeam(teamTag);
-        if(team == null) return;
-        team.removeEntry(player.getName());
+        Collection<Team> teams = scoreboard.getTeams();
+        if(teams == null) return;
+        teams.stream().filter(team -> team.getName().endsWith(TAG_PREFIX))
+                .forEach(team -> team.removeEntry(player.getName()));
     }
 }
