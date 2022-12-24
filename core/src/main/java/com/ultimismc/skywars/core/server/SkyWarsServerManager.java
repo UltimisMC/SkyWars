@@ -1,15 +1,14 @@
 package com.ultimismc.skywars.core.server;
 
 import com.ultimismc.gamescaler.ServerManager;
-import com.ultimismc.gamescaler.connection.ConnectionData;
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 
-public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
+/**
+ * @author DirectPlan
+ */
+public class SkyWarsServerManager extends ServerManager {
 
-    public SkyWarsServerManager(ConnectionData connectionData) {
-        super(connectionData);
-    }
-
-    public SkyWarsServerManager(String host, int port) {
-        super(host, port);
+    public SkyWarsServerManager(SkyWarsPlugin plugin) {
+        super(new SkyWarsPluginWrapper(plugin));
     }
 }

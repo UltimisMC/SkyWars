@@ -9,6 +9,9 @@ import com.ultimismc.skywars.core.game.features.kits.KitRarity;
 import lombok.Getter;
 import org.bukkit.Material;
 
+/**
+ * @author DirectPlan
+ */
 @Getter
 public class PyroKit extends Kit {
 

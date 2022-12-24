@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.server;
 
+import com.ultimismc.gamescaler.GameServer;
 import com.ultimismc.gamescaler.ServerState;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,7 +15,7 @@ import java.util.Collection;
  * @author DirectPlan
  */
 
-public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
+public class ServerListMenu extends PaginatedMenu<GameServer> {
 
     private final SkyWarsServerManager serverManager;
 
@@ -25,12 +26,12 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
     }
 
     @Override
-    public Collection<SkyWarsServer> getList() {
+    public Collection<GameServer> getList() {
         return serverManager.getServers();
     }
 
     @Override
-    public MenuItem buildContent(Player player, SkyWarsServer server) {
+    public MenuItem buildContent(Player player, GameServer server) {
 
         ChatColor statusColor = ChatColor.GRAY;
         int statusDurability = 8; // Game Idling

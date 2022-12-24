@@ -1,4 +1,4 @@
-package com.ultimismc.gamescaler.connection;
+package com.ultimismc.gamescaler.communication;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

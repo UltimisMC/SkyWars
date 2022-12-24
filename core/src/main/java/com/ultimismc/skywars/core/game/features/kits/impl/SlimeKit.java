@@ -10,6 +10,9 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
+/**
+ * @author DirectPlan
+ */
 @Getter
 public class SlimeKit extends Kit {
 

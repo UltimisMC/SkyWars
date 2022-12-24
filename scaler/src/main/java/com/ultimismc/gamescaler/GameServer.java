@@ -7,15 +7,32 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public abstract class GameServer {
+public class GameServer {
 
+    private final ServerPlugin plugin;
     private final String displayName;
     private final String id;
 
-    private int maximumPlayers;
     private ServerState state;
-    private int onlinePlayers;
-    private boolean whitelisted;
+    private boolean lobby;
+
+    public GameServer(ServerPlugin plugin, String displayName, String id, boolean lobby) {
+        this(plugin, displayName, id);
+        this.lobby = lobby;
+    }
+
+
+    public int getOnlinePlayers() {
+        return plugin.getOnlinePlayers();
+    }
+
+    public int getMaximumPlayers() {
+        return plugin.getMaximumPlayers();
+    }
+
+    public boolean isWhitelisted() {
+        return plugin.isWhitelisted();
+    }
 
     public boolean isIdling() { // Or Waiting
         return state == ServerState.IDLING;
