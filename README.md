@@ -10,9 +10,10 @@ A custom skywars plugin developed for UltimisMC Network.
 - Rewards Summary at Game End ***(Completed)***
 - Game Cosmetics Executor ***(Completed)***
 - Servers Communication ***(Working on it)***
-- Automatic Server  
+- Automatic Server Scaling ***(Working on it)***
 - Chest Algorithm System including Refills ***(Completed)*** ***Adding chest bundles required***
 - Cage Algorithm System including automatic Cage building upon join ***(Completed)***
 - Add a brand new damage based combat system to DirectLib ***(Completed)***
 - Damage based Death System ***(Completed)***
 - Kill Messages ***(Completed)***
+- Map Selector
