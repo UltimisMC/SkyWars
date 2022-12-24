@@ -1,37 +1,44 @@
 package com.ultimismc.gamescaler;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class GameServer {
+public class GameServer implements Serializable {
 
     private final ServerPlugin plugin;
     private final String displayName;
     private final String id;
 
     private ServerState state;
-    private boolean lobby;
+
+    private final ServerInfo serverInfo;
 
     public GameServer(ServerPlugin plugin, String displayName, String id, boolean lobby) {
-        this(plugin, displayName, id);
-        this.lobby = lobby;
+        this.plugin = plugin;
+        this.displayName = displayName;
+        this.id = id;
+
+        serverInfo = new ServerInfo(plugin, lobby);
     }
 
+    public boolean isLobby() {
+        return serverInfo.isLobby();
+    }
 
     public int getOnlinePlayers() {
-        return plugin.getOnlinePlayers();
+        return serverInfo.getOnlinePlayers();
     }
 
     public int getMaximumPlayers() {
-        return plugin.getMaximumPlayers();
+        return serverInfo.getMaximumPlayers();
     }
 
     public boolean isWhitelisted() {
-        return plugin.isWhitelisted();
+        return serverInfo.isWhitelisted();
     }
 
     public boolean isIdling() { // Or Waiting
