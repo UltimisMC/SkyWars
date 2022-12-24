@@ -5,8 +5,8 @@ package com.ultimismc.gamescaler.communication;
  */
 public enum ServerChannelConstants implements ServerChannel {
 
-    FETCH_SERVER(),
-    SERVER_UPDATE();
+    FETCH_SERVER,
+    SERVER_UPDATE;
 
     @Override
     public String getName() {
