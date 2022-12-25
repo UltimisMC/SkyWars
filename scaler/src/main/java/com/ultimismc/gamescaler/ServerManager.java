@@ -32,7 +32,7 @@ public abstract class ServerManager<S extends Server> {
         this.plugin = plugin;
         this.serializer = serializer;
         this.gameClazz = gameClazz;
-        this.connection = new JedisConnection();
+        this.connection = new JedisConnection(plugin);
     }
 
     public ServerManager(ServerPlugin plugin, Class<S> gameClazz) {

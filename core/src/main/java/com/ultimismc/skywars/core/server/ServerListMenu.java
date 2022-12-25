@@ -51,7 +51,7 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
         MenuItem menuItem = new MenuItem(Material.INK_SACK, statusColor + displayName, statusDurability);
         menuItem.setLore("&8" + serverId);
         menuItem.setLore(" ");
-        menuItem.setLore("&7Server State: " + statusColor + serverState.name());
+        menuItem.setLore("&fServer State: " + statusColor + serverState.name());
         menuItem.setLore("&fPlayers: &a" + onlinePlayers + "/" + maximumPlayers);
         menuItem.setLore(" ");
         menuItem.setLore("&eClick to jump to &a"+serverId+"&e!");

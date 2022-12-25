@@ -22,6 +22,7 @@ import xyz.directplan.directlib.config.BukkitConfigHandler;
 import xyz.directplan.directlib.config.ConfigHandler;
 import xyz.directplan.directlib.inventory.MenuListener;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
+import xyz.directplan.directlib.library.LibraryLoader;
 
 import java.util.logging.Level;
 
@@ -37,6 +38,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     protected UserManager userManager;
     protected MenuManager menuManager;
     protected RankManager rankManager;
+    protected LibraryLoader libraryLoader;
 
     protected CommandHandler commandHandler;
     protected UserListener userListener;
@@ -56,10 +58,12 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        libraryLoader = new LibraryLoader(this);
+        libraryLoader.loadDependencies();
+
         configHandler = new BukkitConfigHandler(this);
         configHandler.loadConfiguration("config.yml", ConfigKeys.class);
         configHandler.loadConfiguration("cages.yml", CageConfigKeys.class);
-
 
         storage = new UserStorage(this);
         storage.connect();

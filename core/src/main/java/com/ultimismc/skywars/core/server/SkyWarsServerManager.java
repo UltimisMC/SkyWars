@@ -27,7 +27,7 @@ public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
     }
 
     public void connect() {
-        String host = ConfigKeys.STORAGE_HOST.getStringValue();
+        String host = ConfigKeys.JEDIS_HOST.getStringValue();
         int port = ConfigKeys.JEDIS_PORT.getInteger();
         String password = ConfigKeys.JEDIS_PASSWORD.getStringValue();
 

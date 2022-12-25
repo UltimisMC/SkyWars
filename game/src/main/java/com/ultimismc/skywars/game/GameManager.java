@@ -58,10 +58,6 @@ public class GameManager implements FeatureInitializer {
         gameConfig = gameHandler.getGameConfig();
     }
 
-    public void shutdown() {
-        gameHandler.shutdown();
-    }
-
     public void handleJoin(User user) {
         if(gameConfig.isSetupMode()) {
             teleportWaitingLocation(user);

@@ -105,6 +105,7 @@ public class GameHandler implements FeatureInitializer {
         islandHandler = new IslandHandler(this);
         chestHandler = new ChestHandler(this);
         featureHandler.initializeFeature(chestHandler);
+        featureHandler.initializeFeature(islandHandler);
 
         GameType gameType = gameConfig.getGameType();
         switch (gameType) {

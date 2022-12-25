@@ -40,7 +40,5 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
     }
 
     @Override
-    public void disable() {
-        gameManager.shutdown();
-    }
+    public void disable() {}
 }
