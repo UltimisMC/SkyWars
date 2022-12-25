@@ -18,6 +18,10 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
 
     private GameManager gameManager;
 
+    public GameSkyWarsPlugin() {
+        super(new GameServerInitializer());
+    }
+
     @Override
     public void enable() {
         configHandler.loadConfiguration("messages.yml", MessageConfigKeys.class);
@@ -31,6 +35,8 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
         commandHandler.registerCommands(new SkyWarsGameCommand(), new SkyWarsSetupCommand());
         userListener.setUserLoadedListener(new GameUserLoadedListener(this, gameManager));
         userListener.setUserSavedListener(new GameUserSavedListener(gameManager));
+
+
     }
 
     @Override

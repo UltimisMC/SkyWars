@@ -1,59 +1,36 @@
 package com.ultimismc.skywars.game;
 
+import com.ultimismc.skywars.core.ServerInitializer;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.TeamType;
-import com.ultimismc.skywars.game.chest.Chest;
-import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.config.GameConfigKeys;
 import com.ultimismc.skywars.game.config.MapConfigKeys;
-import com.ultimismc.skywars.game.handler.GameHandler;
-import com.ultimismc.skywars.game.island.Island;
-import com.ultimismc.skywars.game.island.IslandHandler;
 import lombok.Data;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import xyz.directplan.directlib.CustomLocation;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author DirectPlan
  */
-public class GameServerInitializer {
+public class GameServerInitializer implements ServerInitializer  {
 
-    private final SkyWarsPlugin plugin;
-
-    private final IslandHandler islandHandler;
-    private final ChestHandler chestHandler;
-    @Getter private final World gameWorld;
-
-    public GameServerInitializer(SkyWarsPlugin plugin, GameHandler gameHandler) {
-        this.plugin = plugin;
-        String worldName = ConfigKeys.WORLD_NAME.getStringValue();
-        plugin.log("Existing worlds:");
-        for(World world : Bukkit.getWorlds()) {
-            plugin.log(" - " + world.getName());
-        }
-        gameWorld = Bukkit.getWorld(worldName);
-        if(gameWorld == null) {
-            plugin.shutdown("World '" + worldName + "' does not exist. Shutting down");
-        }
-        this.islandHandler = gameHandler.getIslandHandler();
-        this.chestHandler = gameHandler.getChestHandler();
-    }
+    @Getter private World gameWorld;
 
     @Getter private GameConfig gameConfig;
 
-    public void initializeServer() {
+    @Override
+    public GameConfig loadGameConfig(SkyWarsPlugin plugin) {
+        String worldName = ConfigKeys.WORLD_NAME.getStringValue();
+        gameWorld = Bukkit.getWorld(worldName);
+        if(gameWorld == null) {
+            plugin.shutdown("World '" + worldName + "' does not exist. Shutting down");
+            return null;
+        }
 
         GameInfo gameInfo = loadGameInfo();
         GameType gameType = gameInfo.getGameType();
@@ -61,27 +38,21 @@ public class GameServerInitializer {
 
         String serverId = gameInfo.getServerId();
 
-        GameMap gameMap = loadGameMap(teamType);
-        gameConfig = new GameConfig(serverId, gameType, teamType, gameMap.toMap());
+        String name = MapConfigKeys.MAP_NAME.getStringValue();
+
+        gameConfig = new GameConfig(serverId, gameType, teamType, gameWorld, new Map(name), false);
 
         if(gameConfig.isSetupMode()) {
             plugin.log("Server is on Setup Mode. ");
-            return;
         }
-        plugin.log("Checking redis connection...");
-        // Check if redis is established
-        plugin.log("Sending startup payload for server " + gameInfo.getServerId() + "...");
-        // Sending message to lobby about this server...
+        return gameConfig;
     }
 
-    public void finalizeServer() {
+    @Override
+    public void saveGameConfig(SkyWarsPlugin plugin) {
         plugin.log("Saving game map...");
-        saveGameMap();
-
-        plugin.log("Sending shutdown payload for server " + gameConfig.getServerId() + "...");
-        // Send shutdown message to lobby.
-
-        plugin.log("Saving configuration files...");
+        Map map = gameConfig.getMap();
+        MapConfigKeys.MAP_NAME.setValue(map.getName());
     }
 
     private GameInfo loadGameInfo() {
@@ -95,77 +66,6 @@ public class GameServerInitializer {
         return new GameInfo(serverId, gameType, teamType);
     }
 
-    private GameMap loadGameMap(TeamType teamType) {
-
-        String name = MapConfigKeys.MAP_NAME.getStringValue();
-        List<String> serializedIslands = MapConfigKeys.MAP_SERIALIZED_ISLANDS.getStringList();
-        List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
-
-        GameMap gameMap = new GameMap(name, teamType, islandHandler, chestHandler);
-
-
-        for(String serializedIsland : serializedIslands) {
-
-            if(serializedIsland.isEmpty()) continue;
-//            String[] args = serializedIsland.split("/");
-            gameMap.addIsland(serializedIsland);
-        }
-
-        for(String serializedChest : serializedChests) {
-            if(serializedChest.isEmpty()) continue;
-            String[] args = serializedChest.split("/");
-            String serializedLocation = args[0];
-            CustomLocation customLocation = CustomLocation.stringToLocation(serializedLocation);
-            boolean midChest = Boolean.parseBoolean(args[1]);
-
-            Block block = gameWorld.getBlockAt(customLocation.toBukkitLocation());
-            if(block.getType() != Material.CHEST) continue;
-            gameMap.addChest(block, midChest);
-        }
-        /*
-        serialized-chests:
-- -199.0, 29.0, -25.0/true
-- -190.0, 32.0, -27.0/false
-- -202.0, 32.0, -37.0/false
-- -200.0, 29.0, -26.0/true
-- -198.0, 32.0, -35.0/false
-- -209.0, 32.0, -27.0/false
-- -211.0, 32.0, -23.0/false
-- -198.0, 29.0, -26.0/true
-- -188.0, 32.0, -23.0/false
-- -196.0, 32.0, -14.0/false
-- -200.0, 32.0, -16.0/false
-- -199.0, 29.0, -27.0/true
-
-
-         */
-        return gameMap;
-    }
-
-    private void saveGameMap() {
-
-        Map map = gameConfig.getMap();
-        MapConfigKeys.MAP_NAME.setValue(map.getName());
-
-        List<String> serializedChests = new ArrayList<>();
-        List<String> serializedIslands = new ArrayList<>();
-
-        for(Chest chest : chestHandler.getChests().values()) {
-            Location location = chest.getLocation();
-            String serializedLocation = CustomLocation.locationToString(location);
-            boolean midChest = chest.isMidChest();
-            serializedChests.add(serializedLocation + "/" + midChest);
-        }
-        for(Island island : islandHandler.getIslands().values()) {
-            Location cageLocation = island.getCageLocation();
-            String serializedCageLocation = CustomLocation.locationToString(cageLocation);
-            serializedIslands.add(serializedCageLocation);
-        }
-
-        MapConfigKeys.MAP_SERIALIZED_CHESTS.setValue(serializedChests);
-        MapConfigKeys.MAP_SERIALIZED_ISLANDS.setValue(serializedIslands);
-    }
-
     @Data
     private static class GameInfo {
 
@@ -177,39 +77,6 @@ public class GameServerInitializer {
             char gameChar = gameType.name().charAt(0);
             char teamChar = teamType.name().charAt(0);
             return id + teamChar + gameChar;
-        }
-    }
-
-    private static class GameMap {
-
-        private final TeamType teamType;
-        private final IslandHandler islandHandler;
-        private final ChestHandler chestHandler;
-        private final Map map;
-
-        public GameMap(String mapName, TeamType teamType, IslandHandler islandHandler, ChestHandler chestHandler) {
-            map = new Map(mapName);
-            this.teamType = teamType;
-            this.islandHandler = islandHandler;
-            this.chestHandler = chestHandler;
-        }
-
-        public void addIsland(Island island) {
-            islandHandler.addIsland(teamType, island);
-        }
-
-        public void addChest(Block block, boolean midChest) {
-            chestHandler.addChest(block, midChest);
-        }
-
-        public void addIsland(String serializedCageLocation) {
-            CustomLocation customLocation = CustomLocation.stringToLocation(serializedCageLocation);
-            Location cageLocation = customLocation.toBukkitLocation();
-            addIsland(new Island(cageLocation));
-        }
-
-        public Map toMap() {
-            return map;
         }
     }
 }

@@ -2,6 +2,7 @@ package com.ultimismc.gamescaler.test;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.ultimismc.gamescaler.Server;
 import com.ultimismc.gamescaler.serializer.GsonSerializer;
 
 /**
@@ -20,15 +21,15 @@ public class ScalerSerializationTest {
         long took = 0;
         int count = 0;
 
-        while(count <= 1000) {
+        while(count <= 3) {
             long now = System.nanoTime();
-            JsonElement jsonElement = serializer.serialize(new ScalerTest());
-//        System.out.println("Serialized Json Element: " + jsonElement);
+            JsonElement jsonElement = serializer.serialize(new Server(new DummyServerPlugin(), "Nordine", "ND1", true));
+        System.out.println("Serialized Json Element: " + jsonElement);
 
 //        System.out.println("Deserializing...");
-            ScalerTest scalerTest = serializer.deserialize(jsonElement.toString(), ScalerTest.class);
+            Server scalerTest = serializer.deserialize(jsonElement.toString(), Server.class);
 
-//        System.out.println("Deserialized Class: " + scalerTest);
+        System.out.println("Deserialized Class: " + scalerTest);
             took += System.nanoTime() - now;
             count++;
         }

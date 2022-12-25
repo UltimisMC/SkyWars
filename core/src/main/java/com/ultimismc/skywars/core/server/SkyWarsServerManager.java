@@ -1,21 +1,36 @@
 package com.ultimismc.skywars.core.server;
 
-import com.ultimismc.gamescaler.GameServer;
 import com.ultimismc.gamescaler.ServerManager;
 import com.ultimismc.gamescaler.ServerPlugin;
+import com.ultimismc.gamescaler.communication.ConnectionData;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.core.game.GameConfig;
 
 /**
  * @author DirectPlan
  */
-public class SkyWarsServerManager extends ServerManager<SkyWarsGameServer> {
 
-    public SkyWarsServerManager(SkyWarsPlugin plugin) {
-        super(new SkyWarsPluginWrapper(plugin), SkyWarsGameServer.class);
+public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
+
+    private final GameConfig gameConfig;
+
+    public SkyWarsServerManager(SkyWarsPlugin plugin, GameConfig gameConfig) {
+        super(new SkyWarsPluginWrapper(plugin), SkyWarsServer.class);
+
+        this.gameConfig = gameConfig;
     }
 
     @Override
-    public SkyWarsGameServer wrap(ServerPlugin plugin, String displayName, String id, boolean lobby) {
-        return new SkyWarsGameServer(plugin, displayName, id, lobby);
+    public SkyWarsServer wrap(ServerPlugin plugin) {
+        return new SkyWarsServer(plugin, gameConfig);
+    }
+
+    public void connect() {
+        String host = ConfigKeys.STORAGE_HOST.getStringValue();
+        int port = ConfigKeys.JEDIS_PORT.getInteger();
+        String password = ConfigKeys.JEDIS_PASSWORD.getStringValue();
+
+        connect(new ConnectionData(host, port, password));
     }
 }

@@ -3,18 +3,15 @@ package com.ultimismc.skywars.game.handler;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameType;
-import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
-import com.ultimismc.skywars.core.game.features.cosmetics.victorydances.VictoryDanceHandler;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.game.GameManager;
-import com.ultimismc.skywars.game.GameServerInitializer;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.combat.SkyWarsCombatAdapter;
@@ -69,12 +66,10 @@ public class GameHandler implements FeatureInitializer {
     private final UserManager userManager;
     private final GameManager gameManager;
     private final MenuManager menuManager;
+    private final GameConfig gameConfig;
 
-    private GameConfig gameConfig;
-    private GameServerInitializer gameServerInitializer;
     private Game game;
     private GameScoreboard gameScoreboard;
-    private World gameWorld;
 
     @Setter private long prepareCountdownLeft;
     @Setter private long gameTime;
@@ -94,6 +89,8 @@ public class GameHandler implements FeatureInitializer {
     public GameHandler(SkyWarsPlugin plugin, GameManager gameManager) {
         this.plugin = plugin;
         this.gameManager = gameManager;
+
+        gameConfig = plugin.getGameConfig();
         menuManager = plugin.getMenuManager();
         userManager = plugin.getUserManager();
     }
@@ -107,12 +104,7 @@ public class GameHandler implements FeatureInitializer {
         skyWarsEventHandler = new SkyWarsEventHandler(plugin, this);
         islandHandler = new IslandHandler(this);
         chestHandler = new ChestHandler(this);
-
-        gameServerInitializer = new GameServerInitializer(plugin, this);
-
-        gameServerInitializer.initializeServer();
-        gameConfig = gameServerInitializer.getGameConfig();
-        gameWorld = gameServerInitializer.getGameWorld();
+        featureHandler.initializeFeature(chestHandler);
 
         GameType gameType = gameConfig.getGameType();
         switch (gameType) {
@@ -147,12 +139,6 @@ public class GameHandler implements FeatureInitializer {
 
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, new GameRunnable(this), 0L, 20L);
         plugin.log("Game Server for SkyWars " + gameConfig.getName() + " has started.");
-    }
-
-    public void shutdown() {
-        chestHandler.shutdown();
-        islandHandler.shutdown();
-        gameServerInitializer.finalizeServer();
     }
 
     public void prepareUser(User user) {
@@ -311,11 +297,6 @@ public class GameHandler implements FeatureInitializer {
         teamHandler.setupTeamTag(userGameSession);
     }
 
-    public void removeSpectator(UserGameSession user) {
-        game.removeSpectator(user);
-
-    }
-
     public void updateScoreboard() {
         broadcastFunction(userGameSession -> gameScoreboard.updateScoreboard(userGameSession.getUser()));
     }
@@ -349,10 +330,6 @@ public class GameHandler implements FeatureInitializer {
 
     public int getMaximumPlayers() {
         return gameConfig.getMaximumPlayers();
-    }
-
-    public Map getServerMap() {
-        return gameConfig.getMap();
     }
 
     public String getServerId() {
@@ -434,6 +411,10 @@ public class GameHandler implements FeatureInitializer {
 
     public void openInventory(Player player, InventoryUI inventoryUI) {
         menuManager.openInventory(player, inventoryUI);
+    }
+
+    public World getGameWorld() {
+        return gameConfig.getWorld();
     }
 
     public FeatureHandler getFeatureHandler() {

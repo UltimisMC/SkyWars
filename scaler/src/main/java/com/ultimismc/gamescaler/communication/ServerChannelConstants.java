@@ -5,6 +5,7 @@ package com.ultimismc.gamescaler.communication;
  */
 public enum ServerChannelConstants implements ServerChannel {
 
+    TEST,
     FETCH_SERVER,
     SERVER_UPDATE;
 

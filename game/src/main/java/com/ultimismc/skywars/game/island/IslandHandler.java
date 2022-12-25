@@ -1,24 +1,28 @@
 package com.ultimismc.skywars.game.island;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.Cage;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.game.config.MapConfigKeys;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import org.bukkit.Location;
+import xyz.directplan.directlib.CustomLocation;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author DirectPlan
  */
 @Getter
-public class IslandHandler {
+public class IslandHandler implements FeatureInitializer {
+
+    @Getter private final String name = "Island Handler";
 
     private final GameHandler gameHandler;
     private final CageHandler cageHandler;
@@ -32,6 +36,35 @@ public class IslandHandler {
         cageHandler = cosmeticManager.getCageHandler();
 
         defaultCage = cageHandler.getDefaultCage();
+    }
+
+    @Override
+    public void initializeFeature(SkyWarsPlugin plugin) {
+        List<String> serializedIslands = MapConfigKeys.MAP_SERIALIZED_ISLANDS.getStringList();
+        TeamType teamType = gameHandler.getTeamType();
+
+        for(String serializedIsland : serializedIslands) {
+            if(serializedIsland.isEmpty()) continue;
+
+            CustomLocation customLocation = CustomLocation.stringToLocation(serializedIsland);
+            Location cageLocation = customLocation.toBukkitLocation();
+            addIsland(teamType, new Island(cageLocation));
+        }
+    }
+
+    @Override
+    public void shutdownFeature(SkyWarsPlugin plugin) {
+        List<String> serializedIslands = new ArrayList<>();
+
+        for(Island island : islands.values()) {
+            Location cageLocation = island.getCageLocation();
+            String serializedCageLocation = CustomLocation.locationToString(cageLocation);
+            serializedIslands.add(serializedCageLocation);
+        }
+
+        MapConfigKeys.MAP_SERIALIZED_ISLANDS.setValue(serializedIslands);
+
+        removeAllCages();
     }
 
     public Island getAvailableIsland() {
@@ -89,10 +122,6 @@ public class IslandHandler {
             location = location.clone().add(0, -2, 0);
             cageHandler.removeCage(location);
         }
-    }
-
-    public void shutdown() {
-        removeAllCages();
     }
 
     public void addIsland(TeamType teamType, Island island) {

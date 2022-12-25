@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game;
 
 import lombok.Data;
+import org.bukkit.World;
 
 /**
  * @author DirectPlan
@@ -12,9 +13,9 @@ public class GameConfig {
     private final GameType gameType;
     private final TeamType teamType;
 
+    private transient final World world;
     private final Map map;
-
-    private int spectators;
+    private final boolean lobby;
 
     private boolean setupMode;
 
@@ -31,6 +32,7 @@ public class GameConfig {
     }
 
     public String getName() {
+        if(lobby) return "Lobby";
         return teamType.getName() + " " + gameType.getName();
     }
 

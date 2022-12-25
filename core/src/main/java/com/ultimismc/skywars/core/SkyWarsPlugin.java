@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.commands.CageCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsDebugCommand;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameListener;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.placeholders.PlaceholderExpansionHandler;
@@ -41,7 +42,13 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     protected UserListener userListener;
     protected FeatureHandler featureHandler;
     protected PlaceholderExpansionHandler placeholderExpansionHandler;
+    protected GameConfig gameConfig;
 
+    private final ServerInitializer serverInitializer;
+
+    public SkyWarsPlugin(ServerInitializer serverInitializer) {
+        this.serverInitializer = serverInitializer;
+    }
 
     public abstract void enable();
 
@@ -53,11 +60,13 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         configHandler.loadConfiguration("config.yml", ConfigKeys.class);
         configHandler.loadConfiguration("cages.yml", CageConfigKeys.class);
 
+
         storage = new UserStorage(this);
         storage.connect();
 
-        serverManager = new SkyWarsServerManager(this);
-
+        gameConfig = serverInitializer.loadGameConfig(this);
+        serverManager = new SkyWarsServerManager(this, gameConfig);
+        serverManager.connect();
 
         userManager = new UserManager(this);
         menuManager = new MenuManager();
@@ -81,11 +90,13 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         disable();
+        serverInitializer.saveGameConfig(this);
 
         featureHandler.shutdownFeatures();
         configHandler.saveConfigurations();
         userManager.saveUsers();
 
+        serverManager.close();
         storage.close();
     }
 

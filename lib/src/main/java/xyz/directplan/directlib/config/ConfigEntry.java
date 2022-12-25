@@ -22,7 +22,6 @@ public interface ConfigEntry {
     
     Object getValue();
 
-
     String getKey();
 
     Map<String, ReplacementBoundary> getReplacementBoundaries();

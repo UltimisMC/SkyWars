@@ -1,6 +1,6 @@
 package com.ultimismc.gamescaler.communication.listener;
 
-import com.ultimismc.gamescaler.GameServer;
+import com.ultimismc.gamescaler.Server;
 import com.ultimismc.gamescaler.ServerManager;
 import com.ultimismc.gamescaler.communication.ServerChannelConstants;
 import com.ultimismc.gamescaler.serializer.Serializer;
@@ -8,9 +8,9 @@ import com.ultimismc.gamescaler.serializer.Serializer;
 /**
  * @author DirectPlan
  */
-public class ChannelUpdateListener<T extends GameServer> extends ServerListener<T> {
+public class UpdateChannelListener<T extends Server> extends ServerListener<T> {
 
-    public ChannelUpdateListener(ServerManager<T> serverManager) {
+    public UpdateChannelListener(ServerManager<T> serverManager) {
         super(serverManager, ServerChannelConstants.SERVER_UPDATE, serverManager.getGameClazz());
     }
 
@@ -25,6 +25,6 @@ public class ChannelUpdateListener<T extends GameServer> extends ServerListener<
         log(" - Whitelisted: " + server.isWhitelisted());
         log(" - State: " + (server.isLobby() ? "N/A" : server.getState()));
 
-        serverManager.registerGameServer(server);
+        serverManager.registerServer(server);
     }
 }

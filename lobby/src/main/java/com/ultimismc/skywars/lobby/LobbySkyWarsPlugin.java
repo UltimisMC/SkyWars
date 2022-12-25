@@ -19,6 +19,10 @@ public class LobbySkyWarsPlugin extends SkyWarsPlugin {
 
     private LobbyManager lobbyManager;
 
+    public LobbySkyWarsPlugin() {
+        super(new LobbyServerInitializer());
+    }
+
     @Override
     public void enable() {
         configHandler.loadConfiguration("messages.yml", MessageConfigKeys.class);
@@ -37,9 +41,6 @@ public class LobbySkyWarsPlugin extends SkyWarsPlugin {
 
     }
 
-
     @Override
-    public void disable() {
-
-    }
+    public void disable() {}
 }

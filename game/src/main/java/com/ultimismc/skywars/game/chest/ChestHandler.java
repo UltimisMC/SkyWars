@@ -1,6 +1,9 @@
 package com.ultimismc.skywars.game.chest;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameStatistics;
+import com.ultimismc.skywars.core.game.features.FeatureInitializer;
+import com.ultimismc.skywars.game.config.MapConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import com.ultimismc.skywars.game.events.SkyWarsEventUpdater;
 import com.ultimismc.skywars.game.handler.Game;
@@ -8,18 +11,24 @@ import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import xyz.directplan.directlib.CustomLocation;
 import xyz.directplan.directlib.PluginUtility;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author DirectPlan
  */
-public class ChestHandler {
+public class ChestHandler implements FeatureInitializer {
 
+    @Getter private final String name = "Chest Handler";
     @Getter private final Map<Location, Chest> chests = new HashMap<>();
 
     private final GameHandler gameHandler;
@@ -31,6 +40,41 @@ public class ChestHandler {
 
         skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.SECOND, 60000));
         skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.THIRD, 60000));
+    }
+
+    @Override
+    public void initializeFeature(SkyWarsPlugin plugin) {
+        List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
+        World gameWorld = gameHandler.getGameWorld();
+
+        for(String serializedChest : serializedChests) {
+            if(serializedChest.isEmpty()) continue;
+            String[] args = serializedChest.split("/");
+            String serializedLocation = args[0];
+            CustomLocation customLocation = CustomLocation.stringToLocation(serializedLocation);
+            boolean midChest = Boolean.parseBoolean(args[1]);
+
+            Block block = gameWorld.getBlockAt(customLocation.toBukkitLocation());
+            if(block.getType() != Material.CHEST) continue;
+            addChest(block, midChest);
+        }
+    }
+
+    @Override
+    public void shutdownFeature(SkyWarsPlugin plugin) {
+        List<String> serializedChests = new ArrayList<>();
+
+        for(Chest chest : chests.values()) {
+            Location location = chest.getLocation();
+            String serializedLocation = CustomLocation.locationToString(location);
+            boolean midChest = chest.isMidChest();
+            serializedChests.add(serializedLocation + "/" + midChest);
+
+            // Destroying hologram
+            ChestHologram hologram = chest.getChestHologram();
+            hologram.destroy();
+        }
+        MapConfigKeys.MAP_SERIALIZED_CHESTS.setValue(serializedChests);
     }
 
     public void refillChest(RefillPhase refillPhase, Chest chest) {
@@ -72,14 +116,6 @@ public class ChestHandler {
         ChestSkyWarsEventUpdater updater = new ChestSkyWarsEventUpdater(chest);
         skyWarsEventHandler.addUpdater(updater);
     }
-
-    public void shutdown() {
-        for(Chest chest : chests.values()) {
-            ChestHologram hologram = chest.getChestHologram();
-            hologram.destroy();
-        }
-    }
-
     public void addChest(Chest chest) {
         chests.put(chest.getLocation(), chest);
     }

@@ -19,10 +19,14 @@ public enum ConfigKeys implements ConfigEntry {
     WORLD_NAME("world-name", "world"),
 
     STORAGE_HOST("mongodb.host", "localhost"),
-    STORAGE_PORT("mongodb.port", 0, false),
+    STORAGE_PORT("mongodb.port", 0),
     STORAGE_USERNAME("mongodb.username", "username"),
     STORAGE_PASSWORD("mongodb.password", "password"),
     STORAGE_DATABASE("mongodb.database", "database"),
+
+    JEDIS_HOST("jedis.host", "localhost"),
+    JEDIS_PORT("jedis.port", 6739),
+    JEDIS_PASSWORD("jedis.password", null),
 //    STORAGE_MAXIMUM_POOL_SIZE("storage.maximum-pool-size", 10),
 
     INCREMENTER_AMOUNT("progress-bar.incrementer-amount", 5),
@@ -35,19 +39,12 @@ public enum ConfigKeys implements ConfigEntry {
 
     ;
     private final String key;
-    private final boolean forcedEntryDeclaration;
     @Setter
     private Object value;
     private final Map<String, ReplacementBoundary> replacementBoundaries = new HashMap<>();
 
-    ConfigKeys(String key, Object defaultValue, boolean overwrite) {
+    ConfigKeys(String key, Object defaultValue) {
         this.key = key;
         this.value = defaultValue;
-
-        this.forcedEntryDeclaration = overwrite;
-    }
-
-    ConfigKeys(String key, Object value) {
-        this(key, value, true);
     }
 }
