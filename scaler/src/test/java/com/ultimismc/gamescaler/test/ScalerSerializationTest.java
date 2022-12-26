@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.ultimismc.gamescaler.Server;
 import com.ultimismc.gamescaler.serializer.GsonSerializer;
+import com.ultimismc.gamescaler.test.connection.DummyGameServer;
 
 /**
  * @author DirectPlan
@@ -23,7 +24,7 @@ public class ScalerSerializationTest {
 
         while(count <= 3) {
             long now = System.nanoTime();
-            JsonElement jsonElement = serializer.serialize(new Server(new DummyServerPlugin(), "Nordine", "ND1", true));
+            JsonElement jsonElement = serializer.serialize(new DummyGameServer(new DummyServerPlugin(), "Nordine", "ND1", true));
         System.out.println("Serialized Json Element: " + jsonElement);
 
 //        System.out.println("Deserializing...");

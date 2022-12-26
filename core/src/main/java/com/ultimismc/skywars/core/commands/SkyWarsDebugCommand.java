@@ -3,13 +3,13 @@ package com.ultimismc.skywars.core.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.Level;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.level.LevelReward;
-import com.ultimismc.skywars.core.server.ServerListMenu;
-import com.ultimismc.skywars.core.server.SkyWarsServerManager;
+import com.ultimismc.skywars.core.server.menu.ServerListMenu;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.core.user.setting.UserSetting;
@@ -36,6 +36,9 @@ import java.util.UUID;
 public class SkyWarsDebugCommand extends BaseCommand {
 
     @Dependency
+    private SkyWarsPlugin plugin;
+
+    @Dependency
     private LevelManager levelManager;
 
     @Dependency
@@ -43,9 +46,6 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Dependency
     private ConfigHandler configHandler;
-
-    @Dependency
-    private SkyWarsServerManager serverManager;
 
     @HelpCommand
     @Syntax("")
@@ -55,7 +55,8 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Subcommand("servers")
     public void onShowServers(Player player) {
-        menuManager.openInventory(player, new ServerListMenu(serverManager));
+
+        menuManager.openInventory(player, new ServerListMenu(plugin, player));
     }
 
     @Subcommand("displaylevels")

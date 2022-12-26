@@ -4,6 +4,7 @@ import com.ultimismc.gamescaler.Server;
 import com.ultimismc.skywars.core.events.GameStateChangedEvent;
 import com.ultimismc.skywars.core.game.GameState;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,11 +20,17 @@ public class ServerUpdateListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        Server server = serverManager.getServer();
+        server.setOnlinePlayers(Bukkit.getOnlinePlayers().size());
+
         serverManager.sendServerUpdate();
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        Server server = serverManager.getServer();
+        server.setOnlinePlayers(Bukkit.getOnlinePlayers().size());
+
         serverManager.sendServerUpdate();
     }
 

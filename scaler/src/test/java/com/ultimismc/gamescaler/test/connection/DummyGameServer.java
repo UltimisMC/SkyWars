@@ -11,4 +11,9 @@ public class DummyGameServer extends Server {
     public DummyGameServer(ServerPlugin plugin, String displayName, String id, boolean lobby) {
         super(plugin, displayName, id, lobby);
     }
+
+    @Override
+    public void updateVariables(Server other) {
+
+    }
 }

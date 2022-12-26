@@ -30,6 +30,7 @@ public class CommandHandler {
         FeatureHandler featureHandler = plugin.getFeatureHandler();
         SkyWarsServerManager serverManager = plugin.getServerManager();
 
+        registerDependency(SkyWarsPlugin.class, plugin);
         registerDependency(ConfigHandler.class, configHandler);
         registerDependency(UserManager.class, userManager);
         registerDependency(MenuManager.class, menuManager);

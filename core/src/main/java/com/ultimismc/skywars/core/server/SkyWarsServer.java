@@ -5,6 +5,8 @@ import com.ultimismc.gamescaler.ServerPlugin;
 
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameState;
+import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.TeamType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,11 +16,16 @@ import lombok.Setter;
 @Getter
 public class SkyWarsServer extends Server {
 
+
+    private final GameType gameType;
+    private final TeamType teamType;
     @Setter private GameState state;
 
     public SkyWarsServer(ServerPlugin plugin, GameConfig gameConfig) {
         super(plugin, gameConfig.getServerId(), "SkyWars " + gameConfig.getName(), gameConfig.isLobby());
 
+        gameType = gameConfig.getGameType();
+        teamType = gameConfig.getTeamType();
         state = GameState.WAITING;
     }
 
@@ -31,7 +38,7 @@ public class SkyWarsServer extends Server {
     }
 
     public boolean hasStarted() {
-        return state == GameState.STARTED;
+        return state != GameState.WAITING && state != GameState.STARTING;
     }
 
     @Override

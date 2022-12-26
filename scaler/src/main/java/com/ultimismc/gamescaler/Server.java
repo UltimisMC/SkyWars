@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public abstract class Server implements Serializable {
+public class Server implements Serializable {
 
-    private final String displayName;
     private final String id;
+    private final String displayName;
 
     private int onlinePlayers;
     private int maximumPlayers;
@@ -26,9 +26,9 @@ public abstract class Server implements Serializable {
         this.lobby = lobby;
     }
 
-    public Server(ServerPlugin plugin, String displayName, String id, boolean lobby) {
-        this.displayName = displayName;
+    public Server(ServerPlugin plugin, String id, String displayName, boolean lobby) {
         this.id = id;
+        this.displayName = displayName;
         this.lobby = lobby;
 
         this.onlinePlayers = plugin.getOnlinePlayers();
@@ -36,5 +36,9 @@ public abstract class Server implements Serializable {
         this.whitelisted = plugin.isWhitelisted();
     }
 
-    public abstract void updateVariables(Server other);
+    public boolean isFull() {
+        return onlinePlayers >= maximumPlayers;
+    }
+
+    public void updateVariables(Server other) {}
 }

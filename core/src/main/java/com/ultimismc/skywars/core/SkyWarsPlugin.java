@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core;
 
 import com.ultimismc.skywars.core.commands.CageCommand;
+import com.ultimismc.skywars.core.commands.PlayCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsDebugCommand;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
@@ -87,7 +88,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
                 new GameListener(userManager, featureHandler),
                 userListener = new UserListener(userManager));
 
-        commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand());
+        commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand(), new PlayCommand());
         enable();
     }
 

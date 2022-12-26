@@ -7,6 +7,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -18,6 +20,8 @@ public class JedisConnection {
 
     private final ServerPlugin plugin;
     private JedisPool jedisPool;
+
+    private final ExecutorService service = Executors.newFixedThreadPool(10);
 
     public synchronized boolean establishConnection(ConnectionData connectionData) {
         String host = connectionData.getHost();
@@ -31,15 +35,15 @@ public class JedisConnection {
     }
 
     public void subscribe(String channel, JedisPubSub pubSub) {
+
         synchronized (this) {
-            Thread thread = new Thread(() -> {
+            CompletableFuture.runAsync(() -> {
                 try (Jedis jedis = jedisPool.getResource()) {
                     jedis.subscribe(pubSub, channel);
+                }catch (Exception e) {
+                    plugin.log("An error has occurred whilst subscribing to " + channel + ": " + e.getMessage());
                 }
-            });
-            thread.setName("Game Scaler - Jedis Subscriber " + channel + " Channel");
-            thread.setDaemon(true);
-            thread.start();
+            }, service);
         }
     }
 

@@ -13,7 +13,6 @@ import java.util.UUID;
  */
 public class MenuManager extends PlayerMenuManager {
 
-
     @Getter private final Map<UUID, InventoryUI> inventories = new HashMap<>();
     
     public InventoryUI getInventory(UUID uuid){

@@ -1,14 +1,23 @@
-package com.ultimismc.skywars.core.server;
+package com.ultimismc.skywars.core.server.menu;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameState;
+import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.server.SkyWarsServer;
+import com.ultimismc.skywars.core.server.SkyWarsServerManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitTask;
 import xyz.directplan.directlib.inventory.MenuItem;
 import xyz.directplan.directlib.inventory.PaginatedMenu;
 import xyz.directplan.directlib.inventory.PaginatedModel;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author DirectPlan
@@ -18,15 +27,21 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
 
     private final SkyWarsServerManager serverManager;
 
-    public ServerListMenu(SkyWarsServerManager serverManager) {
+    private final BukkitTask bukkitTask;
+
+    public ServerListMenu(SkyWarsPlugin plugin, Player player) {
         super("SkyWars Servers", 6, PaginatedModel.HYPIXEL_MODEL);
 
-        this.serverManager = serverManager;
+        this.serverManager = plugin.getServerManager();
+
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, new ServerListMenuUpdater(player, this), 20, 20);
     }
 
     @Override
     public Collection<SkyWarsServer> getList() {
-        return serverManager.getServers();
+        return serverManager.getServers().stream()
+                .sorted((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -54,10 +69,24 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
         menuItem.setLore("&8" + serverId);
         if(lobby) menuItem.setLore("&7&oThis is a lobby server!");
         menuItem.setLore(" ");
-        menuItem.setLore("&fServer State: " + (lobby ? "N/A" : statusColor + gameState.name()));
+        if(!server.isLobby()) {
+            menuItem.setLore("&fServer State: " + statusColor + gameState.name());
+        }
         menuItem.setLore("&fPlayers: &a" + onlinePlayers + "/" + maximumPlayers);
         menuItem.setLore(" ");
+        if(!server.isLobby()) {
+            GameType gameType = server.getGameType();
+            TeamType teamType = server.getTeamType();
+            menuItem.setLore("&fGame Type: &a" + gameType.getDisplayName());
+            menuItem.setLore("&fTeam Type: &a" + teamType.getName() + " &7(Max Players: " + teamType.getMaximumPlayers() + ". Max Teams: " + teamType.getMaximumTeam() + ")");
+            menuItem.setLore(" ");
+        }
         menuItem.setLore("&eClick to jump to &a"+serverId+"&e!");
         return menuItem;
+    }
+
+    @Override
+    public void onClose(Inventory inventory) {
+        bukkitTask.cancel();
     }
 }

@@ -16,7 +16,6 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 @Getter
 public abstract class ServerManager<S extends Server> {
@@ -70,6 +69,8 @@ public abstract class ServerManager<S extends Server> {
     }
 
     public void close() {
+        plugin.log("Broadcasting remove signal...");
+        sendRequest(ServerChannelConstants.SERVER_REMOVE, server);
         plugin.log("Closing jedis connection...");
         connection.close();
     }
