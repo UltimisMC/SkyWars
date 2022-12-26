@@ -23,8 +23,7 @@ public class UpdateChannelListener<T extends Server> extends ServerListener<T> {
         log(" - Players: " + server.getOnlinePlayers() + "/" + server.getMaximumPlayers());
         log(" - A lobby: " + server.isLobby());
         log(" - Whitelisted: " + server.isWhitelisted());
-        log(" - State: " + (server.isLobby() ? "N/A" : server.getState()));
 
-        serverManager.registerServer(server);
+        serverManager.updateServer(server);
     }
 }

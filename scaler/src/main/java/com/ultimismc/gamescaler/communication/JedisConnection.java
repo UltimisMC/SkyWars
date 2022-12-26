@@ -31,7 +31,6 @@ public class JedisConnection {
     }
 
     public void subscribe(String channel, JedisPubSub pubSub) {
-        plugin.log("Subscribing to " + channel + " channel.");
         synchronized (this) {
             Thread thread = new Thread(() -> {
                 try (Jedis jedis = jedisPool.getResource()) {
@@ -71,6 +70,10 @@ public class JedisConnection {
                 jedis.publish(channel.getName(), message);
             }
         });
+    }
+
+    public boolean isConnected() {
+        return !jedisPool.isClosed();
     }
 
     public void close() {

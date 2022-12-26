@@ -1,11 +1,15 @@
 package com.ultimismc.skywars.game.handler;
 
+import com.ultimismc.skywars.core.events.GameStateChangedEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
+import com.ultimismc.skywars.core.game.GameState;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -28,6 +32,12 @@ public abstract class Game {
     private final LinkedList<UserGameSession> playersLeft = new LinkedList<>();
     private final LinkedList<UserGameSession> spectators = new LinkedList<>();
 
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+
+        GameConfig gameConfig = gameHandler.getGameConfig();
+        Bukkit.getPluginManager().callEvent(new GameStateChangedEvent(gameConfig, gameState));
+    }
 
     public void startGame() {}
 

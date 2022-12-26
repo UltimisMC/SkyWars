@@ -1,6 +1,6 @@
 package com.ultimismc.skywars.core.server;
 
-import com.ultimismc.gamescaler.ServerState;
+import com.ultimismc.skywars.core.game.GameState;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -43,15 +43,18 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
             statusColor = ChatColor.GREEN;
         }
 
-        ServerState serverState = server.getState();
+        GameState gameState = server.getState();
         String displayName = server.getDisplayName();
         String serverId = server.getId();
         int onlinePlayers = server.getOnlinePlayers();
         int maximumPlayers = server.getMaximumPlayers();
+
+        boolean lobby = server.isLobby();
         MenuItem menuItem = new MenuItem(Material.INK_SACK, statusColor + displayName, statusDurability);
         menuItem.setLore("&8" + serverId);
+        if(lobby) menuItem.setLore("&7&oThis is a lobby server!");
         menuItem.setLore(" ");
-        menuItem.setLore("&fServer State: " + statusColor + serverState.name());
+        menuItem.setLore("&fServer State: " + (lobby ? "N/A" : statusColor + gameState.name()));
         menuItem.setLore("&fPlayers: &a" + onlinePlayers + "/" + maximumPlayers);
         menuItem.setLore(" ");
         menuItem.setLore("&eClick to jump to &a"+serverId+"&e!");

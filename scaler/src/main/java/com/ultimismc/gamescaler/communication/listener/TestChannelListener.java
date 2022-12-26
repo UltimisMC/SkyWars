@@ -19,7 +19,5 @@ public class TestChannelListener extends ServerListener<Object> {
     }
 
     @Override
-    public void onMessageReceived(Object message, Serializer serializer) {
-
-    }
+    public void onMessageReceived(Object message, Serializer serializer) {}
 }

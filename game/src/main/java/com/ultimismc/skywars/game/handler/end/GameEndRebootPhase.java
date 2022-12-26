@@ -1,7 +1,7 @@
 package com.ultimismc.skywars.game.handler.end;
 
 import com.ultimismc.skywars.game.handler.GameHandler;
-import com.ultimismc.skywars.game.handler.GameState;
+import com.ultimismc.skywars.core.game.GameState;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;

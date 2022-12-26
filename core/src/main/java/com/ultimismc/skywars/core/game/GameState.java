@@ -1,4 +1,4 @@
-package com.ultimismc.skywars.game.handler;
+package com.ultimismc.skywars.core.game;
 
 public enum GameState {
 
@@ -6,5 +6,5 @@ public enum GameState {
     STARTING,
     STARTED,
     ENDED,
-    RESTARTING;
+    RESTARTING
 }

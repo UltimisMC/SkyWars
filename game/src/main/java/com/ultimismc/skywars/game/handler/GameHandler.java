@@ -2,6 +2,7 @@ package com.ultimismc.skywars.game.handler;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameConfig;
+import com.ultimismc.skywars.core.game.GameState;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.currency.Currency;

@@ -5,6 +5,8 @@ import com.ultimismc.gamescaler.communication.ServerChannel;
 import com.ultimismc.gamescaler.communication.ConnectionData;
 import com.ultimismc.gamescaler.communication.JedisConnection;
 import com.ultimismc.gamescaler.communication.ServerChannelConstants;
+import com.ultimismc.gamescaler.communication.listener.ServerListener;
+import com.ultimismc.gamescaler.communication.listener.ServerRemoveChannelListener;
 import com.ultimismc.gamescaler.communication.listener.TestChannelListener;
 import com.ultimismc.gamescaler.communication.listener.UpdateChannelListener;
 import com.ultimismc.gamescaler.serializer.GsonSerializer;
@@ -13,8 +15,8 @@ import lombok.Getter;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Getter
 public abstract class ServerManager<S extends Server> {
@@ -27,6 +29,8 @@ public abstract class ServerManager<S extends Server> {
     private final Serializer serializer;
 
     private final Class<S> gameClazz;
+
+    private S server;
 
     public ServerManager(ServerPlugin plugin, Serializer serializer, Class<S> gameClazz) {
         this.plugin = plugin;
@@ -49,16 +53,20 @@ public abstract class ServerManager<S extends Server> {
             return;
         }
         plugin.log("Connection with Redis server has been established!");
-        Server server = wrap(plugin);
-
         plugin.log("Subscribing to server channels...");
-        connection.subscribe(ServerChannelConstants.SERVER_UPDATE, new UpdateChannelListener<>(this));
-        connection.subscribe(ServerChannelConstants.TEST, new TestChannelListener(this));
+        subscribeChannel(ServerChannelConstants.SERVER_UPDATE, new UpdateChannelListener<>(this));
+        subscribeChannel(ServerChannelConstants.TEST, new TestChannelListener(this));
+        subscribeChannel(ServerChannelConstants.SERVER_REMOVE, new ServerRemoveChannelListener(this));
 
         plugin.log("Broadcasting server data...");
-
-        sendRequest(ServerChannelConstants.SERVER_UPDATE, server);
+        server = wrap(plugin);
+        sendServerUpdate();
         // If everything is working correctly. The server should be registered from SERVER_UPDATE listener!
+    }
+
+    public void subscribeChannel(ServerChannel channel, ServerListener<?> serverListener) {
+        plugin.log("Subscribing to " + channel + " channel...");
+        connection.subscribe(channel, serverListener);
     }
 
     public void close() {
@@ -73,12 +81,32 @@ public abstract class ServerManager<S extends Server> {
         connection.sendRequest(channel, jsonMessage.toString());
     }
 
-    public void registerServer(Server server) {
-        String id = server.getId();
-        servers.put(id.toLowerCase(Locale.ROOT), gameClazz.cast(server));
+    public void sendServerUpdate() {
+        sendRequest(ServerChannelConstants.SERVER_UPDATE, server);
+    }
+
+    public void updateServer(Server updatedServer) {
+        String id = updatedServer.getId();
+
+        S server = servers.computeIfAbsent(id, s -> gameClazz.cast(updatedServer));
+
+        server.setOnlinePlayers(updatedServer.getOnlinePlayers());
+        server.setMaximumPlayers(updatedServer.getMaximumPlayers());
+        server.setWhitelisted(updatedServer.isWhitelisted());
+        server.setLobby(updatedServer.isLobby());
+
+        server.updateVariables(updatedServer);
+    }
+
+    public void removeServer(Server server) {
+        servers.remove(server.getId());
     }
 
     public Collection<S> getServers() {
         return servers.values();
+    }
+
+    public boolean isConnected() {
+        return connection.isConnected();
     }
 }

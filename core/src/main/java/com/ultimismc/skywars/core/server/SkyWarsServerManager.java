@@ -13,11 +13,13 @@ import com.ultimismc.skywars.core.game.GameConfig;
 
 public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
 
+    private final SkyWarsPlugin plugin;
     private final GameConfig gameConfig;
 
     public SkyWarsServerManager(SkyWarsPlugin plugin, GameConfig gameConfig) {
         super(new SkyWarsPluginWrapper(plugin), SkyWarsServer.class);
 
+        this.plugin = plugin;
         this.gameConfig = gameConfig;
     }
 
@@ -32,5 +34,9 @@ public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
         String password = ConfigKeys.JEDIS_PASSWORD.getStringValue();
 
         connect(new ConnectionData(host, port, password));
+
+        if(isConnected()) {
+            plugin.registerListeners(new ServerUpdateListener(this));
+        }
     }
 }
