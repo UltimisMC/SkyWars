@@ -49,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>com.ultimismc</groupId>
-            <artifactId>game-scaler</artifactId>
+            <artifactId>serversync</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

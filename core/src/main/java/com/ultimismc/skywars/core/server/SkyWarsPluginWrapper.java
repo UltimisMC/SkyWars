@@ -1,10 +1,12 @@
 package com.ultimismc.skywars.core.server;
 
-import com.ultimismc.gamescaler.ServerPlugin;
+import com.ultimismc.serversync.ServerPlugin;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import xyz.directplan.directlib.PluginUtility;
+
+import java.util.logging.Level;
 
 /**
  * @author DirectPlan
@@ -17,6 +19,11 @@ public class SkyWarsPluginWrapper implements ServerPlugin {
     @Override
     public String getName() {
         return plugin.getName();
+    }
+
+    @Override
+    public void log(Level level, String s) {
+        plugin.getLogger().log(level, s);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.core;
 
 import co.aikar.commands.*;
-import com.ultimismc.gamescaler.ServerManager;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;

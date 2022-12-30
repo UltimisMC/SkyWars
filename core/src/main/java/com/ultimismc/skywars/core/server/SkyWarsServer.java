@@ -1,8 +1,7 @@
 package com.ultimismc.skywars.core.server;
 
-import com.ultimismc.gamescaler.Server;
-import com.ultimismc.gamescaler.ServerPlugin;
-
+import com.ultimismc.serversync.Server;
+import com.ultimismc.serversync.ServerPlugin;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameState;
 import com.ultimismc.skywars.core.game.GameType;

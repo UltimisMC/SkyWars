@@ -12,6 +12,7 @@ import com.ultimismc.gamescaler.communication.listener.UpdateChannelListener;
 import com.ultimismc.gamescaler.serializer.GsonSerializer;
 import com.ultimismc.gamescaler.serializer.Serializer;
 import lombok.Getter;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,7 +46,6 @@ public abstract class ServerManager<S extends Server> {
 
     public void connect(ConnectionData connectionData) {
         // Establish connection.
-
         plugin.log("Establishing connection with Redis server...");
         if(!connection.establishConnection(connectionData)) {
             plugin.shutdown("Could not connect to redis server.");
@@ -59,7 +59,7 @@ public abstract class ServerManager<S extends Server> {
 
         plugin.log("Broadcasting server data...");
         server = wrap(plugin);
-        sendServerUpdate();
+        sendServerUpdate(ServerChannelConstants.SERVER_UPDATE);
         // If everything is working correctly. The server should be registered from SERVER_UPDATE listener!
     }
 
@@ -82,8 +82,8 @@ public abstract class ServerManager<S extends Server> {
         connection.sendRequest(channel, jsonMessage.toString());
     }
 
-    public void sendServerUpdate() {
-        sendRequest(ServerChannelConstants.SERVER_UPDATE, server);
+    public void sendServerUpdate(ServerChannel serverChannel) {
+        sendRequest(serverChannel, server);
     }
 
     public void updateServer(Server updatedServer) {

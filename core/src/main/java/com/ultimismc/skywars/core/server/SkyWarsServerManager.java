@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.core.server;
 
-import com.ultimismc.gamescaler.ServerManager;
-import com.ultimismc.gamescaler.ServerPlugin;
-import com.ultimismc.gamescaler.communication.ConnectionData;
+import com.ultimismc.serversync.ClientServerManager;
+import com.ultimismc.serversync.ServerPlugin;
+import com.ultimismc.serversync.communication.ConnectionData;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameConfig;
@@ -18,13 +18,13 @@ import java.util.stream.Stream;
  * @author DirectPlan
  */
 
-public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
+public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
 
     private final SkyWarsPlugin plugin;
     private final GameConfig gameConfig;
 
     public SkyWarsServerManager(SkyWarsPlugin plugin, GameConfig gameConfig) {
-        super(new SkyWarsPluginWrapper(plugin), SkyWarsServer.class);
+        super(new SkyWarsPluginWrapper(plugin), "skywars", SkyWarsServer.class);
 
         this.plugin = plugin;
         this.gameConfig = gameConfig;
@@ -36,7 +36,8 @@ public class SkyWarsServerManager extends ServerManager<SkyWarsServer> {
     }
 
     public SkyWarsServer getPerfectAvailableServer(TeamType teamType, GameType gameType) {
-        Stream<SkyWarsServer> stream = getServers().stream().filter(skyWarsServer -> !skyWarsServer.hasStarted() && !skyWarsServer.isFull());
+        Stream<SkyWarsServer> stream = getServers().stream()
+                .filter(server -> !server.isLobby()).filter(skyWarsServer -> !skyWarsServer.hasStarted() && !skyWarsServer.isFull());
         if(teamType != null) {
             stream = stream.filter(skyWarsServer -> skyWarsServer.getTeamType() == teamType);
         }

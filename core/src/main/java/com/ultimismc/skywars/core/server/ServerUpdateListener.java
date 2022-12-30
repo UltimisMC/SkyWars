@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.server;
 
-import com.ultimismc.gamescaler.Server;
+import com.ultimismc.serversync.Server;
+import com.ultimismc.serversync.communication.ServerChannelConstants;
 import com.ultimismc.skywars.core.events.GameStateChangedEvent;
 import com.ultimismc.skywars.core.game.GameState;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class ServerUpdateListener implements Listener {
         Server server = serverManager.getServer();
         server.setOnlinePlayers(Bukkit.getOnlinePlayers().size());
 
-        serverManager.sendServerUpdate();
+        serverManager.sendServerMessage(ServerChannelConstants.SERVER_PLAYERS_UPDATED);
     }
 
     @EventHandler
@@ -31,7 +32,7 @@ public class ServerUpdateListener implements Listener {
         Server server = serverManager.getServer();
         server.setOnlinePlayers(Bukkit.getOnlinePlayers().size());
 
-        serverManager.sendServerUpdate();
+        serverManager.sendServerMessage(ServerChannelConstants.SERVER_PLAYERS_UPDATED);
     }
 
     @EventHandler
@@ -40,6 +41,6 @@ public class ServerUpdateListener implements Listener {
 
         SkyWarsServer server = serverManager.getServer();
         server.setState(state);
-        serverManager.sendServerUpdate();
+        serverManager.sendServerMessage(ServerChannelConstants.SERVER_STATE_UPDATED);
     }
 }
