@@ -9,7 +9,7 @@ A custom skywars plugin developed for UltimisMC Network.
 - Spectator System ***(Completed)***
 - Rewards Summary at Game End ***(Completed)***
 - Game Cosmetics Executor ***(Completed)***
-- Servers Communication ***Completed***
+- Servers Communication ***(Completed)***
 - Automatic Server Scaling ***(Working on Container Management)***
 - Chest Algorithm System including Refills ***(Completed)*** ***Adding chest bundles required***
 - Cage Algorithm System including automatic Cage building upon join ***(Completed)***
