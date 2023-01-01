@@ -36,8 +36,7 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
     }
 
     public SkyWarsServer getPerfectAvailableServer(TeamType teamType, GameType gameType) {
-        Stream<SkyWarsServer> stream = getServers().stream()
-                .filter(server -> !server.isLobby()).filter(skyWarsServer -> !skyWarsServer.hasStarted() && !skyWarsServer.isFull());
+        Stream<SkyWarsServer> stream = getServers().stream().filter(server -> !server.isLobby()).filter(skyWarsServer -> !skyWarsServer.hasStarted() && !skyWarsServer.isFull());
         if(teamType != null) {
             stream = stream.filter(skyWarsServer -> skyWarsServer.getTeamType() == teamType);
         }
