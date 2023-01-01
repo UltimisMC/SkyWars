@@ -27,6 +27,10 @@ public class DockerTest {
         for (Container container : dockerClient.listContainersCmd().exec()) {
             System.out.println(container.getImage());
         }
+        dockerClient.createContainerCmd("")
+                .withEnv("MODE=NORMAL", "TEAM=SOLO")
+                .withName("SkyWars")
+                .withHostName("Bitch").exec().getRawValues();
     }
 
 }
