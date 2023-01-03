@@ -16,4 +16,4 @@ A custom skywars plugin developed for UltimisMC Network.
 - Add a brand new damage based combat system to DirectLib ***(Completed)***
 - Damage based Death System ***(Completed)***
 - Kill Messages ***(Completed)***
-- Map Selector ***(Working on it)***
+- Map Selector ***(Completed)***
