@@ -9,7 +9,7 @@ import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.Level;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
 import com.ultimismc.skywars.core.game.features.level.LevelReward;
-import com.ultimismc.skywars.core.server.menu.ServerListMenu;
+import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.core.user.setting.UserSetting;
@@ -47,6 +47,9 @@ public class SkyWarsDebugCommand extends BaseCommand {
     @Dependency
     private ConfigHandler configHandler;
 
+    @Dependency
+    private GameMenuHandler gameMenuHandler;
+
     @HelpCommand
     @Syntax("")
     public void onHelp(CommandHelp help) {
@@ -55,8 +58,7 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Subcommand("servers")
     public void onShowServers(Player player) {
-
-        menuManager.openInventory(player, new ServerListMenu(plugin, player));
+        gameMenuHandler.openConnectedServersMenu(player);
     }
 
     @Subcommand("displaylevels")

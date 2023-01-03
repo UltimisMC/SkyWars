@@ -30,7 +30,7 @@ public class ServerUpdateListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Server server = serverManager.getServer();
-        server.setOnlinePlayers(Bukkit.getOnlinePlayers().size());
+        server.setOnlinePlayers(Bukkit.getOnlinePlayers().size()); // Could be that this is not decrementing ?
 
         serverManager.sendServerMessage(ServerChannelConstants.SERVER_PLAYERS_UPDATED);
     }

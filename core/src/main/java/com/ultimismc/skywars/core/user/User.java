@@ -155,7 +155,23 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         Level level = statistics.getLevel();
         return level.isExceedingThan(requiredLevel);
     }
-    
+
+    public Collection<String> getFavouriteMaps() {
+        return userSettingHandler.getListSetting(String.class, "favouritemaps");
+    }
+
+    public boolean hasFavouriteMap(String map) {
+        return userSettingHandler.contains("favouritemaps", map);
+    }
+
+    public void addFavouriteMap(String map) {
+        userSettingHandler.addSetting("favouritemaps", map);
+    }
+
+    public void removeFavouriteMap(String map) {
+        userSettingHandler.removeSetting("favouritemaps", map);
+    }
+
     @Override
     public UserPlayerInventoryUi getInventoryUi() {
         return currentInventoryUi;

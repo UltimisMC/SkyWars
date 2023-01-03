@@ -3,11 +3,13 @@ package com.ultimismc.skywars.core;
 import com.ultimismc.skywars.core.commands.CageCommand;
 import com.ultimismc.skywars.core.commands.PlayCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsDebugCommand;
+import com.ultimismc.skywars.core.commands.SkyWarsPlayCommand;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameListener;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
 import com.ultimismc.skywars.core.placeholders.PlaceholderExpansionHandler;
 import com.ultimismc.skywars.core.placeholders.SkyWarsPlaceholderExpansion;
 import com.ultimismc.skywars.core.rank.RankManager;
@@ -46,6 +48,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     protected FeatureHandler featureHandler;
     protected PlaceholderExpansionHandler placeholderExpansionHandler;
     protected GameConfig gameConfig;
+    protected GameMenuHandler gameMenuHandler;
 
     private final ServerInitializer serverInitializer;
 
@@ -77,6 +80,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         menuManager = new MenuManager();
         rankManager = new RankManager();
         featureHandler = new FeatureHandler(this);
+        gameMenuHandler = new GameMenuHandler(this);
         commandHandler = new CommandHandler(this);
 
         placeholderExpansionHandler = new PlaceholderExpansionHandler();
@@ -88,7 +92,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
                 new GameListener(userManager, featureHandler),
                 userListener = new UserListener(userManager));
 
-        commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand(), new PlayCommand());
+        commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand(), new PlayCommand(), new SkyWarsPlayCommand());
         enable();
     }
 

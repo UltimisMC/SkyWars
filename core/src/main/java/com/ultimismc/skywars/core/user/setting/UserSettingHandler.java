@@ -2,9 +2,7 @@ package com.ultimismc.skywars.core.user.setting;
 
 import com.ultimismc.skywars.core.user.UserCacheHandler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author DirectPlan
@@ -15,16 +13,39 @@ public class UserSettingHandler extends UserCacheHandler<String, UserSetting> {
         UserSetting userSetting = userCache.get(key);
         if(userSetting != null) {
             Object settingValue = userSetting.getValue();
-            List<T> values;
-            if(!(settingValue instanceof List)) {
-                values = new ArrayList<>();
+            Set<T> values;
+            if(!(settingValue instanceof Set)) {
+                values = new HashSet<>();
             }else {
-                values = (List<T>) settingValue;
+                values = (Set<T>) settingValue;
             }
             values.add(value);
             return;
         }
         setSetting(key, value);
+    }
+
+    public <T> boolean contains(String key, T value) {
+        UserSetting userSetting = userCache.get(key);
+        if(userSetting == null) return false;
+        Object settingValue = userSetting.getValue();
+        if(!(settingValue instanceof Set)) {
+            return settingValue.equals(value);
+        }
+        Set<T> values = (Set<T>) settingValue;
+        return values.contains(value);
+    }
+
+    public <T> void removeSetting(String key, T value) {
+        UserSetting userSetting = userCache.get(key);
+        if(userSetting == null) return;
+        Object settingValue = userSetting.getValue();
+        if(!(settingValue instanceof Set)) {
+            userCache.remove(key);
+            return;
+        }
+        Set<T> values = (Set<T>) settingValue;
+        values.remove(value);
     }
 
     public <T> void setSetting(String key, T value) {
@@ -39,6 +60,19 @@ public class UserSettingHandler extends UserCacheHandler<String, UserSetting> {
         }
         Object value = userSetting.getValue();
         return castClass.cast(value);
+    }
+
+    public <T> Collection<T> getListSetting(Class<T> castClass, String key) {
+        Set<T> values = new HashSet<>();
+        UserSetting userSetting = userCache.get(key);
+        if(userSetting == null) return values;
+
+        Object value = userSetting.getValue();
+        if(!(value instanceof Set)) {
+            values.add(castClass.cast(value));
+            return values;
+        }
+        return (Set<T>) value;
     }
 
     public boolean isEmpty() {

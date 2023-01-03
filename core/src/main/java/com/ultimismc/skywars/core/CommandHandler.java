@@ -4,6 +4,7 @@ import co.aikar.commands.*;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
+import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
 import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
@@ -28,6 +29,7 @@ public class CommandHandler {
         MenuManager menuManager = plugin.getMenuManager();
         FeatureHandler featureHandler = plugin.getFeatureHandler();
         SkyWarsServerManager serverManager = plugin.getServerManager();
+        GameMenuHandler gameMenuHandler = plugin.getGameMenuHandler();
 
         registerDependency(SkyWarsPlugin.class, plugin);
         registerDependency(ConfigHandler.class, configHandler);
@@ -35,6 +37,7 @@ public class CommandHandler {
         registerDependency(MenuManager.class, menuManager);
         registerDependency(FeatureHandler.class, featureHandler);
         registerDependency(SkyWarsServerManager.class, serverManager);
+        registerDependency(GameMenuHandler.class, gameMenuHandler);
 
         commandManager.enableUnstableAPI("help");
 

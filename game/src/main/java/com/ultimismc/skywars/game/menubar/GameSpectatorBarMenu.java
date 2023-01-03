@@ -1,5 +1,7 @@
 package com.ultimismc.skywars.game.menubar;
 
+import com.ultimismc.skywars.core.game.GameConfig;
+import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.menubar.menu.SpectatorListMenu;
@@ -27,12 +29,9 @@ public class GameSpectatorBarMenu extends GameBarMenu {
         MenuItem spectatorSettingsItem = addBarItem(4, Material.REDSTONE_COMPARATOR, "&b&lSpectator Settings", (item, clicker, clickedBlock, clickType) -> gameHandler.openInventory(clicker, new SpectatorSettingsMenu(user)));
         spectatorSettingsItem.setLore("&7Right-click to change your spectator settings!");
 
-        MenuItem playAgainItem = addBarItem(7, Material.PAPER, "&b&lPlay Again", (item, clicker, clickedBlock, clickType) -> {
-
-            // Sending to another server!
-            user.sendMessage("&aSending to a non-existent game...");
-            user.sendMessage("&eThis is the only game for now you idiot!");
-        });
+        GameMenuHandler gameMenuHandler = gameHandler.getGameMenuHandler();
+        GameConfig gameConfig = gameHandler.getGameConfig();
+        MenuItem playAgainItem = addBarItem(7, Material.PAPER, "&b&lPlay Again", (item, clicker, clickedBlock, clickType) -> gameMenuHandler.openMapSelector(user, gameConfig.getTeamType(), gameConfig.getGameType()));
         playAgainItem.setLore("&7Right-click to play another game!");
     }
 }

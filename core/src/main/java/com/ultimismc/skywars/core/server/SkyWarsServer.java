@@ -2,10 +2,7 @@ package com.ultimismc.skywars.core.server;
 
 import com.ultimismc.serversync.Server;
 import com.ultimismc.serversync.ServerPlugin;
-import com.ultimismc.skywars.core.game.GameConfig;
-import com.ultimismc.skywars.core.game.GameState;
-import com.ultimismc.skywars.core.game.GameType;
-import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.game.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +15,7 @@ public class SkyWarsServer extends Server {
 
     private final GameType gameType;
     private final TeamType teamType;
+    private final Map map;
     @Setter private GameState state;
 
     public SkyWarsServer(ServerPlugin plugin, GameConfig gameConfig) {
@@ -25,6 +23,7 @@ public class SkyWarsServer extends Server {
 
         gameType = gameConfig.getGameType();
         teamType = gameConfig.getTeamType();
+        map = gameConfig.getMap();
         state = GameState.WAITING;
     }
 
@@ -38,6 +37,10 @@ public class SkyWarsServer extends Server {
 
     public boolean hasStarted() {
         return state != GameState.WAITING && state != GameState.STARTING;
+    }
+
+    public String getMapName() {
+        return map.getName();
     }
 
     @Override
