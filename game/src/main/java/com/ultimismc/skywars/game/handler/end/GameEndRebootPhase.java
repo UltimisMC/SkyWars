@@ -30,7 +30,9 @@ public class GameEndRebootPhase extends GameEndPhase {
         String repeatLine = StringUtils.repeat("▬", 70);
         gameHandler.broadcastFunction(user -> {
             user.sendMessage(ChatColor.GREEN + repeatLine);
-            user.sendMessage("         &aRestarting &e&l" + gameHandler.getServerId() + "&a...");
+            user.sendMessage("  ");
+            user.sendMessage("         &aRestarting &e" + gameHandler.getServerId() + "&a...");
+            user.sendMessage("  ");
             user.sendMessage(ChatColor.GREEN + repeatLine);
         });
         Bukkit.shutdown();

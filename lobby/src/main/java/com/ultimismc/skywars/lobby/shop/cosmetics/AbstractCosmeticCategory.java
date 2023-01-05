@@ -30,7 +30,7 @@ public abstract class AbstractCosmeticCategory<T extends PurchasableRegistry<?>>
     public ProductItemDesign designCategory(User user) {
         String settingKey = cosmeticRegistry.getSettingKey();
         Cosmetic cosmetic = user.getSetting(Cosmetic.class, settingKey);
-        List<? extends Cosmetic> ownedCosmetics = user.getAssets(cosmetic.getClass());
+        List<? extends Cosmetic> ownedCosmetics = user.getAssetPurchasables(cosmetic.getClass());
 
         PurchasableDesign design = getDesign();
         List<String> lore = new ArrayList<>(this.description);

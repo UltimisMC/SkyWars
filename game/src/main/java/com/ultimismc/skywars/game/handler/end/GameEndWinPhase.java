@@ -42,6 +42,7 @@ public class GameEndWinPhase extends GameEndPhase {
         gameHandler.broadcastFunction(userGameSession -> {
             User user = userGameSession.getUser();
             user.sendMessage(ChatColor.GREEN + repeatLine);
+            user.sendMessage(" ");
             user.sendMessage("                             &f&lSkyWars");
             user.sendMessage(" ");
             user.sendMessage("                       &eWinner &7- " + getPlayerDisplayNames(winnerTeam));
@@ -51,6 +52,8 @@ public class GameEndWinPhase extends GameEndPhase {
             user.sendMessage("                   &c&l3rd Killer &7- " + getKillerDisplayInfo(finalThirdTeam));
             user.sendMessage(" ");
             user.sendMessage(ChatColor.GREEN + repeatLine);
+
+
         });
 
         for(UserGameSession winner : winnerTeam) {

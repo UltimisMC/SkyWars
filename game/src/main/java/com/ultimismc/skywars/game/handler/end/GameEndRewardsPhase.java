@@ -25,6 +25,7 @@ public class GameEndRewardsPhase extends GameEndPhase {
             User user = userGameSession.getUser();
             UserRewardSummary rewardSummary = userGameSession.getRewardSummary();
             user.sendMessage(ChatColor.GREEN + repeatLine);
+            user.sendMessage("  ");
             user.sendMessage("                             &f&lReward Summary");
             user.sendMessage("  ");
             user.sendMessage("     &7You earned:");

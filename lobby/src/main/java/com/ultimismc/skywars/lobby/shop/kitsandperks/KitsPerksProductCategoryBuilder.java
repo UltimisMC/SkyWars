@@ -84,13 +84,8 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         for(int i = 0; i < perkItemSlots.length; i++) {
             int perkSlot = (i + 1);
             int itemSlot = perkItemSlots[i];
-            PerkSlot perkSlotProduct = new PerkSlot(perkSlot, itemSlot);
-
-            perkSlotProduct.setProductPath(purchasedPerksCategory);
-
+            PerkSlot perkSlotProduct = new PerkSlot(purchasedPerksCategory, perkSlot, itemSlot);
             productCategory.addProduct(perkSlotProduct);
         }
-
-
     }
 }

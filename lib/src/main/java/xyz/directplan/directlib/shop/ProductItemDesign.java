@@ -24,6 +24,7 @@ public class ProductItemDesign {
     @Setter private boolean canAfford;
     @Setter private String purchaseStatus, purchasedStatus;
     @Setter private boolean ignoreConfirmation;
+    @Setter private Object data;
 
     public ProductItemDesign(Material material, short durability, ChatColor color, List<String> lore, boolean canAfford) {
         this.material = material;

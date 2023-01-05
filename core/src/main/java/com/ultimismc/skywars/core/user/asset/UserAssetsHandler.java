@@ -33,12 +33,22 @@ public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
         return getAsset(purchasable) != null;
     }
 
-    public <T extends Purchasable> List<T> getAssets(Class<T> clazz) {
+    public <T extends Purchasable> List<T> getAssetPurchasables(Class<T> clazz) {
         List<T> assets = new ArrayList<>();
         for(UserAsset userAsset : getAssets()) {
             Purchasable purchasable = userAsset.getPurchasable();
             if(!clazz.isInstance(purchasable)) continue;
             assets.add(clazz.cast(purchasable));
+        }
+        return assets;
+    }
+
+    public <T extends Purchasable> List<UserAsset> getAssets(Class<T> clazz) {
+        List<UserAsset> assets = new ArrayList<>();
+        for(UserAsset userAsset : getAssets()) {
+            Purchasable purchasable = userAsset.getPurchasable();
+            if(!clazz.isInstance(purchasable)) continue;
+            assets.add(userAsset);
         }
         return assets;
     }

@@ -74,8 +74,12 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return userAssetsHandler.getAsset(purchasable);
     }
 
-    public <T extends Purchasable> List<T> getAssets(Class<T> clazz) {
+    public <T extends Purchasable> List<UserAsset> getAssets(Class<T> clazz) {
         return userAssetsHandler.getAssets(clazz);
+    }
+
+    public <T extends Purchasable> List<T> getAssetPurchasables(Class<T> clazz) {
+        return userAssetsHandler.getAssetPurchasables(clazz);
     }
 
     public void addAsset(UserAsset asset) {

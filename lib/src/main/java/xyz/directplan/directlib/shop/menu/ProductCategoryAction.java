@@ -8,10 +8,7 @@ import xyz.directplan.directlib.inventory.ActionableItem;
 import xyz.directplan.directlib.inventory.ConfirmableActionMenu;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.MenuItem;
-import xyz.directplan.directlib.shop.ConfirmableProduct;
-import xyz.directplan.directlib.shop.Product;
-import xyz.directplan.directlib.shop.ProductCategory;
-import xyz.directplan.directlib.shop.ShopHandler;
+import xyz.directplan.directlib.shop.*;
 
 /**
  * @author DirectPlan
@@ -23,6 +20,7 @@ public class ProductCategoryAction<U> implements ActionableItem {
 
     private final U user;
     private final Product<U> product;
+    private final ProductItemDesign itemDesign;
     private final InventoryUI currentMenu;
     private final boolean ignoreConfirmation;
     private final boolean canAfford;
@@ -49,6 +47,12 @@ public class ProductCategoryAction<U> implements ActionableItem {
 
         if(!ignoreConfirmation && product instanceof ConfirmableProduct) {
             shopHandler.openInventory(clicker, new ConfirmableActionMenu(item, () -> product.executeAction(user, clickType)));
+            return;
+        }
+        Object data = itemDesign.getData();
+        if(data != null && product instanceof TypedProduct) {
+            TypedProduct<U, ?> typedProduct = (TypedProduct<U, ?>) product;
+            typedProduct.executeActionObjectData(user, data, clickType);
             return;
         }
         product.executeAction(user, clickType);

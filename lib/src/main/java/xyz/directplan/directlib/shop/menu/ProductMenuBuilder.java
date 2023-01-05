@@ -48,7 +48,7 @@ public class ProductMenuBuilder<U> {
                 displayNameColor = itemDesign.getColor();
             }
         }
-        ProductCategoryAction<U> productCategoryAction = new ProductCategoryAction<>(shopHandler, user, product, currentMenu, itemDesign.isIgnoreConfirmation(), canAfford);
+        ProductCategoryAction<U> productCategoryAction = new ProductCategoryAction<>(shopHandler, user, product, itemDesign, currentMenu, itemDesign.isIgnoreConfirmation(), canAfford);
 
         String displayName = displayNameColor + productName;
         if(itemDesign.hasDisplayName()) {
