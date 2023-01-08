@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author DirectPlan
  */
 @Getter
-public class UserDeathEvent extends AbstractUserEvent {
+public class UserDeathEvent extends UserSkyWarsEvent {
 
     private final User killer;
 
