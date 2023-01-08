@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.lobby.shop.soulwell;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
@@ -43,7 +44,7 @@ public class RollSoulWellProduct extends UserPurchasableProduct {
     }
 
     @Override
-    public void executePurchasableProduct(User user, ClickType clickType) {
+    public void executePurchasableProduct(User user, GameType gameType, ClickType clickType) {
         Player player = user.getPlayer();
         menuManager.openInventory(player, new SoulWellRollMenu(plugin, user));
     }
