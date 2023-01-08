@@ -21,6 +21,7 @@ public class UserAsset {
     @Setter private boolean defaultAsset;
     private final List<GameType> purchasedFor = new ArrayList<>();
     private long acquiredAt;
+    @Setter private transient Object tempObject;
 
     public UserAsset(Purchasable purchasable, long acquiredAt, boolean activated) {
         this(purchasable);
