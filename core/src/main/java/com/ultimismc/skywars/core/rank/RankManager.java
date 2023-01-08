@@ -22,7 +22,7 @@ public class RankManager {
     public RankManager() {
         hookProvider = new LuckPermsHookProvider();
 
-        registerRanks(defaultRank = new DefaultRank(), new VipRank(), new EliteRank(), new SupremeRank(), new MythRank(), new UltimisRank());
+        registerRanks(defaultRank = new DefaultRank(), new VipRank(), new EliteRank(), new SupremeRank(), new MythRank(), new UltimisRank(), new AdminRank(), new OwnerRank());
     }
 
     public void setupUserRank(User user) {
