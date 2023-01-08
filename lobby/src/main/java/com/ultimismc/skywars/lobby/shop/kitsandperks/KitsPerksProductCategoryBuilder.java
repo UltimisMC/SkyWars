@@ -52,7 +52,7 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         productCategory.addProduct(kitShowcaseCategory);
 
         KitsPerksShowcaseProductCategory perkShowcaseCategory = new KitsPerksShowcaseProductCategory(perkMaterial, gameType, "Perks", perkSlot);
-        addPerkProducts(perkShowcaseCategory, perkManager);
+        addPerkProducts(perkShowcaseCategory, perkManager, gameType);
         productCategory.addProduct(perkShowcaseCategory);
     }
 
@@ -62,7 +62,7 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         }
     }
 
-    public void addPerkProducts(KitsPerksShowcaseProductCategory productCategory, PerkManager perkManager) {
+    public void addPerkProducts(KitsPerksShowcaseProductCategory productCategory, PerkManager perkManager, GameType gameType) {
 
         List<String> perksSlotsLore = ShopMessageKeys.PERKS_SLOTS_ITEM_LORE.getStringList();
         productCategory.addProduct(new DisplayProduct<>(Material.REDSTONE_TORCH_ON, "Perks Slots", perksSlotsLore, 19));
@@ -72,8 +72,8 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         PurchasedPerksCategory purchasedPerksCategory = new PurchasedPerksCategory(51);
         for(Perk perk : perkManager) {
             if(perk.isDefault() || perk.isSoulWellPerk()) continue;
-            perkShopCategory.addProduct(new ShopPerkProduct(perk));
-            purchasedPerksCategory.addProduct(new PurchasedPerkProduct(purchasedPerksCategory, perk));
+            perkShopCategory.addProduct(new ShopPerkProduct(perk, gameType));
+            purchasedPerksCategory.addProduct(new PurchasedPerkProduct(purchasedPerksCategory, perk, gameType));
         }
         productCategory.addProduct(perkShopCategory);
 
@@ -84,7 +84,7 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
         for(int slotIndex = 0; slotIndex < perkItemSlots.length; slotIndex++) {
             int perkSlot = (slotIndex + 1);
             int itemSlot = perkItemSlots[slotIndex];
-            PerkSlot perkSlotProduct = new PerkSlot(purchasedPerksCategory, perkSlot, itemSlot);
+            PerkSlot perkSlotProduct = new PerkSlot(purchasedPerksCategory, gameType, perkSlot, itemSlot);
             productCategory.addProduct(perkSlotProduct);
         }
     }

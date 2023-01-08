@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.cosmetics.killmessages;
 
+import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.Cosmetic;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessage;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.KillMessageBundle;
@@ -20,8 +21,8 @@ import java.util.Map;
  */
 public class KillMessagePurchasableProduct extends CosmeticPurchasableProduct {
 
-    public KillMessagePurchasableProduct(Cosmetic cosmetic) {
-        super(cosmetic);
+    public KillMessagePurchasableProduct(PurchasableRegistry<?> registry, Cosmetic cosmetic) {
+        super(registry, cosmetic);
     }
 
     @Override

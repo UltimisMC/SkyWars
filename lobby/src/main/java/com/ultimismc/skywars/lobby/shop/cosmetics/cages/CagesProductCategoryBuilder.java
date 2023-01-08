@@ -22,7 +22,7 @@ public class CagesProductCategoryBuilder implements UserProductCategoryBuilder {
         CageHandler cageHandler = cosmeticManager.getCageHandler();
         CagesProductCategory cagesProductCategory = new CagesProductCategory(cageHandler, 12);
         for(Cage cage : cageHandler) {
-            cagesProductCategory.addProduct(new CosmeticPurchasableProduct(cage, false));
+            cagesProductCategory.addProduct(new CosmeticPurchasableProduct(cageHandler, cage, false));
         }
         return cagesProductCategory;
     }

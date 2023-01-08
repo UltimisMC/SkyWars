@@ -24,7 +24,7 @@ public class VictoryDanceCategoryBuilder implements UserProductCategoryBuilder {
 
         VictoryDancesCategory category = new VictoryDancesCategory(victoryDanceHandler);
         for(VictoryDance victoryDance : victoryDanceHandler) {
-            category.addProduct(new CosmeticPurchasableProduct(victoryDance));
+            category.addProduct(new CosmeticPurchasableProduct(victoryDanceHandler, victoryDance));
         }
         return category;
     }

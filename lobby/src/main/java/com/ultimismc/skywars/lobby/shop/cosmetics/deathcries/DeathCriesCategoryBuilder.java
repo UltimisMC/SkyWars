@@ -22,7 +22,7 @@ public class DeathCriesCategoryBuilder implements UserProductCategoryBuilder {
         DeathCryHandler deathCryHandler = cosmeticManager.getDeathCryHandler();
         DeathCriesCategory category = new DeathCriesCategory(deathCryHandler, 28);
         for(DeathCry deathCry : deathCryHandler) {
-            category.addProduct(new DeathCryPurchasableProduct(deathCry));
+            category.addProduct(new DeathCryPurchasableProduct(deathCryHandler, deathCry));
         }
         return category;
     }

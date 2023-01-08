@@ -23,7 +23,7 @@ public class KillMessagesCategoryBuilder implements UserProductCategoryBuilder {
 
         KillMessagesProductCategory productCategory = new KillMessagesProductCategory(killMessageHandler, 32);
         for(KillMessage killMessage : killMessageHandler) {
-            productCategory.addProduct(new KillMessagePurchasableProduct(killMessage));
+            productCategory.addProduct(new KillMessagePurchasableProduct(killMessageHandler, killMessage));
         }
         return productCategory;
     }

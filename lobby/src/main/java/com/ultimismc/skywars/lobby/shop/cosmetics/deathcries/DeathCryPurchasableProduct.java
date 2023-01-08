@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.cosmetics.deathcries;
 
+import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.Cosmetic;
 import com.ultimismc.skywars.core.game.features.cosmetics.deathcries.DeathCry;
 import com.ultimismc.skywars.core.user.User;
@@ -10,8 +11,8 @@ import com.ultimismc.skywars.lobby.shop.cosmetics.CosmeticPurchasableProduct;
  */
 public class DeathCryPurchasableProduct extends CosmeticPurchasableProduct {
 
-    public DeathCryPurchasableProduct(Cosmetic cosmetic) {
-        super(cosmetic, true);
+    public DeathCryPurchasableProduct(PurchasableRegistry<?> registry, Cosmetic cosmetic) {
+        super(registry, cosmetic, true);
     }
 
     @Override
