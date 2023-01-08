@@ -12,14 +12,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemFlag;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.inventory.ActionableItem;
 import xyz.directplan.directlib.inventory.InventoryUI;
-import xyz.directplan.directlib.inventory.ItemEnchantment;
 import xyz.directplan.directlib.inventory.MenuItem;
 
 import java.util.ArrayList;
@@ -30,23 +27,21 @@ import java.util.List;
  */
 public class KitSelectorMenu extends InventoryUI {
 
-    private final GameHandler gameHandler;
     private final User user;
     private final GameType gameType;
+    private final KitManager kitManager;
 
     public KitSelectorMenu(GameHandler gameHandler, User user) {
         super("Kit Selector", 6);
 
-        this.gameHandler = gameHandler;
         this.user = user;
         this.gameType = gameHandler.getGameType();
+        FeatureHandler featureHandler = gameHandler.getFeatureHandler();
+        kitManager = featureHandler.getKitManager();
     }
 
     @Override
     public void build(Player player) {
-        FeatureHandler featureHandler = gameHandler.getFeatureHandler();
-        KitManager kitManager = featureHandler.getKitManager();
-
         Kit selectedKit = user.getSetting(Kit.class, kitManager.getSettingKey());
         fillInventory(new MenuItem(Material.STAINED_GLASS_PANE, "&c", 15));
 
@@ -58,13 +53,13 @@ public class KitSelectorMenu extends InventoryUI {
 
             ChatColor color = ChatColor.GREEN;
             ActionableItem action = null;
-            boolean purchased = user.hasPurchased(kit);
+            boolean purchased = user.hasPurchased(kit, gameType);
             if(!purchased) {
                 color = ChatColor.RED;
                 material = Material.STAINED_GLASS_PANE;
                 durability = 14;
             }else {
-                action = new KitSelectorItemAction(user, kit);
+                action = new KitSelectorItemAction(kitManager, user, kit);
             }
 
             String displayName = color + kit.getName();
@@ -94,13 +89,14 @@ public class KitSelectorMenu extends InventoryUI {
     @RequiredArgsConstructor
     public static class KitSelectorItemAction implements ActionableItem {
 
+        private final KitManager kitManager;
         private final User user;
         private final Kit kit;
 
         @Override
         public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType) {
             PluginUtility.playSound(clicker, Sound.CLICK);
-            user.setSetting("kit", kit);
+            user.setSetting(kitManager.getSettingKey(), kit);
             user.sendMessage("&eYou've selected " + kit.getName() + " kit!");
         }
 
