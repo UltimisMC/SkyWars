@@ -8,11 +8,11 @@ import lombok.Getter;
  * @author DirectPlan
  */
 @Getter
-public abstract class AbstractUserEvent extends AbstractEvent {
+public abstract class UserSkyWarsEvent extends SkyWarsEvent {
 
     private final User user;
 
-    public AbstractUserEvent(GameConfig gameConfig, User user) {
+    public UserSkyWarsEvent(GameConfig gameConfig, User user) {
         super(gameConfig);
         this.user = user;
     }
