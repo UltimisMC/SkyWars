@@ -1,14 +1,11 @@
 package com.ultimismc.skywars.lobby.shop.kitsandperks.perks;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.asset.UserAsset;
-import com.ultimismc.skywars.lobby.config.ShopMessageKeys;
 import com.ultimismc.skywars.lobby.shop.UserProduct;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.List;
@@ -20,20 +17,22 @@ public class PurchasedPerkProduct extends UserProduct {
 
     private final PurchasedPerksCategory perksCategory;
     private final Perk perk;
+    private final GameType gameType;
     private final PerkProduct perkProduct;
     private UserAsset perkAsset;
 
-    public PurchasedPerkProduct(PurchasedPerksCategory perksCategory, Perk perk) {
+    public PurchasedPerkProduct(PurchasedPerksCategory perksCategory, Perk perk, GameType gameType) {
         super(perk.getName(), 0);
 
         this.perksCategory = perksCategory;
         this.perk = perk;
+        this.gameType = gameType;
         perkProduct = new PerkProduct(perk);
     }
 
     @Override
     public ProductItemDesign designProduct(User user) {
-        perkAsset = user.getAsset(perk);
+        perkAsset = user.getAsset(perk, gameType);
         if(perkAsset == null) {
             return null;
         }
