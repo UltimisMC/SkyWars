@@ -18,13 +18,15 @@ import java.util.List;
  */
 public class PurchasedPerkProduct extends UserProduct {
 
+    private final PurchasedPerksCategory perksCategory;
     private final Perk perk;
     private final PerkProduct perkProduct;
     private UserAsset perkAsset;
 
-    public PurchasedPerkProduct(Perk perk) {
+    public PurchasedPerkProduct(PurchasedPerksCategory perksCategory, Perk perk) {
         super(perk.getName(), 0);
 
+        this.perksCategory = perksCategory;
         this.perk = perk;
         perkProduct = new PerkProduct(perk);
     }
@@ -37,24 +39,21 @@ public class PurchasedPerkProduct extends UserProduct {
         }
         ProductItemDesign productItemDesign = perkProduct.designProduct(user);
 
-        List<String> itemLore = productItemDesign.getLore();
         boolean activated = perkAsset.isActivated();
+        List<String> itemLore = productItemDesign.getLore();
         itemLore.add("&eClick to toggle " + (activated ? "&cOFF" : "&aON"));
+
+        productItemDesign.setInvisibleEnchanted(activated);
         return productItemDesign;
     }
 
     @Override
     public void executeAction(User user, ClickType clickType) {
-        Player player = user.getPlayer();
-        player.closeInventory();
-        player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1f, 1f);
+        perksCategory.togglePerk(user, perkAsset);
+    }
 
-        boolean activated = perkAsset.isActivated();
-        ShopMessageKeys toggleMessage = ShopMessageKeys.PERK_EQUIPPED_MESSAGE;
-        if(activated) {
-            toggleMessage = ShopMessageKeys.PERK_UN_EQUIPPED_MESSAGE;
-        }
-        perkAsset.toggleAsset();
-        toggleMessage.sendMessage(player, new Replacement("name", perk.getName()));
+    @Override
+    public boolean isRefreshInventoryEnabled() {
+        return true;
     }
 }

@@ -57,4 +57,9 @@ public class ProductCategoryAction<U> implements ActionableItem {
         }
         product.executeAction(user, clickType);
     }
+
+    @Override
+    public boolean updateButtons(Player clicker, ClickType clickType) {
+        return product.isRefreshInventoryEnabled();
+    }
 }

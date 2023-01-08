@@ -1,10 +1,8 @@
 package com.ultimismc.skywars.core.placeholders;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.placeholders.stats.*;
-import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 
 import java.util.Locale;
 
@@ -22,6 +20,7 @@ public class SkyWarsPlaceholderExpansion extends UserPlaceholderExpansion {
         processorHandler.registerProcessor("player-progress", new CurrentProgressProcessor());
         processorHandler.registerProcessor("player-maxprogress", new RequiredProgressProcessor());
         processorHandler.registerProcessor("player-level", new LevelProcessor());
+        processorHandler.registerProcessor("player-level-value", new LevelProcessor(true));
         processorHandler.registerProcessor("player-chat-level", new ChatLevelProcessor());
         processorHandler.registerProcessor("player-coins", new CoinProcessor());
         processorHandler.registerProcessor("player-souls", new SoulProcessor());

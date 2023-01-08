@@ -9,6 +9,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemFlag;
@@ -98,6 +99,11 @@ public class MenuItem implements Cloneable {
         ItemMeta meta = itemStack.getItemMeta();
         meta.addItemFlags(flags);
         itemStack.setItemMeta(meta);
+    }
+
+    public void addInvisibleEnchantment() {
+        addEnchantments(new ItemEnchantment(Enchantment.DIG_SPEED, 1));
+        addFlags(ItemFlag.HIDE_ENCHANTS);
     }
 
     public Material getType() {

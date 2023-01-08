@@ -20,6 +20,7 @@ import xyz.directplan.directlib.inventory.InventoryUser;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author DirectPlan
@@ -98,6 +99,14 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         if(purchasable == null) return false;
         Currency currency = purchasable.getCurrency();
         return currency.canAfford(this, purchasable);
+    }
+
+    public <T extends Purchasable> List<UserAsset> getActivatedAssets(Class<T> clazz) {
+        return getAssets(clazz).stream().filter(UserAsset::isActivated).collect(Collectors.toList());
+    }
+
+    public <T extends Purchasable> int getActivatedAssetsSize(Class<T> clazz) {
+        return getActivatedAssets(clazz).size();
     }
 
     public <T> void addSetting(String key, T value) {

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.MenuItem;
 import xyz.directplan.directlib.shop.Product;
@@ -59,6 +60,9 @@ public class ProductMenuBuilder<U> {
         int amount = itemDesign.getAmount();
         if(amount > 1) {
             menuItem.setAmount(amount);
+        }
+        if(itemDesign.isInvisibleEnchanted()) {
+            menuItem.addInvisibleEnchantment();
         }
         String texture = itemDesign.getSkullTexture();
         menuItem.setCustomSkullProperty(texture);

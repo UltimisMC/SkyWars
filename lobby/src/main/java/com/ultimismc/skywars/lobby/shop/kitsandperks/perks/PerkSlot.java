@@ -20,24 +20,27 @@ import java.util.stream.Collectors;
  */
 public class PerkSlot extends UserTypedProduct<UserAsset> {
 
-    private final UserProductCategory purchaseCategory;
+    private final PurchasedPerksCategory perksCategory;
     private final int perkSlot;
 
-    public PerkSlot(UserProductCategory purchaseCategory, int perkSlot, int itemSlot) {
+    public PerkSlot(PurchasedPerksCategory perksCategory, int perkSlot, int itemSlot) {
         super("Perk Slot", itemSlot, UserAsset.class);
-        this.purchaseCategory = purchaseCategory;
+        this.perksCategory = perksCategory;
         this.perkSlot = perkSlot;
     }
 
     @Override
     public ProductItemDesign designProduct(User user) {
-        List<UserAsset> userAssets = user.getAssets(Perk.class).stream().filter(UserAsset::isActivated).collect(Collectors.toList());
-        if(userAssets.size() > perkSlot) {
-            UserAsset userAsset = userAssets.get(perkSlot);
+        List<UserAsset> userAssets = user.getActivatedAssets(Perk.class);
+        int assetIndex = (perkSlot - 1);
+        if(userAssets.size() > assetIndex) {
+            UserAsset userAsset = userAssets.get(assetIndex);
             Perk perk = (Perk) userAsset.getPurchasable();
             PerkProduct perkProduct = new PerkProduct(perk);
             ProductItemDesign productItemDesign = perkProduct.designProduct(user);
+            productItemDesign.addLore("&eRight-Click to toggle &cOFF");
             productItemDesign.setData(userAsset);
+            setProductPath(null);
             return productItemDesign;
         }
         List<String> lore = Arrays.asList("&eClick here to view your",
@@ -50,12 +53,19 @@ public class PerkSlot extends UserTypedProduct<UserAsset> {
         ProductItemDesign productItemDesign = new ProductItemDesign(Material.STAINED_GLASS_PANE, (short) 14, ChatColor.RED, lore, true);
         productItemDesign.setDisplayName(displayName);
 
-        setProductPath(purchaseCategory);
+        setProductPath(perksCategory);
         return productItemDesign;
     }
 
     @Override
     public void executeAction(User user, UserAsset asset, ClickType clickType) {
-        asset.toggleAsset();
+        if(clickType != ClickType.RIGHT) return;
+
+        perksCategory.togglePerk(user, asset);
+    }
+
+    @Override
+    public boolean isRefreshInventoryEnabled() {
+        return true;
     }
 }

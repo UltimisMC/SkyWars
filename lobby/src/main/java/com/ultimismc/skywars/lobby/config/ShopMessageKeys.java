@@ -46,6 +46,7 @@ public enum ShopMessageKeys implements ConfigEntry {
                     "&7slot.")),
     PERK_EQUIPPED_MESSAGE("kits-perks.perks.equipped-message", "&aYou have equipped your &e%name% &aperk!"),
     PERK_UN_EQUIPPED_MESSAGE("kits-perks.perks.un-equipped-message", "&cYou have unequipped your &e%name% &cperk!"),
+    PERK_SLOTS_MAXED_MESSAGE("kits-perks.perks.perk-slots-maxed-message", "&cYou have no available Perk Slots!"),
 
     SOUL_WELL_CATEGORY_LORE("soul-well.category-lore", Arrays.asList("&7Use &bSouls &7to roll the well ",
             "&7and win kits & perks!",

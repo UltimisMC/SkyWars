@@ -76,8 +76,7 @@ public class KitSelectorMenu extends InventoryUI {
                 status = "&cNot unlocked yet!";
             }else if(kit == selectedKit) {
                 status = "&aSELECTED";
-                menuItem.addEnchantments(new ItemEnchantment(Enchantment.DIG_SPEED, 1));
-                menuItem.addFlags(ItemFlag.HIDE_ENCHANTS);
+                menuItem.addInvisibleEnchantment();
             }
 
             List<String> lore = new ArrayList<>(kit.getDisplayItems(gameType));

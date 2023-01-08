@@ -24,6 +24,7 @@ public class ProductItemDesign {
     @Setter private boolean canAfford;
     @Setter private String purchaseStatus, purchasedStatus;
     @Setter private boolean ignoreConfirmation;
+    @Setter private boolean invisibleEnchanted;
     @Setter private Object data;
 
     public ProductItemDesign(Material material, short durability, ChatColor color, List<String> lore, boolean canAfford) {
@@ -69,5 +70,9 @@ public class ProductItemDesign {
 
     public boolean hasDisplayName() {
         return displayName != null;
+    }
+
+    public void addLore(String lore) {
+        this.lore.add(lore);
     }
 }

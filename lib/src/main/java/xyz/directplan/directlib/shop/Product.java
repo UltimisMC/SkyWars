@@ -30,4 +30,6 @@ public interface Product<U> {
     default void onRightClick(U user) {}
 
     default boolean hasRightClickSupport() { return false; }
+
+    default boolean isRefreshInventoryEnabled() { return false; }
 }
