@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop.soulwell;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
@@ -42,7 +43,7 @@ public class SoulHarvesterProduct extends UserPurchasableProduct {
     }
 
     @Override
-    public void executePurchasableProduct(User user, ClickType clickType) {
+    public void executePurchasableProduct(User user, GameType gameType, ClickType clickType) {
         UserStatistics userStatistics = user.getStatistics();
         int sumSouls = userStatistics.getSouls() + souls;
         if(sumSouls >= userStatistics.getMaximumSouls()) {
