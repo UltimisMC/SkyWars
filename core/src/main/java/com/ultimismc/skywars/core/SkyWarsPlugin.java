@@ -6,6 +6,7 @@ import com.ultimismc.skywars.core.commands.SkyWarsDebugCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsPlayCommand;
 import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
+import com.ultimismc.skywars.core.events.SkyWarsEvent;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameListener;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
@@ -114,6 +115,10 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         for(Listener listener : listeners) {
             pluginManager.registerEvents(listener, this);
         }
+    }
+
+    public void callEvent(SkyWarsEvent skyWarsEvent) {
+        getServer().getPluginManager().callEvent(skyWarsEvent);
     }
 
     public void log(String message) {

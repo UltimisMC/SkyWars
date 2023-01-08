@@ -138,7 +138,7 @@ public class GameHandler implements FeatureInitializer {
         }
         gameSetupHandler = new GameSetupHandler(this);
 
-        SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(this, featureHandler);
+        SkyWarsCombatAdapter combatAdapter = new SkyWarsCombatAdapter(plugin, this, featureHandler);
         combatManager = new SkyWarsCombatManager(plugin, this, combatAdapter);
         combatManager.startCombatManager();
         teamHandler = new GameTeamHandler(this);

@@ -1,5 +1,6 @@
 package xyz.directplan.directlib.combat;
 
+import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -14,10 +15,11 @@ public interface CombatAdapter<U> {
      *
      * @param user The player who got attacked
      * @param attacker The attacker
+     * @param projectile the projectile used for this attack
      * @param attackCause What caused this attack.
      * @return Whether this attack should be allowed
      */
-    boolean onAttack(U user, U attacker, AttackCause attackCause);
+    boolean onAttack(U user, U attacker, Projectile projectile, AttackCause attackCause);
 
     /**
      * Gets call when {@param user} dies.

@@ -17,15 +17,15 @@ public class PerkManager extends PurchasableRegistry<Perk> {
 
     private final String name = "Perks";
 
-    private final PerkEventHandler perkEventHandler;
+    private PerkEventHandler perkEventHandler;
 
     public PerkManager() {
         super("perk");
-        perkEventHandler = new PerkEventHandler();
     }
 
     @Override
     public void initializeFeature(SkyWarsPlugin plugin) {
+        perkEventHandler = new PerkEventHandler(plugin);
 
         registerPurchasables(new BridgerPerk(), new KnowledgePerk(), new LuckyCharmPerk(), new MiningExpertisePerk(), new NourishmentPerk(), new AnnoyOMitePerk(), new ArrowRecoveryPerk(),
                 new BlazingArrowsPerk(), new EnvironmentalExpertPerk(), new SpeedBoostPerk(), new BarbarianPerk(), new BlackMagicPerk(), new FrostPerk(),

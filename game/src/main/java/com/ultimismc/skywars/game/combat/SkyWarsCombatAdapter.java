@@ -1,5 +1,10 @@
 package com.ultimismc.skywars.game.combat;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.events.BowArrowHitEvent;
+import com.ultimismc.skywars.core.events.UserDamagedEvent;
+import com.ultimismc.skywars.core.events.UserDeathEvent;
+import com.ultimismc.skywars.core.events.UserKillEvent;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
@@ -10,7 +15,9 @@ import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.combat.AttackCause;
@@ -23,17 +30,20 @@ import java.util.List;
  */
 public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
 
+    private final SkyWarsPlugin plugin;
     private final GameHandler gameHandler;
     private final FeatureHandler featureHandler;
 
-    public SkyWarsCombatAdapter(GameHandler gameHandler, FeatureHandler featureHandler) {
+    public SkyWarsCombatAdapter(SkyWarsPlugin plugin, GameHandler gameHandler, FeatureHandler featureHandler) {
+        this.plugin = plugin;
         this.gameHandler = gameHandler;
         this.featureHandler = featureHandler;
     }
 
     @Override
-    public boolean onAttack(UserGameSession userGameSession, UserGameSession attackerGameSession, AttackCause attackCause) {
+    public boolean onAttack(UserGameSession userGameSession, UserGameSession attackerGameSession, Projectile projectile, AttackCause attackCause) {
         User user = userGameSession.getUser();
+
         User attacker = (attackerGameSession != null ? attackerGameSession.getUser() : null);
         if(userGameSession.isSetupMode()) return true;
 
@@ -62,6 +72,12 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
             double health = player.getHealth();
             attacker.sendMessage(user.getDisplayName() + "&e is on &c" + PluginUtility.formatDoubleDecimal(health) + "&e HP!");
         }
+
+        plugin.callEvent(new UserDamagedEvent(attacker, user, !attackCause.isEntityAttack()));
+        if(attackCause.isBow()) {
+            Arrow arrow = (Arrow) projectile;
+            plugin.callEvent(new BowArrowHitEvent(attacker, user.getPlayer(), arrow));
+        }
         return false;
     }
 
@@ -81,8 +97,11 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
         deathCryHandler.playDeathCry(user);
 
         gameHandler.terminateUser(userGameSession);
+
+        plugin.callEvent(new UserDeathEvent(user, killer));
         if(killer == null) return;
         Player killerPlayer = killer.getPlayer();
+        plugin.callEvent(new UserKillEvent(user, killer, attackCause));
 
         killerGameSession.increaseKill();
         killerGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 100, "Kill");

@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 import org.bukkit.block.Block;
@@ -14,9 +13,9 @@ public class BlockMinedEvent extends UserSkyWarsEvent {
     private final Block block;
     private final int dropAmount;
 
-    public BlockMinedEvent(GameConfig gameConfig, User user, Block block, int dropAmount) {
-        super(gameConfig, user);
+    public BlockMinedEvent(User user, Block block) {
+        super(user);
         this.block = block;
-        this.dropAmount = dropAmount;
+        this.dropAmount = block.getDrops().size();
     }
 }

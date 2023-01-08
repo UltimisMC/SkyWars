@@ -57,11 +57,11 @@ public abstract class CombatManager<U> {
                 attacker = (Player) damager;
             }
         }
-        EntityDamageEvent.DamageCause AdamageCause = event.getCause();
-        AttackCause attackCause = AttackCause.translate(AdamageCause, projectile);
+        EntityDamageEvent.DamageCause damageCause = event.getCause();
+        AttackCause attackCause = AttackCause.translate(damageCause, projectile);
         U user = getUser(player);
         U attackerUser = (attacker != null ? getUser(attacker) : null);
-        if(combatAdapter.onAttack(user, attackerUser, attackCause)) {
+        if(combatAdapter.onAttack(user, attackerUser, projectile, attackCause)) {
             event.setCancelled(true);
             return;
         }

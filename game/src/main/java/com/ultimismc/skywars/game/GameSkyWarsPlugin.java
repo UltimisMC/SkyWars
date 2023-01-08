@@ -1,6 +1,8 @@
 package com.ultimismc.skywars.game;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.events.SkyWarsEventListener;
+import com.ultimismc.skywars.core.game.features.perks.event.PerkEventListener;
 import com.ultimismc.skywars.game.commands.SkyWarsGameCommand;
 import com.ultimismc.skywars.game.commands.SkyWarsSetupCommand;
 import com.ultimismc.skywars.game.config.GameConfigKeys;
@@ -31,6 +33,7 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
         featureHandler.initializeFeature(gameManager = new GameManager(this));
 
         registerListeners(new SkyWarsGameListener(gameManager.getGameHandler()));
+        registerListeners(new SkyWarsEventListener(this));
 
         commandHandler.registerCommands(new SkyWarsGameCommand(), new SkyWarsSetupCommand());
         userListener.setUserLoadedListener(new GameUserLoadedListener(this, gameManager));

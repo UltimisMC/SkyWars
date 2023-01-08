@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.BowArrowHitEvent;
-import com.ultimismc.skywars.core.events.BowArrowShotEvent;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -12,7 +11,6 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.directplan.directlib.PluginUtility;

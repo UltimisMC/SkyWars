@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 
 /**
@@ -8,7 +7,7 @@ import com.ultimismc.skywars.core.user.User;
  */
 public class GameStartedEvent extends UserSkyWarsEvent {
 
-    public GameStartedEvent(GameConfig gameConfig, User user) {
-        super(gameConfig, user);
+    public GameStartedEvent(User user) {
+        super(user);
     }
 }

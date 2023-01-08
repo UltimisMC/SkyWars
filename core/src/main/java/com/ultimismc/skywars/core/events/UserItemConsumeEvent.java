@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,9 +16,8 @@ public class UserItemConsumeEvent extends UserSkyWarsEvent implements Cancellabl
     @Setter private boolean cancelled;
     private final ItemStack item;
 
-
-    public UserItemConsumeEvent(GameConfig gameConfig, User user, ItemStack item) {
-        super(gameConfig, user);
+    public UserItemConsumeEvent(User user, ItemStack item) {
+        super(user);
 
         this.item = item;
     }

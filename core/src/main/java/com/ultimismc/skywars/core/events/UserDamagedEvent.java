@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +14,10 @@ public class UserDamagedEvent extends UserSkyWarsEvent {
     @Setter private double damage;
     private final boolean environmentalDamage;
 
-    public UserDamagedEvent(GameConfig gameConfig, User user, User damaged, double damage, boolean environmentalDamage) {
-        super(gameConfig, user);
+    public UserDamagedEvent(User user, User damaged, boolean environmentalDamage) {
+        super(user);
 
-        this.damage = damage;
+        this.damage = 1.0;
         this.damaged = damaged;
         this.environmentalDamage = environmentalDamage;
     }

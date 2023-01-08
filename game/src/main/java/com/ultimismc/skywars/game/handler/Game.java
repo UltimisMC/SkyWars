@@ -1,8 +1,11 @@
 package com.ultimismc.skywars.game.handler;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.events.GameStartedEvent;
 import com.ultimismc.skywars.core.events.GameStateChangedEvent;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameState;
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
@@ -22,6 +25,7 @@ import java.util.Optional;
 @Setter
 public abstract class Game {
 
+    protected final SkyWarsPlugin plugin;
     protected final GameHandler gameHandler;
     private final GameChestRegistry chestRegistry;
 
@@ -34,9 +38,13 @@ public abstract class Game {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+        plugin.callEvent(new GameStateChangedEvent(gameState));
 
-        GameConfig gameConfig = gameHandler.getGameConfig();
-        Bukkit.getPluginManager().callEvent(new GameStateChangedEvent(gameConfig, gameState));
+        if(gameState == GameState.STARTED) {
+            for(UserGameSession userGameSession : gameHandler.getUserSessions()) {
+                plugin.callEvent(new GameStartedEvent(userGameSession.getUser()));
+            }
+        }
     }
 
     public void startGame() {}

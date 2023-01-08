@@ -1,8 +1,8 @@
 package com.ultimismc.skywars.core.events;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
+import xyz.directplan.directlib.combat.AttackCause;
 
 /**
  * @author DirectPlan
@@ -11,12 +11,16 @@ import lombok.Getter;
 public class UserKillEvent extends UserSkyWarsEvent {
 
     private final User victim;
-    private final boolean voidKill;
+    private final AttackCause attackCause;
 
-    public UserKillEvent(GameConfig gameConfig, User user, User victim, boolean voidKill) {
-        super(gameConfig, user);
+    public UserKillEvent(User user, User victim, AttackCause attackCause) {
+        super(user);
 
         this.victim = victim;
-        this.voidKill = voidKill;
+        this.attackCause = attackCause;
+    }
+
+    public boolean isVoidKill() {
+        return attackCause.isVoid();
     }
 }
