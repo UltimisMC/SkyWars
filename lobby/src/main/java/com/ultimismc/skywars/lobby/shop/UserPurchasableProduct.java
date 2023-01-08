@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.lobby.shop;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.user.User;
@@ -24,37 +25,51 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
 
     protected final Currency currency;
     private final int cost;
+    private final GameType gameType;
 
-    public UserPurchasableProduct(String name, int itemSlot, int cost, Currency currency) {
+    public UserPurchasableProduct(String name, int itemSlot, int cost, Currency currency, GameType gameType) {
         super(name, itemSlot);
         this.cost = cost;
         this.currency = currency;
+        this.gameType = gameType;
     }
 
-    public UserPurchasableProduct(String name, int inventoryRows, int itemSlot, int cost, Currency currency) {
+    public UserPurchasableProduct(String name, int itemSlot, int cost, Currency currency) {
+        this(name, itemSlot, cost, currency, null);
+    }
+
+    public UserPurchasableProduct(String name, int inventoryRows, int itemSlot, int cost, Currency currency, GameType gameType) {
         super(name, inventoryRows, itemSlot);
         this.cost = cost;
         this.currency = currency;
+        this.gameType = gameType;
     }
 
-    public UserPurchasableProduct(String name, int itemSlot, Purchasable purchasable) {
-        this(name, itemSlot, purchasable.getPrice(), purchasable.getCurrency());
+    public UserPurchasableProduct(String name, int inventoryRows, int itemSlot, int cost, Currency currency) {
+        this(name, inventoryRows, itemSlot, cost, currency, null);
+    }
+
+    public UserPurchasableProduct(int itemSlot, Purchasable purchasable, GameType gameType) {
+        this(purchasable.getName(), itemSlot, purchasable.getPrice(), purchasable.getCurrency(), gameType);
         this.purchasable = purchasable;
     }
 
     public UserPurchasableProduct(int itemSlot, Purchasable purchasable) {
-        this(purchasable.getName(), itemSlot, purchasable.getPrice(), purchasable.getCurrency());
+        this(itemSlot, purchasable, null);
+    }
+
+    public UserPurchasableProduct(int itemSlot, int inventoryRows, Purchasable purchasable, GameType gameType) {
+        this(purchasable.getNameWithCategory(), inventoryRows, itemSlot, purchasable.getPrice(), purchasable.getCurrency(), gameType);
         this.purchasable = purchasable;
     }
 
     public UserPurchasableProduct(int itemSlot, int inventoryRows, Purchasable purchasable) {
-        this(purchasable.getNameWithCategory(), inventoryRows, itemSlot, purchasable.getPrice(), purchasable.getCurrency());
-        this.purchasable = purchasable;
+        this(itemSlot, inventoryRows, purchasable, null);
     }
 
     public abstract ProductItemDesign designPurchasableProduct(User user);
 
-    public abstract void executePurchasableProduct(User user, ClickType clickType);
+    public abstract void executePurchasableProduct(User user, GameType gameType, ClickType clickType);
 
     @Override
     public ProductItemDesign designProduct(User user) {
@@ -68,7 +83,7 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
             displayName = getName();
         }
         boolean canAfford = currency.canAfford(user, cost);
-        boolean hasPurchased = (purchasable != null && user.hasPurchased(purchasable));
+        boolean hasPurchased = (purchasable != null && user.hasPurchased(purchasable, gameType));
 
         Material material = shopProductItemDesign.getMaterial();
         short durability = shopProductItemDesign.getDurability();
@@ -117,8 +132,8 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
     public void executeAction(User user, ClickType clickType) {
         Player player = user.getPlayer();
 
-        if(purchasable != null && user.hasPurchased(purchasable)) {
-            executePurchasableProduct(user, clickType);
+        if(purchasable != null && user.hasPurchased(purchasable, gameType)) {
+            executePurchasableProduct(user, gameType, clickType);
             return;
         }
         currency.decreaseCurrency(user, cost);
@@ -127,12 +142,12 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
             player.closeInventory();
             String displayPrice = getDisplayCost();
 
-            user.purchaseAsset(purchasable);
+            user.purchaseAsset(purchasable, gameType);
             ShopMessageKeys.SHOP_ITEM_PURCHASED_MESSAGE.sendMessage(player, new Replacement("name", purchasable.getNameWithCategory()),
                     new Replacement("price", displayPrice));
             return;
         }
-        executePurchasableProduct(user, clickType);
+        executePurchasableProduct(user, gameType, clickType);
     }
 
     protected String getDisplayCost() {

@@ -1,10 +1,9 @@
 package com.ultimismc.skywars.lobby.shop.kitsandperks.perks;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.asset.UserAsset;
-import com.ultimismc.skywars.lobby.shop.UserProduct;
-import com.ultimismc.skywars.lobby.shop.UserProductCategory;
 import com.ultimismc.skywars.lobby.shop.UserTypedProduct;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,7 +12,6 @@ import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author DirectPlan
@@ -22,16 +20,18 @@ public class PerkSlot extends UserTypedProduct<UserAsset> {
 
     private final PurchasedPerksCategory perksCategory;
     private final int perkSlot;
+    private final GameType gameType;
 
-    public PerkSlot(PurchasedPerksCategory perksCategory, int perkSlot, int itemSlot) {
+    public PerkSlot(PurchasedPerksCategory perksCategory, GameType gameType, int perkSlot, int itemSlot) {
         super("Perk Slot", itemSlot, UserAsset.class);
         this.perksCategory = perksCategory;
+        this.gameType = gameType;
         this.perkSlot = perkSlot;
     }
 
     @Override
     public ProductItemDesign designProduct(User user) {
-        List<UserAsset> userAssets = user.getActivatedAssets(Perk.class);
+        List<UserAsset> userAssets = user.getActivatedAssets(Perk.class, gameType);
         int assetIndex = (perkSlot - 1);
         if(userAssets.size() > assetIndex) {
             UserAsset userAsset = userAssets.get(assetIndex);

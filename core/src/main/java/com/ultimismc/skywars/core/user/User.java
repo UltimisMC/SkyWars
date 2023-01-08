@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.user;
 
+import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.Level;
@@ -21,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author DirectPlan
@@ -75,6 +77,10 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return userAssetsHandler.getAsset(purchasable);
     }
 
+    public UserAsset getAsset(Purchasable purchasable, GameType gameType) {
+        return userAssetsHandler.getAsset(purchasable, gameType);
+    }
+
     public <T extends Purchasable> List<UserAsset> getAssets(Class<T> clazz) {
         return userAssetsHandler.getAssets(clazz);
     }
@@ -87,12 +93,16 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         userAssetsHandler.addAsset(asset);
     }
 
-    public void purchaseAsset(Purchasable purchasable) {
-        userAssetsHandler.purchaseAsset(purchasable);
+    public void purchaseAsset(Purchasable purchasable, GameType gameType) {
+        userAssetsHandler.purchaseAsset(purchasable, gameType);
     }
 
     public boolean hasPurchased(Purchasable purchasable) {
         return userAssetsHandler.hasPurchased(purchasable);
+    }
+
+    public boolean hasPurchased(Purchasable purchasable, GameType gameType) {
+        return userAssetsHandler.hasPurchased(purchasable, gameType);
     }
 
     public boolean canAfford(Purchasable purchasable) {
@@ -101,9 +111,16 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return currency.canAfford(this, purchasable);
     }
 
-    public <T extends Purchasable> List<UserAsset> getActivatedAssets(Class<T> clazz) {
-        return getAssets(clazz).stream().filter(UserAsset::isActivated).collect(Collectors.toList());
+    public <T extends Purchasable> List<UserAsset> getActivatedAssets(Class<T> clazz, GameType gameType) {
+        Stream<UserAsset> stream = getAssets(clazz).stream().filter(UserAsset::isActivated);
+        if(gameType != null) stream = stream.filter(asset -> asset.isPurchasedFor(gameType));
+        return stream.collect(Collectors.toList());
     }
+
+    public <T extends Purchasable> List<UserAsset> getActivatedAssets(Class<T> clazz) {
+        return getActivatedAssets(clazz, null);
+    }
+
 
     public <T extends Purchasable> int getActivatedAssetsSize(Class<T> clazz) {
         return getActivatedAssets(clazz).size();

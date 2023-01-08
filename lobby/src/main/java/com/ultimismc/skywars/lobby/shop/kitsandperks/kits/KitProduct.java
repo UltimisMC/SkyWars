@@ -22,7 +22,7 @@ public class KitProduct extends UserPurchasableProduct {
     private final GameType gameType;
 
     public KitProduct(Kit kit, GameType gameType) {
-        super(0, kit);
+        super(0, kit, gameType);
         this.kit = kit;
         this.gameType = gameType;
     }
@@ -44,7 +44,7 @@ public class KitProduct extends UserPurchasableProduct {
     }
 
     @Override
-    public void executePurchasableProduct(User user, ClickType clickType) {
+    public void executePurchasableProduct(User user, GameType gameType, ClickType clickType) {
         Player player = user.getPlayer();
         user.sendMessage("&aPreviewing &e" + kit.getName() + " &akit...");
 
