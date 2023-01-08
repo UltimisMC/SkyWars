@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author DirectPlan
  */
 @Getter
-public class GameStateChangedEvent extends AbstractEvent {
+public class GameStateChangedEvent extends SkyWarsEvent {
 
     private final GameState gameState;
 
