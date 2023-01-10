@@ -3,7 +3,7 @@ A custom skywars plugin developed for UltimisMC Network.
 
 # Features Left
 - Implement kit items ***(Completed)***
-- Implement perk functionalities ***(Working on it)***
+- Implement perk functionalities ***(Completed)***
 - Game Kit Selector Menu implementation ***(Completed)***
 - Spectator Settings Menu ***(Completed)***
 - Spectator System ***(Completed)***
@@ -11,7 +11,7 @@ A custom skywars plugin developed for UltimisMC Network.
 - Game Cosmetics Executor ***(Completed)***
 - Servers Communication ***(Completed)***
 - Automatic Server Scaling ***(Working on Container Management)***
-- Chest Algorithm System including Refills ***(Completed)*** ***Adding chest bundles required***
+- Chest Algorithm System including Refills ***(Completed)*** ***Adding chest bundles required (Working on it)***
 - Cage Algorithm System including automatic Cage building upon join ***(Completed)***
 - Add a brand new damage based combat system to DirectLib ***(Completed)***
 - Damage based Death System ***(Completed)***
