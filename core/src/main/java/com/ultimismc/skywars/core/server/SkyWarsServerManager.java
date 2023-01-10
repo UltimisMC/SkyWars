@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.server;
 
 import com.ultimismc.serversync.ClientServerManager;
+import com.ultimismc.serversync.Server;
 import com.ultimismc.serversync.ServerPlugin;
 import com.ultimismc.serversync.communication.ConnectionData;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
@@ -63,22 +64,39 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
         Optional<SkyWarsServer> perfectServer = stream.max((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()));
         return perfectServer.orElse(null);
     }
+    
+    public SkyWarsServer getPerfectLobby() {
+        Stream<SkyWarsServer> stream = getServers().stream().filter(Server::isLobby).filter(server -> !server.isFull());
+        Optional<SkyWarsServer> perfectLobby = stream.max((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()));
+        return perfectLobby.orElse(null);
+    }
 
-    public void sendToAvailableServer(User user, TeamType teamType, GameType gameType, String map) {
+    public void sendToLobby(User user) {
+        SkyWarsServer perfectLobby = getPerfectLobby();
+        sendToServer(user, perfectLobby);
+    }
+    
+    public boolean sendToAvailableServer(User user, TeamType teamType, GameType gameType, String map) {
         SkyWarsServer server = getPerfectAvailableServer(teamType, gameType, map);
         if(server == null) {
-            user.sendMessage("&cThere are not game servers available at this moment. Please wait!");
-            return;
+            user.sendMessage("&cThere are not game servers available at this moment.");
+            return false;
         }
+        sendToServer(user, server);
+        return true;
+    }
+
+    public boolean sendToAvailableServer(User user, TeamType teamType, GameType gameType) {
+        return sendToAvailableServer(user, teamType, gameType, null);
+    }
+
+    public boolean sendToAvailableServer(User user, GameConfig gameConfig) {
+        return sendToAvailableServer(user, gameConfig.getTeamType(), gameConfig.getGameType());
+    }
+
+    public void sendToServer(User user, SkyWarsServer server) {
         user.sendMessage("&aSending you to " + server.getId() + "!");
-        sendToGameServer(user, server);
-    }
 
-    public void sendToAvailableServer(User user, TeamType teamType, GameType gameType) {
-        sendToAvailableServer(user, teamType, gameType, null);
-    }
-
-    public void sendToGameServer(User user, SkyWarsServer server) {
         String serverId = server.getId();
         PluginUtility.connectToServer(plugin, user.getPlayer(), serverId);
     }

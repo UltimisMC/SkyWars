@@ -3,16 +3,13 @@ package com.ultimismc.skywars.game.handler;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.events.GameStartedEvent;
 import com.ultimismc.skywars.core.events.GameStateChangedEvent;
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameState;
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -104,7 +101,11 @@ public abstract class Game {
     }
 
     public boolean hasStarted() {
-        return gameState != GameState.WAITING && gameState != GameState.STARTING;
+        return gameState == GameState.STARTING; // Could break something?
+    }
+
+    public boolean isJoinable() {
+        return (gameState == GameState.WAITING || gameState == GameState.STARTING);
     }
 
     public boolean hasEnded() {

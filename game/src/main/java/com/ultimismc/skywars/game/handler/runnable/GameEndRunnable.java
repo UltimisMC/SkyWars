@@ -1,10 +1,8 @@
 package com.ultimismc.skywars.game.handler.runnable;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.game.handler.GameHandler;
-import com.ultimismc.skywars.game.handler.end.GameEndPhase;
-import com.ultimismc.skywars.game.handler.end.GameEndRebootPhase;
-import com.ultimismc.skywars.game.handler.end.GameEndRewardsPhase;
-import com.ultimismc.skywars.game.handler.end.GameEndWinPhase;
+import com.ultimismc.skywars.game.handler.end.*;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 
 import java.util.Collection;
@@ -21,13 +19,14 @@ public class GameEndRunnable implements Runnable {
     private long currentTime = System.currentTimeMillis();
     private final LinkedList<GameEndPhase> endPhases = new LinkedList<>();
 
-    public GameEndRunnable(GameHandler gameHandler, GameTeam winnerTeam, Collection<GameTeam> teams) {
+    public GameEndRunnable(SkyWarsPlugin plugin, GameHandler gameHandler, GameTeam winnerTeam, Collection<GameTeam> teams) {
         this.winnerTeam = winnerTeam;
         this.teams = teams;
 
         endPhases.addLast(new GameEndWinPhase(gameHandler));
         endPhases.addLast(new GameEndRewardsPhase(gameHandler));
-        endPhases.addLast(new GameEndRebootPhase(gameHandler));
+        endPhases.addLast(new GameEndConnectPhase(plugin, gameHandler));
+        endPhases.addLast(new GameEndRestartPhase(gameHandler));
     }
 
     @Override

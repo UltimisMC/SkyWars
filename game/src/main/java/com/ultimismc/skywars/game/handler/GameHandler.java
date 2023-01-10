@@ -11,7 +11,6 @@ import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
-import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.game.GameManager;
@@ -70,6 +69,7 @@ public class GameHandler implements FeatureInitializer {
     private final GameManager gameManager;
     private final MenuManager menuManager;
     private final GameConfig gameConfig;
+    private final GameMenuHandler gameMenuHandler;
 
     private Game game;
     private GameScoreboard gameScoreboard;
@@ -86,7 +86,6 @@ public class GameHandler implements FeatureInitializer {
     private SkyWarsCombatManager combatManager;
     private GameTeamHandler teamHandler;
     private KitManager kitManager;
-    private GameMenuHandler gameMenuHandler;
 
     private BukkitTask gamePreparer, gameTask;
 
@@ -256,7 +255,7 @@ public class GameHandler implements FeatureInitializer {
         game.endGame();
 
         GameTeam winnerTeam = game.getLastTeamAlive();
-        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(this, winnerTeam, game.getGameTeams()), 0, 20L);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(plugin, this, winnerTeam, game.getGameTeams()), 0, 20L);
     }
 
     public void terminateUser(UserGameSession userGameSession) {
@@ -408,7 +407,7 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public boolean isOpen() {
-        return !game.hasStarted() && getOnlinePlayers() < getMaximumPlayers();
+        return !game.isJoinable() && getOnlinePlayers() < getMaximumPlayers();
     }
 
     public boolean isSoloGame() {

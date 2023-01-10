@@ -36,7 +36,15 @@ public class SkyWarsServer extends Server {
     }
 
     public boolean hasStarted() {
-        return state != GameState.WAITING && state != GameState.STARTING;
+        return !isJoinable(); // Could break something?
+    }
+
+    public boolean isJoinable() {
+        return (state == GameState.WAITING || state == GameState.STARTING);
+    }
+
+    public boolean isRestarting() {
+        return state == GameState.RESTARTING;
     }
 
     public String getMapName() {
