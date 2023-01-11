@@ -52,7 +52,7 @@ public class CageHandler extends PurchasableRegistry<Cage> {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         // Checking for schematic adapter
         if(!pluginManager.isPluginEnabled("WorldEdit")) {
-            plugin.shutdown("WorldEdit is not detected.");
+            plugin.disablePlugin("WorldEdit is not detected.");
             return;
         }
         schematicAdapter = new WorldEditSchematicAdapter(gameWorld);
