@@ -18,7 +18,7 @@ public class Chest {
     private final boolean midChest;
     private final ChestHologram chestHologram = new ChestHologram();
     private boolean opened;
-    private ChestSkyWarsEventUpdater updater;
+    private ChestHologramUpdater updater;
 
     private final Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST);
 
