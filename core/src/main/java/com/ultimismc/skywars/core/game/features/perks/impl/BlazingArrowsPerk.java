@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.BowArrowShotEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -30,7 +31,7 @@ public class BlazingArrowsPerk extends Perk implements PerkEvent<BowArrowShotEve
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, BowArrowShotEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, BowArrowShotEvent event) {
         if(!PluginUtility.hasChanceOccurred(15)) return;
         Arrow arrow = event.getArrow();
 

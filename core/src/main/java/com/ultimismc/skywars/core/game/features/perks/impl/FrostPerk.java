@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.BowArrowHitEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -34,7 +35,7 @@ public class FrostPerk extends Perk implements PerkEvent<BowArrowHitEvent> {
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, BowArrowHitEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, BowArrowHitEvent event) {
         // TODO: Check if bow is fully charged
         Arrow arrow = event.getArrow();
         System.out.println("Arrow velocity at: " + arrow.getVelocity());

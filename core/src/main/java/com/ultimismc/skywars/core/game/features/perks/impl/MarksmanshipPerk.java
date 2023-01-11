@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.UserKillEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -33,7 +34,7 @@ public class MarksmanshipPerk extends Perk implements PerkEvent<UserKillEvent> {
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, UserKillEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, UserKillEvent event) {
         Player player = user.getPlayer();
 
         ItemStack itemStack = player.getItemInHand();

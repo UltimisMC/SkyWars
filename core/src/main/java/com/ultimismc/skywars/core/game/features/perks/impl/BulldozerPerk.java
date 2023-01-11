@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.UserKillEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
@@ -32,9 +33,9 @@ public class BulldozerPerk extends Perk implements PerkEvent<UserKillEvent> {
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, UserKillEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, UserKillEvent event) {
         int duration = (2 * 20); // 2 seconds for Team Mode
-        TeamType teamType = event.getTeamType();
+        TeamType teamType = config.getTeamType();
         if(teamType.isSolo()) {
             duration = (5 * 20); // 5 seconds for Solo Mode.
         }

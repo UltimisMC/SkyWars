@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.UserDamagedEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -28,7 +29,7 @@ public class EnvironmentalExpertPerk extends Perk implements PerkEvent<UserDamag
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, UserDamagedEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, UserDamagedEvent event) {
         if(!event.isEnvironmentalDamage()) return;
 
         double damage = event.getDamage();

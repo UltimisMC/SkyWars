@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.UserDamagedEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -37,7 +38,7 @@ public class RobberyPerk extends Perk implements PerkEvent<UserDamagedEvent> {
 
 
     @Override
-    public void onTrigger(User user, UserAsset asset, UserDamagedEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, UserDamagedEvent event) {
         Player player = user.getPlayer();
         ItemStack itemStack = player.getItemInHand();
         if(itemStack.getType() != Material.AIR) return;

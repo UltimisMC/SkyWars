@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.GameStartedEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -31,7 +32,7 @@ public class FatPerk extends Perk implements PerkEvent<GameStartedEvent> {
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, GameStartedEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, GameStartedEvent event) {
         Player player = user.getPlayer();
         player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400, 0)); // 20 seconds
     }

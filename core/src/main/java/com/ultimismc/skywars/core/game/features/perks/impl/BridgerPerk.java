@@ -1,6 +1,7 @@
 package com.ultimismc.skywars.core.game.features.perks.impl;
 
 import com.ultimismc.skywars.core.events.UserItemConsumeEvent;
+import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.perks.Perk;
 import com.ultimismc.skywars.core.game.features.perks.PerkRarity;
@@ -29,7 +30,7 @@ public class BridgerPerk extends Perk implements PerkEvent<UserItemConsumeEvent>
     }
 
     @Override
-    public void onTrigger(User user, UserAsset asset, UserItemConsumeEvent event) {
+    public void onTrigger(User user, GameConfig config, UserAsset asset, UserItemConsumeEvent event) {
         if(!event.isBlockItem()) return;
         if(!PluginUtility.hasChanceOccurred(50)) return;
 
