@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game.mode;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
@@ -11,8 +12,8 @@ import xyz.directplan.directlib.PluginUtility;
  */
 public class InsaneGame extends Game {
 
-    public InsaneGame(GameHandler gameHandler) {
-        super(gameHandler, new InsaneChestRegistry());
+    public InsaneGame(SkyWarsPlugin plugin, GameHandler gameHandler) {
+        super(plugin, gameHandler, new InsaneChestRegistry());
     }
 
     @Override

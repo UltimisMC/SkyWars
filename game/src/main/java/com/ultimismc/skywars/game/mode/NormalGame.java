@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game.mode;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.game.handler.Game;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
@@ -9,8 +10,8 @@ import com.ultimismc.skywars.game.user.UserGameSession;
  */
 public class NormalGame extends Game {
 
-    public NormalGame(GameHandler gameHandler) {
-        super(gameHandler, new NormalChestRegistry());
+    public NormalGame(SkyWarsPlugin plugin, GameHandler gameHandler) {
+        super(plugin, gameHandler, new NormalChestRegistry());
     }
 
     @Override

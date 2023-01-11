@@ -114,11 +114,11 @@ public class GameHandler implements FeatureInitializer {
         GameType gameType = gameConfig.getGameType();
         switch (gameType) {
             case NORMAL: {
-                game = new NormalGame(this);
+                game = new NormalGame(plugin, this);
                 break;
             }
             case INSANE: {
-                game = new InsaneGame(this);
+                game = new InsaneGame(plugin, this);
             }
             break;
             default:
@@ -191,7 +191,9 @@ public class GameHandler implements FeatureInitializer {
             teamHandler.handleTeamQuit(userGameSession);
         }
         if(game.isStarting() && !hasMinimumPlayers()) {
-            broadcastMessage("&cNot enough players!");
+            broadcastMessage(" ");
+            broadcastMessage("&cUnable to meet minimum player requirements. Please try to queue again later.");
+            broadcastMessage(" ");
             cancelPreparer();
         }
 
@@ -406,8 +408,12 @@ public class GameHandler implements FeatureInitializer {
         return game.isRestarting();
     }
 
+    public GameState getGameState() {
+        return game.getGameState();
+    }
+
     public boolean isOpen() {
-        return !game.isJoinable() && getOnlinePlayers() < getMaximumPlayers();
+        return game.isJoinable() && getOnlinePlayers() < getMaximumPlayers();
     }
 
     public boolean isSoloGame() {

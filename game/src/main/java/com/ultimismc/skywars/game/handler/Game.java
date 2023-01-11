@@ -101,7 +101,7 @@ public abstract class Game {
     }
 
     public boolean hasStarted() {
-        return gameState == GameState.STARTING; // Could break something?
+        return gameState == GameState.STARTED; // Could break something?
     }
 
     public boolean isJoinable() {
