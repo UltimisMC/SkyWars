@@ -12,17 +12,15 @@ import xyz.directplan.directlib.inventory.MenuItem;
 @Getter
 public class ChestItem {
 
-    private final int percentage;
     private final MenuItem menuItem;
 
-    public ChestItem(int percentage, Material material, int amount) {
-        this.percentage = percentage;
+    public ChestItem(Material material, int amount) {
         menuItem = new MenuItem(material, null);
         menuItem.setAmount(amount);
     }
 
-    public ChestItem(int percentage, Material material) {
-        this(percentage, material, 1);
+    public ChestItem(Material material) {
+        this(material, 1);
     }
 
     public void addEnchantments(ItemEnchantment... enchantment) {
