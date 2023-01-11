@@ -125,8 +125,13 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         getLogger().log(Level.INFO, message);
     }
 
-    public void shutdown(String reason) {
+    public void disablePlugin(String reason) {
+        getLogger().severe("Disabling plugin: " + reason);
+        getServer().getPluginManager().disablePlugin(this);
+    }
+
+    public void shutdownServer(String reason) {
         getLogger().severe("Shutting down server: " + reason);
-        this.getServer().getPluginManager().disablePlugin(this);
+        getServer().shutdown();
     }
 }
