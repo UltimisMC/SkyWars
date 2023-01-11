@@ -11,5 +11,7 @@ public interface SkyWarsEvent {
 
     long getScheduledIn();
 
+    void prepare(GameHandler gameHandler);
+
     void executeEvent(GameHandler gameHandler);
 }
