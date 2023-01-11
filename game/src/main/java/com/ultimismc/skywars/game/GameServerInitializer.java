@@ -28,7 +28,7 @@ public class GameServerInitializer implements ServerInitializer  {
         String worldName = ConfigKeys.WORLD_NAME.getStringValue();
         gameWorld = Bukkit.getWorld(worldName);
         if(gameWorld == null) {
-            plugin.shutdown("World '" + worldName + "' does not exist. Shutting down");
+            plugin.disablePlugin("World '" + worldName + "' does not exist. Shutting down");
             return null;
         }
 
