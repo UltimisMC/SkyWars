@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
  * @author DirectPlan
  */
 @RequiredArgsConstructor
-public class ChestSkyWarsEventUpdater implements SkyWarsEventUpdater {
+public class ChestHologramUpdater implements SkyWarsEventUpdater {
 
     private final Chest chest;
 
