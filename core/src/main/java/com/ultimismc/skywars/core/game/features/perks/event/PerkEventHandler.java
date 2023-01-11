@@ -56,7 +56,7 @@ public class PerkEventHandler implements FeatureInitializer {
             if(userAsset == null) continue;
             if(!userAsset.isActivated()) continue; // Checks if the perk is activated for the game type
 
-            perkEvent.onTrigger(user, userAsset, event);
+            perkEvent.onTrigger(user, gameConfig, userAsset, event);
         }
     }
 }
