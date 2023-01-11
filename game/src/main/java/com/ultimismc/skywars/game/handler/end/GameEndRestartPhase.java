@@ -1,9 +1,9 @@
 package com.ultimismc.skywars.game.handler.end;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameState;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
-import org.bukkit.Bukkit;
 
 import java.util.Collection;
 
@@ -19,6 +19,7 @@ public class GameEndRestartPhase extends GameEndPhase {
     @Override
     public void executePhase(GameTeam winnerTeam, Collection<GameTeam> gameTeams) {
         gameHandler.setGameState(GameState.RESTARTING);
-        Bukkit.shutdown();
+        SkyWarsPlugin plugin = gameHandler.getPlugin();
+        plugin.shutdownServer("Game Ended: Restart Phase");
     }
 }
