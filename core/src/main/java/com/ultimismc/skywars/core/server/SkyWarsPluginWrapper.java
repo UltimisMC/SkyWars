@@ -53,6 +53,6 @@ public class SkyWarsPluginWrapper implements ServerPlugin {
 
     @Override
     public void shutdown(String reason) {
-        plugin.shutdown(reason);
+        plugin.shutdownServer(reason);
     }
 }
