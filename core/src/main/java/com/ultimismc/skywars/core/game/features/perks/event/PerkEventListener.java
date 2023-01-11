@@ -17,7 +17,7 @@ public class PerkEventListener implements Listener {
     @EventHandler
     public void onSkyWarsEvent(UserSkyWarsEvent event) {
         User user = event.getUser();
-
+        if(user == null) return;
         eventHandler.triggerPerk(user, event);
     }
 }
