@@ -14,5 +14,7 @@ public abstract class AbstractSkyWarsEvent implements SkyWarsEvent {
     private final String name;
     private final long scheduledIn;
 
+    public void prepare(GameHandler gameHandler) {}
+
     public abstract void executeEvent(GameHandler gameHandler);
 }
