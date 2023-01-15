@@ -79,7 +79,7 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
     public boolean sendToAvailableServer(User user, TeamType teamType, GameType gameType, String map) {
         SkyWarsServer server = getPerfectAvailableServer(teamType, gameType, map);
         if(server == null) {
-            user.sendMessage("&cThere are not game servers available at this moment.");
+            user.sendMessage("&cThere are no available game servers at this moment.");
             return false;
         }
         sendToServer(user, server);
@@ -118,4 +118,5 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
     public Collection<SkyWarsServer> getGameServers() {
         return getGameServers(null, null);
     }
+
 }
