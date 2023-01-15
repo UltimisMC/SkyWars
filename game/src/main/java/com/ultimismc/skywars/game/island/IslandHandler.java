@@ -116,6 +116,7 @@ public class IslandHandler implements FeatureInitializer {
         Location cageLocation = island.getCageLocation();
         placeCage(defaultCage, cageLocation, false);
     }
+
     public void removeAllCages() {
         for(Island island : islands.values()) {
             Location location = island.getCageLocation();
