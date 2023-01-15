@@ -1,18 +1,13 @@
 package com.ultimismc.skywars.game;
 
-import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.RequiredArgsConstructor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
@@ -33,30 +28,10 @@ public class SkyWarsGameListener implements Listener {
             event.setKickMessage(PluginUtility.translateMessage("&cServer is restarting..."));
             return;
         }
-        if(gameHandler.isOpen()) return;
+        if(gameHandler.isJoinable()) return;
 
         event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST);
         event.setKickMessage(PluginUtility.translateMessage("&cGame is full or has already started!"));
-    }
-
-    @EventHandler
-    public void onChestOpen(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        UserGameSession userGameSession = gameHandler.getSession(player);
-        if(userGameSession.isSpectator()) {
-            event.setCancelled(true);
-            return;
-        }
-        Block clickedBlock = event.getClickedBlock();
-        Action action = event.getAction();
-        if(clickedBlock == null) return;
-        if(action != Action.RIGHT_CLICK_BLOCK) return;
-        if(clickedBlock.getType() != Material.CHEST) return;
-
-        event.setCancelled(true);
-        ChestHandler chestHandler = gameHandler.getChestHandler();
-        chestHandler.openChest(userGameSession, clickedBlock);
-        PluginUtility.playSound(player, Sound.CHEST_OPEN);
     }
 
     @EventHandler
