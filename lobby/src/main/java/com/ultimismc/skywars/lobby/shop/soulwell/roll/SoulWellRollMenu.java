@@ -49,7 +49,8 @@ public class SoulWellRollMenu extends InventoryUI {
             PurchasableRarity rarity = purchasable.getRarity();
             int occurrence = rarity.getOccurrenceChance();
             boolean hasChanceOccurred = PluginUtility.hasChanceOccurred(occurrence);
-            return !purchasable.isSoulWell() || user.hasPurchased(purchasable) || !hasChanceOccurred;
+            return !purchasable.isSoulWell() || user.hasPurchased(purchasable, null) || !hasChanceOccurred;
+            // TODO: Make it so that the roll can be for all Game Types
         });
         purchaseSlots = new int[]{
                 40,
@@ -149,7 +150,7 @@ public class SoulWellRollMenu extends InventoryUI {
             String userDisplayName = user.getDisplayName();
             PluginUtility.broadcastMessage(userDisplayName + " &7has found " + purchasableDisplayName + " &7in the &bSoul Well&7!");
         }
-        user.addAsset(new UserAsset(currentPurchasable));
+        user.addAsset(new UserAsset(currentPurchasable), null); // TODO: Make it so that...
     }
 
     @Override
