@@ -196,7 +196,6 @@ public class GameHandler implements FeatureInitializer {
             broadcastMessage(" ");
             cancelPreparer();
         }
-
         updateScoreboard();
     }
 
@@ -256,21 +255,21 @@ public class GameHandler implements FeatureInitializer {
         game.setGameState(GameState.ENDED);
         game.endGame();
 
-        GameTeam winnerTeam = game.getLastTeamAlive();
-        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(plugin, this, winnerTeam, game.getGameTeams()), 0, 20L);
+        GameTeam winnerTeam = teamHandler.getLastTeamAlive();
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(plugin, this, winnerTeam, teamHandler.getGameTeams()), 0, 20L);
     }
 
     public void terminateUser(UserGameSession userGameSession) {
         MessageConfigKeys.DEATH_MESSAGE.sendMessage(userGameSession.getPlayer());
 
-        game.terminatePlayer(userGameSession); // Currently, useless as fuck
+        game.terminatePlayer(userGameSession);
 
         userGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 1400, "Game End", true);
 
-        if(game.getTeamsLeft() <= 1 && !hasEnded()) {
+        addSpectator(userGameSession);
+        if(teamHandler.getTeamsLeft() <= 1 && !hasEnded()) {
             endGame();
         }
-        addSpectator(userGameSession);
     }
 
     public void addSpectator(UserGameSession userGameSession) {
@@ -388,14 +387,6 @@ public class GameHandler implements FeatureInitializer {
         return gameTime >= millis;
     }
 
-    public void addGameTeam(GameTeam gameTeam) {
-        game.addGameTeam(gameTeam);
-    }
-
-    public void removeGameTeam(GameTeam gameTeam) {
-        game.removeGameTeam(gameTeam);
-    }
-
     public boolean hasStarted() {
         return game.hasStarted();
     }
@@ -408,12 +399,8 @@ public class GameHandler implements FeatureInitializer {
         return game.isRestarting();
     }
 
-    public GameState getGameState() {
-        return game.getGameState();
-    }
-
-    public boolean isOpen() {
-        return game.isJoinable() && getOnlinePlayers() < getMaximumPlayers();
+    public boolean isJoinable() {
+        return game.isJoinable();
     }
 
     public boolean isSoloGame() {
