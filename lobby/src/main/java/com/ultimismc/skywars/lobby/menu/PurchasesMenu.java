@@ -11,7 +11,6 @@ import xyz.directplan.directlib.inventory.MenuItem;
 import xyz.directplan.directlib.inventory.PaginatedMenu;
 import xyz.directplan.directlib.inventory.PaginatedModel;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
