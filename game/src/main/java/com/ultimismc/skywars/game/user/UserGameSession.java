@@ -88,4 +88,9 @@ public class UserGameSession {
     public void increaseChestsOpened() {
         gameStatistics.increaseChestsOpened();
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
