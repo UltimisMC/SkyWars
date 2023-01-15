@@ -37,7 +37,7 @@ public class UserLoadedListener {
             user.addSetting(category, defaultPurchasable);
             UserAsset userAsset = new UserAsset(defaultPurchasable);
             userAsset.setDefaultAsset(true);
-            user.addAsset(userAsset);
+            user.addAssetAllModes(userAsset);
         }
     }
 }
