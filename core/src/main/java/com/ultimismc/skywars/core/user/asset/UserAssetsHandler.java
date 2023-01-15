@@ -17,10 +17,6 @@ public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
         return getCache(assetName);
     }
 
-    public UserAsset getAsset(Purchasable purchasable) {
-        return getAsset(purchasable, null);
-    }
-
     public UserAsset getAsset(Purchasable purchasable, GameType gameType) {
         UserAsset userAsset = getAsset(purchasable.getNameWithCategory());
         if(userAsset == null) return null;
@@ -28,31 +24,21 @@ public class UserAssetsHandler extends UserCacheHandler<String, UserAsset> {
         return null;
     }
 
-    public void addAsset(UserAsset asset) {
+    public void addAsset(UserAsset asset, GameType gameType) {
+        asset.addPurchasedGame(gameType);
         addCache(asset.getNameWithCategory(), asset);
     }
 
     public void purchaseAsset(Purchasable purchasable, GameType gameType) {
-        UserAsset userAsset = getAsset(purchasable);
+        UserAsset userAsset = getAsset(purchasable, gameType);
         if(userAsset == null) {
-            userAsset = new UserAsset(purchasable, System.currentTimeMillis(), false);
-            addAsset(userAsset);
+            UserAsset asset = new UserAsset(purchasable, System.currentTimeMillis(), false);
+            addAsset(asset, gameType);
         }
-        if(gameType != null) {
-            userAsset.addPurchasedGame(gameType);
-        }
-    }
-
-    public void purchaseAsset(Purchasable purchasable) {
-        purchaseAsset(purchasable, null);
     }
 
     public boolean hasPurchased(Purchasable purchasable, GameType gameType) {
         return getAsset(purchasable, gameType) != null;
-    }
-
-    public boolean hasPurchased(Purchasable purchasable) {
-        return hasPurchased(purchasable, null);
     }
 
     public <T extends Purchasable> List<T> getAssetPurchasables(Class<T> clazz) {
