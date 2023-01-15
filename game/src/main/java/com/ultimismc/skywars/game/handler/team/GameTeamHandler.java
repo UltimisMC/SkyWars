@@ -1,15 +1,16 @@
 package com.ultimismc.skywars.game.handler.team;
 
 import com.ultimismc.skywars.core.game.TeamType;
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.TagUtil;
 
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * @author DirectPlan
@@ -17,7 +18,7 @@ import java.util.Locale;
 public class GameTeamHandler {
 
     private final String[] alphabets;
-    private final LinkedList<GameTeam> gameTeams = new LinkedList<>();
+    @Getter private final LinkedList<GameTeam> gameTeams = new LinkedList<>();
 
     private final GameHandler gameHandler;
 
@@ -33,25 +34,29 @@ public class GameTeamHandler {
         }
     }
 
+    public void addGameTeam(GameTeam gameTeam) {
+        gameTeams.add(gameTeam);
+    }
+
+    public void removeGameTeam(GameTeam gameTeam) {
+        gameTeams.remove(gameTeam);
+    }
+
     public void handleTeamJoin(UserGameSession userGameSession) {
         GameTeam availableTeam = getAvailableTeam();
         if(!gameTeams.contains(availableTeam)) {
-            gameTeams.add(availableTeam);
+            addGameTeam(availableTeam);
         }
         availableTeam.addPlayer(userGameSession);
 
         userGameSession.setGameTeam(availableTeam);
-        gameHandler.addGameTeam(availableTeam);
-
-        User user = userGameSession.getUser();
-        user.sendMessage("&aTeam Tag Group: &e" + availableTeam.getTagGroup());
     }
 
     public void handleTeamQuit(UserGameSession userGameSession) {
         GameTeam gameTeam = userGameSession.getGameTeam();
         if(gameTeam == null) return; // Strange
         gameTeam.removePlayer(userGameSession);
-        if(gameTeam.isEmpty()) gameHandler.removeGameTeam(gameTeam);
+        if(gameTeam.isEmpty()) removeGameTeam(gameTeam);
 
         Player player = userGameSession.getPlayer();
         TagUtil.clearTag(player);
@@ -60,7 +65,6 @@ public class GameTeamHandler {
     private GameTeam getAvailableTeam() {
         GameTeam lastTeam = null;
         for(GameTeam gameTeam : gameTeams) {
-            gameHandler.log("Iterating at: " + gameTeam.getTagGroup());
             lastTeam = gameTeam;
             if(gameTeam.isFull()) continue;
             return gameTeam;
@@ -74,6 +78,27 @@ public class GameTeamHandler {
             alphabet = getCode(index + 1);
         }
         return new GameTeam(alphabet, maximumTeam);
+    }
+
+    public GameTeam getLastTeamAlive() {
+        for(GameTeam gameTeam : gameTeams) {
+            System.out.println("Game Team " + gameTeam.getTagGroup() + ": " + gameTeam.getPlayers().values() + " (" + gameTeam.isAlive() + ")");
+        }
+
+        Optional<GameTeam> lastTeamOptional = gameTeams.stream().filter(GameTeam::isAlive).findFirst();
+        if(!lastTeamOptional.isPresent()) {
+            throw new RuntimeException("Could not find any alive team. Game Teams is empty? Size: " + gameTeams.size());
+        }
+        return lastTeamOptional.get();
+    }
+
+    public int getTeamsLeft() {
+        int teamsLeft = 0;
+        for(GameTeam gameTeam : gameTeams) {
+            if(!gameTeam.isAlive()) continue;
+            teamsLeft++;
+        }
+        return teamsLeft;
     }
 
     public void setupTeamTag(UserGameSession user) {
