@@ -58,6 +58,8 @@ public class ChestHandler implements FeatureInitializer {
             if(block.getType() != Material.CHEST) continue;
             addChest(block, midChest);
         }
+
+        plugin.registerListeners(new ChestListener(gameHandler));
     }
 
     @Override
