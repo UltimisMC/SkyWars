@@ -73,10 +73,6 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return userAssetsHandler.getAssets();
     }
 
-    public UserAsset getAsset(Purchasable purchasable) {
-        return userAssetsHandler.getAsset(purchasable);
-    }
-
     public UserAsset getAsset(Purchasable purchasable, GameType gameType) {
         return userAssetsHandler.getAsset(purchasable, gameType);
     }
@@ -89,16 +85,17 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
         return userAssetsHandler.getAssetPurchasables(clazz);
     }
 
-    public void addAsset(UserAsset asset) {
-        userAssetsHandler.addAsset(asset);
+    public void addAssetAllModes(UserAsset asset) {
+        for(GameType gameType : GameType.values()) {
+            addAsset(asset, gameType);
+        }
+    }
+    public void addAsset(UserAsset asset, GameType gameType) {
+        userAssetsHandler.addAsset(asset, gameType);
     }
 
     public void purchaseAsset(Purchasable purchasable, GameType gameType) {
         userAssetsHandler.purchaseAsset(purchasable, gameType);
-    }
-
-    public boolean hasPurchased(Purchasable purchasable) {
-        return userAssetsHandler.hasPurchased(purchasable);
     }
 
     public boolean hasPurchased(Purchasable purchasable, GameType gameType) {
