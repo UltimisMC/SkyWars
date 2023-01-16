@@ -7,38 +7,39 @@ import com.ultimismc.skywars.core.game.features.cosmetics.killeffects.KillEffect
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 /**
  * @author DirectPlan
  */
 @Getter
-public class DefaultKillEffect extends KillEffect {
+public class LightingStrikeKillEffect extends KillEffect {
 
-    private final PurchasableDesign design = new PurchasableDesign(Material.BARRIER);
+    private final PurchasableDesign design = new PurchasableDesign(Material.GLASS);
 
-    public DefaultKillEffect() {
-        super("None", CosmeticRarity.COMMON);
+    public LightingStrikeKillEffect() {
+        super("Lighting Strike", CosmeticRarity.COMMON);
     }
 
     @Override
     public KillEffectExecutor killEffectExecutor(User target, User killer) {
-        return new DefaultKillEffectExecutor(target, killer);
-    }
-
-    @Override
-    public boolean isDefault() {
-        return true;
+        return new Executor(target, killer);
     }
 }
 
-class DefaultKillEffectExecutor extends KillEffectExecutor {
+class Executor extends KillEffectExecutor {
 
-    public DefaultKillEffectExecutor(User user, User killer) {
+    public Executor(User user, User killer) {
         super(user, killer, 1);
     }
 
     @Override
     public void animateEffect(int tick) {
+        Player player = user.getPlayer();
 
+        World world = player.getWorld();
+        world.spawnEntity(player.getLocation(), EntityType.LIGHTNING);
     }
 }

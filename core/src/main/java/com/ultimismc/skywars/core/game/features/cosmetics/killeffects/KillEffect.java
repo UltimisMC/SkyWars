@@ -17,5 +17,5 @@ public abstract class KillEffect extends Cosmetic {
         super(name, rarity);
     }
 
-    public abstract void playKillEffect(User target, User killer);
+    public abstract KillEffectExecutor killEffectExecutor(User target, User killer);
 }

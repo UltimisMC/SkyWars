@@ -32,7 +32,7 @@ public class CosmeticManager implements FeatureInitializer {
         this.featureHandler = featureHandler;
         cageHandler = new CageHandler(plugin);
         killMessageHandler = new KillMessageHandler();
-        killEffectHandler = new KillEffectHandler();
+        killEffectHandler = new KillEffectHandler(plugin);
         projectileTrailHandler = new ProjectileTrailHandler();
         deathCryHandler = new DeathCryHandler();
         victoryDanceHandler = new VictoryDanceHandler(plugin);

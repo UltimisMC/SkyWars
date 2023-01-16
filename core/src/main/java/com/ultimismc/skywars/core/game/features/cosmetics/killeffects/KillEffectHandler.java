@@ -13,9 +13,12 @@ import lombok.Getter;
 public class KillEffectHandler extends PurchasableRegistry<KillEffect> {
 
     private final String name = "Kill Effects";
+    private final SkyWarsPlugin plugin;
 
-    public KillEffectHandler() {
+    public KillEffectHandler(SkyWarsPlugin plugin) {
         super("killeffect");
+
+        this.plugin = plugin;
     }
 
     @Override
@@ -28,6 +31,10 @@ public class KillEffectHandler extends PurchasableRegistry<KillEffect> {
     public void playKillEffect(User user, User killer) {
         if(killer == null) return;
         KillEffect killEffect = killer.getSetting(KillEffect.class, settingKey);
-        killEffect.playKillEffect(user, killer);
+
+        KillEffectExecutor executor = killEffect.killEffectExecutor(user, killer);
+
+        int period = (executor.getPeriodTicks() / executor.getFrequency());
+        plugin.getServer().getScheduler().runTaskTimer(plugin, (Runnable) executor, 0, period);
     }
 }
