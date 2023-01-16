@@ -23,7 +23,7 @@ public class KillEffectsCategoryBuilder implements UserProductCategoryBuilder {
 
         KillEffectsCategory category = new KillEffectsCategory(killEffectHandler, 16);
         for(KillEffect killEffect : killEffectHandler) {
-            category.addProduct(new CosmeticPurchasableProduct(killEffectHandler, killEffect, false));
+            category.addProduct(new CosmeticPurchasableProduct(killEffectHandler, killEffect));
         }
         return category;
     }

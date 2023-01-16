@@ -7,6 +7,7 @@ import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.Cosmetic;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.PluginUtility;
@@ -33,7 +34,7 @@ public class CosmeticPurchasableProduct extends UserPurchasableProduct {
     }
 
     public CosmeticPurchasableProduct(PurchasableRegistry<?> registry, Cosmetic cosmetic) {
-        this(registry, cosmetic, true);
+        this(registry, cosmetic, false);
     }
 
     @Override
@@ -47,7 +48,9 @@ public class CosmeticPurchasableProduct extends UserPurchasableProduct {
         lore.add(" ");
         List<String> cosmeticDescription = cosmetic.getDescription();
         if(!cosmeticDescription.isEmpty()) {
-            lore.addAll(cosmeticDescription);
+            for(String cosmeticDescriptionLine : cosmeticDescription) {
+                lore.add(ChatColor.GRAY + cosmeticDescriptionLine);
+            }
             lore.add(" ");
         }
         if(rightclickable) {

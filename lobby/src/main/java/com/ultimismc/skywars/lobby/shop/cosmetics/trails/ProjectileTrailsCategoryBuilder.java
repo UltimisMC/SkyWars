@@ -24,7 +24,7 @@ public class ProjectileTrailsCategoryBuilder implements UserProductCategoryBuild
 
         ProjectileTrailsCategory category = new ProjectileTrailsCategory(projectileTrailHandler, 10);
         for(ProjectileTrail projectileTrail : projectileTrailHandler) {
-            category.addProduct(new CosmeticPurchasableProduct(projectileTrailHandler, projectileTrail, false));
+            category.addProduct(new CosmeticPurchasableProduct(projectileTrailHandler, projectileTrail));
         }
         return category;
     }

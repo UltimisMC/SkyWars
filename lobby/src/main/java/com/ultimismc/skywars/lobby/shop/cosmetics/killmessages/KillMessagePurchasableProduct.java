@@ -22,7 +22,7 @@ import java.util.Map;
 public class KillMessagePurchasableProduct extends CosmeticPurchasableProduct {
 
     public KillMessagePurchasableProduct(PurchasableRegistry<?> registry, Cosmetic cosmetic) {
-        super(registry, cosmetic);
+        super(registry, cosmetic, true);
     }
 
     @Override
