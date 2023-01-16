@@ -15,6 +15,7 @@ import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.user.UserGameSession;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -93,19 +94,25 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
         KillEffectHandler killEffectHandler = cosmeticManager.getKillEffectHandler();
 
         killMessageHandler.triggerKillMessage(attackCause, user, killer);
-        killEffectHandler.playKillEffect(user, killer);
         deathCryHandler.playDeathCry(user);
 
         gameHandler.terminateUser(userGameSession);
 
         plugin.callEvent(new UserDeathEvent(user, killer));
         if(killer == null) return;
+
         Player killerPlayer = killer.getPlayer();
+        killerPlayer.playSound(killerPlayer.getLocation(), Sound.SUCCESSFUL_HIT, 3, 3);
         plugin.callEvent(new UserKillEvent(user, killer, attackCause));
 
+        killEffectHandler.playKillEffect(user, killer);
         killerGameSession.increaseKill();
         killerGameSession.addCurrencyStat(Currency.COIN_CURRENCY, 100, "Kill");
         killerGameSession.addCurrencyStat(Currency.EXP_CURRENCY, 1, "Kill");
+        if(!killerGameSession.hasExceededMaximumSouls()) {
+            killerGameSession.addCurrencyStat(Currency.SOUL_CURRENCY, 1, "Kill");
+        }
+
 
         if(attackCause.isProjectile()) {
             double shootDistance = killerPlayer.getLocation().distanceSquared(player.getLocation());
@@ -117,6 +124,7 @@ public class SkyWarsCombatAdapter implements CombatAdapter<UserGameSession> {
 
     @Override
     public void onAssist(UserGameSession user, UserGameSession assistant, AttackCause attackCause) {
+        assistant.increaseAssists();
         assistant.sendMessage("&eYou have assisted killing " + user.getDisplayName() + "&e!");
     }
 }

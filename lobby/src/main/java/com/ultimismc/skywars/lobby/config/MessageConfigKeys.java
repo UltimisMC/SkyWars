@@ -47,6 +47,7 @@ public enum MessageConfigKeys implements ConfigEntry {
                     "&7Losses: &a%losses%",
                     " ",
                     "&7Kills: &a%kills%",
+                    "&7Assists: &a%assists%",
                     "&7Deaths: &a%deaths%",
                     " ",
                     "&7Bow Kills: &a%bow-kills%",

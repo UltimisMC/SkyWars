@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game;
 
+import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,20 @@ public class SkyWarsGameListener implements Listener {
         event.setKickMessage(PluginUtility.translateMessage("&cGame is full or has already started!"));
     }
 
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+
+        UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSpectator()) return;
+
+        event.setFormat("&7[SPECTATOR] &r" + event.getFormat());
+        event.getRecipients().removeIf(recipient -> {
+            UserGameSession recipientSession = gameHandler.getSession(recipient);
+            return !recipientSession.isSpectator();
+        });
+
+    }
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if(!gameHandler.hasStarted()) {

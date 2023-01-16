@@ -118,7 +118,7 @@ public class GameTeamHandler {
             if(gameTeam.isMember(online)) {
                 tagColor = ChatColor.GREEN;
             }
-            if(gameHandler.isSoloGame()) tag = "[" + tagGroup + "] ";
+            if(!gameHandler.isSoloGame()) tag = "[" + tagGroup + "] ";
 
             TagUtil.setTag(player, other, tagGroup, tagColor + tag);
         }

@@ -30,10 +30,6 @@ public interface Currency {
         sendMessage(user, amount, reason);
     }
 
-    default void increaseCurrency(User user, Purchasable purchasable) {
-        increaseCurrency(user, purchasable.getPrice());
-    }
-
     void decreaseCurrency(User user, int amount);
 
     default void decreaseCurrency(User user, Purchasable purchasable) {
@@ -42,7 +38,8 @@ public interface Currency {
 
     default void sendMessage(User user, int amount, String reason) {
         String displayAmount = getDisplayAmount(amount);
-        user.sendMessage(getCurrencyColor() + "+ " + displayAmount + (reason != null ? " (" + reason + ")" : ""));
+        ChatColor color = getCurrencyColor();
+        user.sendMessage(color + "+ " + displayAmount + (reason != null ? " (" + reason + color + ")" : ""));
     }
 
     default String getDisplayAmount(int amount) {

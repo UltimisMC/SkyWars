@@ -39,14 +39,10 @@ public class KitProduct extends UserPurchasableProduct {
         // "&eClick here to preview!"
         ProductItemDesign productItemDesign = new ProductItemDesign(kitDesign.getMaterial(), (short) kitDesign.getDurability(), lore);
         productItemDesign.setSkullTexture(kitDesign.getTexture());
-        productItemDesign.setPurchasedStatus("&eClick here to preview!");
+//        productItemDesign.setPurchasedStatus("&eClick here to preview!");
         return productItemDesign;
     }
 
     @Override
-    public void executePurchasableProduct(User user, GameType gameType, ClickType clickType) {
-        Player player = user.getPlayer();
-        user.sendMessage("&aPreviewing &e" + kit.getName() + " &akit...");
-
-    }
+    public void executePurchasableProduct(User user, GameType gameType, ClickType clickType) {}
 }

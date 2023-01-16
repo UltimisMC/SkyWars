@@ -1,14 +1,17 @@
 package com.ultimismc.skywars.lobby.shop.soulwell.roll;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
 import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.asset.UserAsset;
+import com.ultimismc.skywars.lobby.shop.soulwell.rewards.BagOfCoinsReward;
+import com.ultimismc.skywars.lobby.shop.soulwell.rewards.SoulWellPurchasableReward;
+import com.ultimismc.skywars.lobby.shop.soulwell.rewards.SoulWellReward;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -28,8 +31,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SoulWellRollMenu extends InventoryUI {
 
     private final User user;
-    private final List<Purchasable> purchasables;
-    private Purchasable currentPurchasable;
+    private final List<SoulWellReward> soulWellRewards = new ArrayList<>();
+    private SoulWellReward currentReward;
     private int currentPurchaseIndex = 0;
 
     private final int[] purchaseSlots;
@@ -42,16 +45,30 @@ public class SoulWellRollMenu extends InventoryUI {
 
         FeatureHandler featureHandler = plugin.getFeatureHandler();
         this.user = user;
-        purchasables = new ArrayList<>(featureHandler.getAllPurchasables());
-        Collections.shuffle(purchasables);
+        List<Purchasable> purchasables = new ArrayList<>(featureHandler.getAllPurchasables());
 
         purchasables.removeIf(purchasable -> {
             PurchasableRarity rarity = purchasable.getRarity();
             int occurrence = rarity.getOccurrenceChance();
             boolean hasChanceOccurred = PluginUtility.hasChanceOccurred(occurrence);
-            return !purchasable.isSoulWell() || user.hasPurchased(purchasable, null) || !hasChanceOccurred;
-            // TODO: Make it so that the roll can be for all Game Types
+            return !purchasable.isSoulWell() || purchasable.isDefault() || !hasChanceOccurred;
+            // TODO: purchasables that were already purchased will be turned into coins.
         });
+
+
+        GameType[] gameTypes = GameType.values();
+        for(Purchasable purchasable : purchasables) {
+            GameType randomGameType = PluginUtility.getRandomElement(gameTypes);
+            soulWellRewards.add(new SoulWellPurchasableReward(purchasable, randomGameType));
+        }
+        int randomBags = PluginUtility.getRandomInteger(1, 5);
+        for(int i = 0; i < randomBags; i++) {
+            BagOfCoinsReward bagOfCoinsReward = BagOfCoinsReward.getRandomBagOfCoinsReward();
+            soulWellRewards.add(bagOfCoinsReward);
+        }
+
+        Collections.shuffle(soulWellRewards);
+
         purchaseSlots = new int[]{
                 40,
                 31,
@@ -76,31 +93,28 @@ public class SoulWellRollMenu extends InventoryUI {
             setSlot(i, menuItem);
         }
 
-        int purchasesSize = purchasables.size();
+        int purchasesSize = soulWellRewards.size();
         int purchaseSlotIndex = 0;
         for(int i = 0; i < purchaseSlots.length; i++) {
-            Purchasable purchasable = purchasables.get(currentPurchaseIndex + purchaseSlotIndex);
+            SoulWellReward soulWellReward = soulWellRewards.get(currentPurchaseIndex + purchaseSlotIndex);
 
             if(((currentPurchaseIndex + purchaseSlotIndex) + 1) >= purchasesSize) {
                 currentPurchaseIndex = 0;
             }
             int purchaseSlot =  purchaseSlots[purchaseSlotIndex];
             if(purchaseSlot == 22) {
-                currentPurchasable = purchasable;
+                currentReward = soulWellReward;
             }
             purchaseSlotIndex++;
 
-            PurchasableDesign design = purchasable.getDesign();
+            PurchasableDesign design = soulWellReward.getDesign();
+            PurchasableRarity rarity = soulWellReward.getRarity();
+
             Material material = design.getMaterial();
             int durability = design.getDurability();
-            String name = purchasable.getNameWithCategory();
+            String displayName = rarity.getColor() + soulWellReward.getDisplayName();
 
-            PurchasableRarity purchasableRarity = purchasable.getRarity();
-            ChatColor color = ChatColor.GREEN;
-            if(purchasableRarity != null) {
-                color = purchasableRarity.getColor();
-            }
-            MenuItem menuItem = new MenuItem(material, color + name, durability);
+            MenuItem menuItem = new MenuItem(material, displayName, durability);
             menuItem.setCustomSkullProperty(design.getTexture());
             setSlot(purchaseSlot, menuItem);
         }
@@ -132,11 +146,11 @@ public class SoulWellRollMenu extends InventoryUI {
         }
         player.updateInventory();
 
-        String name = currentPurchasable.getNameWithCategory();
+        String displayName = currentReward.getDisplayName();
 
-        PurchasableRarity rarity = currentPurchasable.getRarity();
-        ChatColor rarityColor = rarity.getColor();
-        String purchasableDisplayName = (rarityColor + name);
+        PurchasableRarity rarity = currentReward.getRarity();
+        displayName = rarity.getColor() + displayName;
+
         Sound sound = Sound.LEVEL_UP;
         if(rarity == PurchasableRarity.LEGENDARY) {
             sound = Sound.ENDERDRAGON_GROWL;
@@ -145,16 +159,22 @@ public class SoulWellRollMenu extends InventoryUI {
             online.playSound(player.getLocation(), sound, 1f, 1f);
         }
 
-        user.sendMessage("&7&lYou found " + purchasableDisplayName + " &7&lin the well!");
+        user.sendMessage("&7&lYou found " + displayName + " &7&lin the well!");
         if(rarity.isRare()) {
             String userDisplayName = user.getDisplayName();
-            PluginUtility.broadcastMessage(userDisplayName + " &7has found " + purchasableDisplayName + " &7in the &bSoul Well&7!");
+            PluginUtility.broadcastMessage(userDisplayName + " &7has found " + displayName + " &7in the &bSoul Well&7!");
         }
-        user.addAsset(new UserAsset(currentPurchasable), null); // TODO: Make it so that...
+        if(currentReward.hasPurchased(user)) {
+            int rarityCoins = currentReward.getRarityCoins();
+            user.sendMessage("&7&lSince you already have it, you receive &e&l " + rarityCoins + " coins&7&l.");
+            Currency.COIN_CURRENCY.increaseCurrency(user, rarityCoins);
+            return;
+        }
+        currentReward.giveReward(user);
     }
 
     @Override
     public String getInventoryId() {
-        return "SoulWell Roll";
+        return "Soul Well Roll";
     }
 }

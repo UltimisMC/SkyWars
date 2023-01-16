@@ -53,6 +53,11 @@ public class PluginUtility {
         return collection.get(randomIndex);
     }
 
+    public static <T> T getRandomElement(T... elements) {
+        int randomIndex = random.nextInt(elements.length);
+        return elements[randomIndex];
+    }
+
     public static String translateMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }

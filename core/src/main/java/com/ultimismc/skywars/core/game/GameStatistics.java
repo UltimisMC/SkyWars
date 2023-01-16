@@ -12,7 +12,7 @@ public class GameStatistics {
 
     private int wins, losses;
 
-    private int kills, deaths;
+    private int kills, deaths, assists;
     private int bowKills, voidKills;
     private int arrowsShot, arrowsHit;
     private int chestsOpened;
@@ -23,6 +23,10 @@ public class GameStatistics {
 
     public void increaseKill() {
         kills++;
+    }
+
+    public void increaseAssists() {
+        assists++;
     }
 
     public void increaseChestsOpened() {

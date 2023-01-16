@@ -4,6 +4,7 @@ import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.island.Island;
 import lombok.Data;
@@ -41,6 +42,11 @@ public class UserGameSession {
 
     public int getKills() {
         return gameStatistics.getKills();
+    }
+
+    public boolean hasExceededMaximumSouls() {
+        UserStatistics userStatistics = user.getStatistics();
+        return userStatistics.getSouls() >= userStatistics.getMaximumSouls();
     }
 
     public void teleport(Location location) {
@@ -83,6 +89,10 @@ public class UserGameSession {
 
     public void increaseWin() {
         gameStatistics.increaseWin();
+    }
+
+    public void increaseAssists() {
+        gameStatistics.increaseAssists();
     }
 
     public void increaseChestsOpened() {

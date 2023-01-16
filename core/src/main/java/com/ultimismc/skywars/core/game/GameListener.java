@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.core.game;
 
-import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import xyz.directplan.directlib.PluginUtility;
 public class GameListener implements Listener {
 
     private final UserManager userManager;
-    private final FeatureHandler featureHandler;
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {

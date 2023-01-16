@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game.menubar;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.menubar.menu.KitSelectorMenu;
@@ -11,8 +12,8 @@ import org.bukkit.entity.Player;
  */
 public class UserWaitingBarMenu extends GameBarMenu {
 
-    public UserWaitingBarMenu(GameHandler gameHandler, User user) {
-        super(gameHandler, user);
+    public UserWaitingBarMenu(SkyWarsPlugin plugin, GameHandler gameHandler, User user) {
+        super(plugin, gameHandler, user);
     }
 
     @Override

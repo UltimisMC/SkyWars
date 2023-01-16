@@ -34,6 +34,7 @@ public class UserStatsMenu extends InventoryUI {
         int totalWins = userStatistics.getTotalWins();
         int totalLosses = userStatistics.getTotalLosses();
         int totalKills = userStatistics.getTotalKills();
+        int totalAssists = userStatistics.getTotalAssists();
         int totalDeaths = userStatistics.getTotalDeaths();
         int totalBowKills = userStatistics.getTotalBowKills();
         int totalVoidKills = userStatistics.getTotalVoidKills();
@@ -42,7 +43,7 @@ public class UserStatsMenu extends InventoryUI {
         int totalChestsOpened = userStatistics.getTotalChestsOpened();
 
         MenuItem allModes = new MenuItem(Material.PAPER, ChatColor.GREEN + "All Modes Statistics");
-        allModes.setLore(getStatisticsLore(totalWins, totalLosses, totalKills, totalDeaths, totalBowKills, totalVoidKills,
+        allModes.setLore(getStatisticsLore(totalWins, totalLosses, totalKills, totalAssists, totalDeaths, totalBowKills, totalVoidKills,
                 totalArrowsShot, totalArrowsHit, totalChestsOpened));
 
         setSlot(4, allModes);
@@ -55,6 +56,7 @@ public class UserStatsMenu extends InventoryUI {
             int wins = statistics.getWins();
             int losses = statistics.getLosses();
             int kills = statistics.getKills();
+            int assists = statistics.getAssists();
             int deaths = statistics.getDeaths();
             int bowKills = statistics.getBowKills();
             int voidKills = statistics.getVoidKills();
@@ -62,7 +64,7 @@ public class UserStatsMenu extends InventoryUI {
             int arrowsHit = statistics.getArrowsHit();
             int chestsOpened = statistics.getChestsOpened();
 
-            List<String> statisticsLore = getStatisticsLore(wins, losses, kills, deaths, bowKills, voidKills, arrowsShot, arrowsHit, chestsOpened);
+            List<String> statisticsLore = getStatisticsLore(wins, losses, kills, assists, deaths, bowKills, voidKills, arrowsShot, arrowsHit, chestsOpened);
             MenuItem menuItem = new MenuItem(Material.PAPER, ChatColor.GREEN + teamType.getName() + " Statistics");
             menuItem.setLore(statisticsLore);
 
@@ -73,11 +75,12 @@ public class UserStatsMenu extends InventoryUI {
         addCloseButton();
     }
 
-    private List<String> getStatisticsLore(int wins, int losses, int kills, int deaths, int bowKills, int voidKills, int arrowsShot, int arrowsHit, int chestsOpened) {
+    private List<String> getStatisticsLore(int wins, int losses, int kills, int assists, int deaths, int bowKills, int voidKills, int arrowsShot, int arrowsHit, int chestsOpened) {
         MessageConfigKeys statisticsLore = MessageConfigKeys.SKYWARS_STATISTICS_LORE;
         return statisticsLore.getStringList(new Replacement("wins", wins),
                 new Replacement("losses", losses),
                 new Replacement("kills", kills),
+                new Replacement("assists", assists),
                 new Replacement("deaths", deaths),
                 new Replacement("bow-kills", bowKills),
                 new Replacement("void-kills", voidKills),

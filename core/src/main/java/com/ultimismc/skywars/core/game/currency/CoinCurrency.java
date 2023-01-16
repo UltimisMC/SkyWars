@@ -27,6 +27,11 @@ public class CoinCurrency implements Currency {
     }
 
     @Override
+    public String getDisplayAmount(int amount) {
+        return Currency.super.getDisplayAmount(amount); //
+    }
+
+    @Override
     public boolean canAfford(User user, int amount) {
         UserStatistics userStatistics = user.getStatistics();
         return userStatistics.getCoins() >= amount;

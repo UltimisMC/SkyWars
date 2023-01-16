@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.game.menubar;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
 import com.ultimismc.skywars.core.user.User;
@@ -15,8 +16,8 @@ import xyz.directplan.directlib.inventory.MenuItem;
  */
 public class GameSpectatorBarMenu extends GameBarMenu {
 
-    public GameSpectatorBarMenu(GameHandler gameHandler, User user) {
-        super(gameHandler, user);
+    public GameSpectatorBarMenu(SkyWarsPlugin plugin, GameHandler gameHandler, User user) {
+        super(plugin, gameHandler, user);
     }
 
     @Override

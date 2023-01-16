@@ -20,7 +20,9 @@ public class DefaultKillEffect extends KillEffect {
     }
 
     @Override
-    public void playKillEffect(User target, User killer) {}
+    public void playKillEffect(User target, User killer) {
+
+    }
 
     @Override
     public boolean isDefault() {

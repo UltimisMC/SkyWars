@@ -116,6 +116,14 @@ public class UserStatistics {
         return value;
     }
 
+    public int getTotalAssists() {
+        int value = 0;
+        for(GameStatistics gameStatistics : gameStats.values()) {
+            value += gameStatistics.getAssists();
+        }
+        return value;
+    }
+
     public int getTotalDeaths() {
         int value = 0;
         for(GameStatistics gameStatistics : gameStats.values()) {

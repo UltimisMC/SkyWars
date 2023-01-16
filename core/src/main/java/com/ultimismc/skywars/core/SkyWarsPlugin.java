@@ -90,7 +90,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
 
         placeholderExpansionHandler.registerPlaceholderExpansion(new SkyWarsPlaceholderExpansion(this));
         registerListeners(new MenuListener(menuManager),
-                new GameListener(userManager, featureHandler),
+                new GameListener(userManager),
                 userListener = new UserListener(userManager));
 
         commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand(), new PlayCommand(), new SkyWarsPlayCommand());

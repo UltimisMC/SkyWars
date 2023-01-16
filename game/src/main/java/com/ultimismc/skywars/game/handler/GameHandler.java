@@ -165,7 +165,7 @@ public class GameHandler implements FeatureInitializer {
         game.prepareUser(userGameSession);
         islandHandler.handleCageJoin(userGameSession);
 
-        menuManager.applyDesign(new UserWaitingBarMenu(this, user), true, false);
+        menuManager.applyDesign(new UserWaitingBarMenu(plugin, this, user), true, false);
         if(hasMinimumPlayers()) {
             startPreparer();
         }
@@ -174,13 +174,16 @@ public class GameHandler implements FeatureInitializer {
 
     public void quitUser(User user) {
         String userDisplayName = user.getDisplayName();
-        MessageConfigKeys.QUIT_MESSAGE.broadcastMessage(new Replacement("player", userDisplayName));
 
         UserGameSession userGameSession;
         if(hasStarted()) {
             userGameSession = getSession(user);
         }else {
             userGameSession = userSessionHandler.removeSession(user);
+        }
+
+        if(!userGameSession.isSpectator()) {
+            MessageConfigKeys.QUIT_MESSAGE.broadcastMessage(new Replacement("player", userDisplayName));
         }
 
         gameManager.removeScoreboard(user.getUuid());
@@ -287,7 +290,7 @@ public class GameHandler implements FeatureInitializer {
 
 
         // spectators too
-        menuManager.applyDesign(new GameSpectatorBarMenu(this, user), true, false);
+        menuManager.applyDesign(new GameSpectatorBarMenu(plugin, this, user), true, false);
 
         // Make player invisible and that he can see
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));

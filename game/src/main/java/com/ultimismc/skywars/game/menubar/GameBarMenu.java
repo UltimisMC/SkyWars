@@ -1,5 +1,7 @@
 package com.ultimismc.skywars.game.menubar;
 
+import com.ultimismc.skywars.core.SkyWarsPlugin;
+import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
 import com.ultimismc.skywars.game.handler.GameHandler;
@@ -15,16 +17,20 @@ import xyz.directplan.directlib.inventory.MenuItem;
  */
 public class GameBarMenu extends UserPlayerInventoryUi {
 
+    protected final SkyWarsPlugin plugin;
     protected final GameHandler gameHandler;
 
-    public GameBarMenu(GameHandler gameHandler, User user) {
+    public GameBarMenu(SkyWarsPlugin plugin, GameHandler gameHandler, User user) {
         super(user);
+        this.plugin = plugin;
         this.gameHandler = gameHandler;
     }
 
     @Override
     public void build(Player player) {
         MenuItem returnLobby = addBarItem(8, Material.BED, "&c&lReturn to Lobby");
+        SkyWarsServerManager serverManager = plugin.getServerManager();
+        returnLobby.setAction((item, clicker, clickedBlock, clickType) -> serverManager.sendToLobby(user));
         returnLobby.setLore("&7Right-click to leave to the lobby!");
     }
 

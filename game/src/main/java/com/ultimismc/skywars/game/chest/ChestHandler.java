@@ -38,8 +38,9 @@ public class ChestHandler implements FeatureInitializer {
         this.gameHandler = gameHandler;
         skyWarsEventHandler = gameHandler.getSkyWarsEventHandler();
 
-        skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.THIRD, 60000));
-        skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.SECOND, 60000));
+        long THREE_MINUTES = (60000 * 3);
+        skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.THIRD, THREE_MINUTES));
+        skyWarsEventHandler.addEvent(new ChestRefillSkyWarsEvent(RefillPhase.SECOND, THREE_MINUTES));
     }
 
     @Override
@@ -113,8 +114,7 @@ public class ChestHandler implements FeatureInitializer {
         chest.setOpened(true);
         PluginUtility.playChestAction(chest.getBlockChest(), true);
 
-        GameStatistics gameStatistics = userGameSession.getGameStatistics();
-        gameStatistics.increaseChestsOpened();
+        userGameSession.increaseChestsOpened();
 
         ChestHologramUpdater updater = new ChestHologramUpdater(chest);
         skyWarsEventHandler.addUpdater(updater);
