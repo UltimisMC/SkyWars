@@ -28,6 +28,8 @@ public class Cage extends Cosmetic {
         this.teamSchematic = teamSchematic;
 
         this.design = design;
+
+        addDescription("Selects the " + getNameWithCategory() + ".");
     }
 
     public void placeSchematic(TeamType teamType, Location location, boolean ignoreAir) {

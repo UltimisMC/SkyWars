@@ -16,6 +16,7 @@ public abstract class VictoryDance extends Cosmetic {
     public VictoryDance(String name, CosmeticRarity rarity, int intervalTicks) {
         super(name, rarity);
         this.intervalTicks = intervalTicks;
+
     }
 
     public VictoryDance(String name, CosmeticRarity rarity) {

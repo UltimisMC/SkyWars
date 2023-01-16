@@ -21,6 +21,9 @@ public abstract class KillMessage extends Cosmetic {
     public KillMessage(String name, CosmeticRarity rarity) {
         super(name, rarity);
 
+        addDescription("Select the " + getNameWithCategory());
+        addDescription("for in-game chat messages!");
+
         buildBundle(messageBundle);
     }
 

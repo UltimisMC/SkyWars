@@ -1,5 +1,7 @@
 package com.ultimismc.skywars.game.handler.end;
 
+import com.ultimismc.skywars.core.game.GameType;
+import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.cosmetics.victorydances.VictoryDanceHandler;
@@ -56,8 +58,12 @@ public class GameEndWinPhase extends GameEndPhase {
 
         });
 
+        TeamType teamType = gameHandler.getTeamType();
+        GameType gameType = gameHandler.getGameType();
+        String playCommand = "play " + teamType.name() + "_" + gameType.name();
         for(UserGameSession winner : winnerTeam) {
-            MessageConfigKeys.WON_MESSAGE.sendMessage(winner.getPlayer());
+            String wonMessage = MessageConfigKeys.WON_MESSAGE.getStringValue();
+            PluginUtility.sendCmdActionMessage(winner.getPlayer(), wonMessage, "&eClick to play again!", playCommand);
 
             winner.increaseWin();
 

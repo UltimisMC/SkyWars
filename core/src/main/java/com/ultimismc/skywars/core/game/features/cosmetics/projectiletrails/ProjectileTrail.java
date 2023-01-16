@@ -16,6 +16,8 @@ public abstract class ProjectileTrail extends Cosmetic {
 
     public ProjectileTrail(String name, CosmeticRarity rarity) {
         super(name, rarity);
+
+        addDescription("Selects the " + getNameWithCategory() + ".");
     }
 
     public abstract void playProjectileTrail(User user, Projectile projectile);

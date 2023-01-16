@@ -21,6 +21,9 @@ public class LightingStrikeKillEffect extends KillEffect {
 
     public LightingStrikeKillEffect() {
         super("Lighting Strike", CosmeticRarity.COMMON);
+
+        addDescription("Killing an enemy will wake up");
+        addDescription("Thor.");
     }
 
     @Override

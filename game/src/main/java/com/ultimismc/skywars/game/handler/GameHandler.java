@@ -263,7 +263,11 @@ public class GameHandler implements FeatureInitializer {
     }
 
     public void terminateUser(UserGameSession userGameSession) {
-        MessageConfigKeys.DEATH_MESSAGE.sendMessage(userGameSession.getPlayer());
+        Player player = userGameSession.getPlayer();
+
+        String deathMessage = MessageConfigKeys.DEATH_MESSAGE.getStringValue();
+        String playCommand = "play " + getTeamType().name() + "_" + getGameType().name();
+        PluginUtility.sendCmdActionMessage(player, deathMessage, "&eClick to play again!", playCommand);
 
         game.terminatePlayer(userGameSession);
 

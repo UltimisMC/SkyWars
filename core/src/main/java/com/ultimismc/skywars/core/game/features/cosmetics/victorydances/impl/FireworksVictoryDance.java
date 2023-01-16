@@ -6,10 +6,7 @@ import com.ultimismc.skywars.core.game.features.cosmetics.victorydances.VictoryD
 import com.ultimismc.skywars.core.game.features.cosmetics.victorydances.VictoryDanceExecutor;
 import lombok.Getter;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
-import org.bukkit.entity.Player;
+import xyz.directplan.directlib.PluginUtility;
 
 /**
  * @author DirectPlan
@@ -21,6 +18,9 @@ public class FireworksVictoryDance extends VictoryDance {
 
     public FireworksVictoryDance() {
         super("Fireworks", CosmeticRarity.COMMON);
+
+        addDescription("Celebrate with a splendid");
+        addDescription("fireworks show!");
     }
 
     @Override
@@ -30,12 +30,6 @@ public class FireworksVictoryDance extends VictoryDance {
 
     @Override
     public VictoryDanceExecutor executor() {
-        return (user, tick) -> {
-            Player player = user.getPlayer();
-
-            World world = player.getWorld();
-            Firework firework = (Firework) world.spawnEntity(player.getLocation(), EntityType.FIREWORK);
-            firework.detonate();
-        };
+        return (user, tick) -> PluginUtility.spawnCoolFirework(user.getPlayer());
     }
 }

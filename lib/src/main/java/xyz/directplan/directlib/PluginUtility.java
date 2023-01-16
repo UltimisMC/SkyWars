@@ -2,6 +2,10 @@ package xyz.directplan.directlib;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.*;
@@ -170,6 +174,13 @@ public class PluginUtility {
         Title title = new Title(TitleSlot.ACTIONBAR);
         title.setTitle(translateMessage(actionBar));
         title.send(player);
+    }
+
+    public static void sendCmdActionMessage(Player player, String message, String hoverText, String command) {
+        TextComponent text = new TextComponent(translateMessage(message));
+        text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + command));
+        player.spigot().sendMessage(text);
     }
 
     public static void playChestAction(Chest chest, boolean open) {

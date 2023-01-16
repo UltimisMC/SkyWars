@@ -18,6 +18,9 @@ public class DefaultKillEffect extends KillEffect {
 
     public DefaultKillEffect() {
         super("None", CosmeticRarity.COMMON);
+
+        addDescription("Selecting this option disables");
+        addDescription("your Kill Effect.");
     }
 
     @Override

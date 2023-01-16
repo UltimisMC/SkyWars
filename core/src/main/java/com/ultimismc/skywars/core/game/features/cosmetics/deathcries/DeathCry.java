@@ -21,6 +21,10 @@ public abstract class DeathCry extends Cosmetic {
 
     public DeathCry(String name, CosmeticRarity rarity, Sound crySound) {
         super(name, rarity);
+
+        addDescription("Plays the " + getNameWithCategory());
+        addDescription("when you die.");
+
         this.crySound = crySound;
     }
 

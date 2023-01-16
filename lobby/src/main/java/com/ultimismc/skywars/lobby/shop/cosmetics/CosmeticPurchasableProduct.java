@@ -45,9 +45,11 @@ public class CosmeticPurchasableProduct extends UserPurchasableProduct {
 
         lore.add("&8" + category);
         lore.add(" ");
-        lore.add("&7Select the " + cosmetic.getNameWithCategory());
-        lore.add("&7for in-game chat messages!");
-        lore.add(" ");
+        List<String> cosmeticDescription = cosmetic.getDescription();
+        if(!cosmeticDescription.isEmpty()) {
+            lore.addAll(cosmeticDescription);
+            lore.add(" ");
+        }
         if(rightclickable) {
             lore.add("&eRight-Click to preview!");
         }
