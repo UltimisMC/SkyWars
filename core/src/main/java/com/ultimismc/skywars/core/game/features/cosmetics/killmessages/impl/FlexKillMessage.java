@@ -32,10 +32,10 @@ public class FlexKillMessage extends KillMessage {
         messageBundle.addResolver(MessageType.BOW, (user, killer, statistics) -> user + "&e was bow kill #" + totalKills(statistics) + " by " + killer + "&e.");
     }
 
-    private String totalKills(UserStatistics statistics) {
-        if(statistics == null) {
+    private String totalKills(UserStatistics userStatistics) {
+        if(userStatistics == null) {
             return "N/A";
         }
-        return StringUtil.getReadableNumber(statistics.getTotalKills());
+        return StringUtil.getReadableNumber(userStatistics.getKills());
     }
 }

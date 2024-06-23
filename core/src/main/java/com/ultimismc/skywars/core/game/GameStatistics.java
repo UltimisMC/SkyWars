@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.game;
 
+import com.ultimismc.skywars.core.user.Statistics;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class GameStatistics {
+public class GameStatistics implements Statistics {
 
     private int wins, losses;
     private int winstreak, bestWinstreak;

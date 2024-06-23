@@ -12,6 +12,6 @@ public class WinProcessor implements UserPlaceholderProcessor {
     @Override
     public String process(User user, String value) {
         UserStatistics userStatistics = user.getStatistics();
-        return String.valueOf(userStatistics.getTotalWins());
+        return String.valueOf(userStatistics.getWins());
     }
 }

@@ -15,7 +15,7 @@ import java.util.function.Function;
  */
 @Getter
 @Setter
-public class UserStatistics {
+public class UserStatistics implements Statistics {
 
     private Level level;
     private int nextLevelProgress;
@@ -93,51 +93,51 @@ public class UserStatistics {
         return doublesStatistics.getKills();
     }
 
-    public int getTotalWins() {
+    public int getWins() {
         return getTotalStat(GameStatistics::getWins);
     }
 
-    public int getTotalLosses() {
+    public int getLosses() {
         return getTotalStat(GameStatistics::getLosses);
     }
 
-    public int getTotalKills() {
+    public int getKills() {
         return getTotalStat(GameStatistics::getKills);
     }
 
-    public int getTotalAssists() {
+    public int getAssists() {
         return getTotalStat(GameStatistics::getAssists);
     }
 
-    public int getTotalDeaths() {
+    public int getDeaths() {
         return getTotalStat(GameStatistics::getDeaths);
     }
 
-    public int getTotalBowKills() {
+    public int getBowKills() {
         return getTotalStat(GameStatistics::getBowKills);
     }
 
-    public int getTotalVoidKills() {
+    public int getVoidKills() {
         return getTotalStat(GameStatistics::getVoidKills);
     }
 
-    public int getTotalArrowShot() {
+    public int getArrowsShot() {
         return getTotalStat(GameStatistics::getArrowsShot);
     }
 
-    public int getTotalArrowHits() {
+    public int getArrowsHit() {
         return getTotalStat(GameStatistics::getArrowsHit);
     }
 
-    public int getTotalChestsOpened() {
+    public int getChestsOpened() {
         return getTotalStat(GameStatistics::getChestsOpened);
     }
 
-    public int getTotalWinstreak() {
+    public int getWinstreak() {
         return getTotalStat(GameStatistics::getWinstreak);
     }
 
-    public int getTotalBestWinstreak() {
+    public int getBestWinstreak() {
         return getTotalStat(GameStatistics::getBestWinstreak);
     }
 

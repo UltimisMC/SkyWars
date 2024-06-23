@@ -12,6 +12,6 @@ public class BestWinstreakProcessor implements UserPlaceholderProcessor {
     @Override
     public String process(User user, String value) {
         UserStatistics userStatistics = user.getStatistics();
-        return String.valueOf(userStatistics.getTotalBestWinstreak());
+        return String.valueOf(userStatistics.getBestWinstreak());
     }
 }

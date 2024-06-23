@@ -2,6 +2,7 @@ package com.ultimismc.skywars.lobby.menu;
 
 import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.game.TeamType;
+import com.ultimismc.skywars.core.user.Statistics;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
@@ -31,20 +32,8 @@ public class UserStatsMenu extends InventoryUI {
     @Override
     public void build(Player player) {
         UserStatistics userStatistics = user.getStatistics();
-        int totalWins = userStatistics.getTotalWins();
-        int totalLosses = userStatistics.getTotalLosses();
-        int totalKills = userStatistics.getTotalKills();
-        int totalAssists = userStatistics.getTotalAssists();
-        int totalDeaths = userStatistics.getTotalDeaths();
-        int totalBowKills = userStatistics.getTotalBowKills();
-        int totalVoidKills = userStatistics.getTotalVoidKills();
-        int totalArrowsShot = userStatistics.getTotalArrowShot();
-        int totalArrowsHit = userStatistics.getTotalArrowHits();
-        int totalChestsOpened = userStatistics.getTotalChestsOpened();
-
         MenuItem allModes = new MenuItem(Material.PAPER, ChatColor.GREEN + "All Modes Statistics");
-        allModes.setLore(getStatisticsLore(totalWins, totalLosses, totalKills, totalAssists, totalDeaths, totalBowKills, totalVoidKills,
-                totalArrowsShot, totalArrowsHit, totalChestsOpened));
+        allModes.setLore(getStatisticsLore(userStatistics));
 
         setSlot(4, allModes);
 
@@ -52,19 +41,9 @@ public class UserStatsMenu extends InventoryUI {
         int currentIndex = 0;
         for(Map.Entry<TeamType, GameStatistics> statisticsEntry : userStatistics.getGameStats().entrySet()) {
             TeamType teamType = statisticsEntry.getKey();
-            GameStatistics statistics = statisticsEntry.getValue();
-            int wins = statistics.getWins();
-            int losses = statistics.getLosses();
-            int kills = statistics.getKills();
-            int assists = statistics.getAssists();
-            int deaths = statistics.getDeaths();
-            int bowKills = statistics.getBowKills();
-            int voidKills = statistics.getVoidKills();
-            int arrowsShot = statistics.getArrowsShot();
-            int arrowsHit = statistics.getArrowsHit();
-            int chestsOpened = statistics.getChestsOpened();
+            GameStatistics gameStatistics = statisticsEntry.getValue();
 
-            List<String> statisticsLore = getStatisticsLore(wins, losses, kills, assists, deaths, bowKills, voidKills, arrowsShot, arrowsHit, chestsOpened);
+            List<String> statisticsLore = getStatisticsLore(gameStatistics);
             MenuItem menuItem = new MenuItem(Material.PAPER, ChatColor.GREEN + teamType.getName() + " Statistics");
             menuItem.setLore(statisticsLore);
 
@@ -75,17 +54,28 @@ public class UserStatsMenu extends InventoryUI {
         addCloseButton();
     }
 
-    private List<String> getStatisticsLore(int wins, int losses, int kills, int assists, int deaths, int bowKills, int voidKills, int arrowsShot, int arrowsHit, int chestsOpened) {
+    private List<String> getStatisticsLore(Statistics statistics) {
+        int totalWins = statistics.getWins();
+        int totalLosses = statistics.getLosses();
+        int totalKills = statistics.getKills();
+        int totalAssists = statistics.getAssists();
+        int totalDeaths = statistics.getDeaths();
+        int totalBowKills = statistics.getBowKills();
+        int totalVoidKills = statistics.getVoidKills();
+        int totalArrowsShot = statistics.getArrowsShot();
+        int totalArrowsHit = statistics.getArrowsHit();
+        int totalChestsOpened = statistics.getChestsOpened();
+
         MessageConfigKeys statisticsLore = MessageConfigKeys.SKYWARS_STATISTICS_LORE;
-        return statisticsLore.getStringList(new Replacement("wins", wins),
-                new Replacement("losses", losses),
-                new Replacement("kills", kills),
-                new Replacement("assists", assists),
-                new Replacement("deaths", deaths),
-                new Replacement("bow-kills", bowKills),
-                new Replacement("void-kills", voidKills),
-                new Replacement("arrows-shot", arrowsShot),
-                new Replacement("arrows-hit", arrowsHit),
-                new Replacement("chests-opened", chestsOpened));
+        return statisticsLore.getStringList(new Replacement("wins", totalWins),
+                new Replacement("losses", totalLosses),
+                new Replacement("kills", totalKills),
+                new Replacement("assists", totalAssists),
+                new Replacement("deaths", totalDeaths),
+                new Replacement("bow-kills", totalBowKills),
+                new Replacement("void-kills", totalVoidKills),
+                new Replacement("arrows-shot", totalArrowsShot),
+                new Replacement("arrows-hit", totalArrowsHit),
+                new Replacement("chests-opened", totalChestsOpened));
     }
 }

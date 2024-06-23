@@ -12,6 +12,6 @@ public class KillProcessor implements UserPlaceholderProcessor {
     @Override
     public String process(User user, String value) {
         UserStatistics userStatistics = user.getStatistics();
-        return String.valueOf(userStatistics.getTotalKills());
+        return String.valueOf(userStatistics.getKills());
     }
 }
