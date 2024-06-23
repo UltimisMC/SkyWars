@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public enum TeamType {
 
-
     SOLO("Solo", 12, 1),
     DOUBLES("Doubles", 24,2),
     ;

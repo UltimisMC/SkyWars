@@ -5,7 +5,6 @@ import com.mojang.authlib.properties.Property;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -16,11 +15,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import xyz.directplan.directlib.ItemBuilder;
+import xyz.directplan.directlib.StringUtil;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -29,8 +29,19 @@ import java.util.UUID;
 @Getter
 public class MenuItem implements Cloneable {
 
+    private static final Map<Material, String> MATERIAL_NAME_MAP = new HashMap<>();
+
+    static {
+        for(Material material : Material.values()) {
+            String name = material.name().toLowerCase();
+            name = StringUtil.fixName(name);
+
+            MATERIAL_NAME_MAP.put(material, name);
+        }
+    }
+
     private ItemStack itemStack;
-    private final ItemBuilder builder;
+    private ItemBuilder builder;
     private final String displayName;
     @Setter private Object itemKey;
     @Setter private boolean cancelAction = true;
@@ -38,6 +49,11 @@ public class MenuItem implements Cloneable {
     private int itemAmount = 1;
 
     @Setter private ActionableItem action;
+    @Setter private InventoryUI openInventory;
+
+    public MenuItem(Material type) {
+        this(type, null);
+    }
 
     public MenuItem(Material type, String displayName) {
         this(type, displayName, 0);
@@ -53,22 +69,28 @@ public class MenuItem implements Cloneable {
 
     public MenuItem(Material type, String displayName, int durability, ActionableItem action){
         this.builder = new ItemBuilder(type);
-        if(displayName != null) {
-            builder.name(displayName);
-        }
-        if(durability > 0){
-            this.builder.durability(durability);
-        }
+        if(displayName != null) builder.name(displayName);
+        if(durability > 0) builder.durability(durability);
+
         this.itemStack = builder.build();
-        this.displayName = displayName;
+        this.displayName = itemStack.getItemMeta().getDisplayName();
         this.action = action;
+        this.itemStack.setAmount(1);
+    }
+
+    public Material getType() {
+        return itemStack.getType();
+    }
+
+    public void setDurability(int durability) {
+        itemStack.setDurability((short) durability);
     }
 
     public void setCustomSkullName(String name) {
         this.itemStack = builder.type(Material.SKULL_ITEM).durability(3).skullOwner(name).build();
     }
+
     public void setCustomSkullProperty(String value) {
-        if(value == null) return;
         ItemStack item = builder.type(Material.SKULL_ITEM).durability(3).build();
 
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null);
@@ -106,32 +128,20 @@ public class MenuItem implements Cloneable {
         addFlags(ItemFlag.HIDE_ENCHANTS);
     }
 
-    public Material getType() {
-        return itemStack.getType();
-    }
-
     public List<String> getLore() {
         return itemStack.getItemMeta().getLore();
-    }
-
-    public void setDurability(int durability) {
-        itemStack = builder.durability(durability).build();
     }
 
     public void setAmount(int amount) {
         this.itemAmount = amount;
         itemStack = builder.amount(amount).build();
     }
-
     public void markUnbreakable() {
         ItemMeta meta = itemStack.getItemMeta();
+        assert meta != null;
         meta.spigot().setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(meta);
-    }
-
-    public void color(Color color) {
-        this.itemStack = builder.color(color).build();
     }
 
     public void setLore(List<String> lore){
@@ -150,48 +160,44 @@ public class MenuItem implements Cloneable {
         return action != null;
     }
 
+    public boolean hasOpenInventory() {
+        return openInventory != null;
+    }
+
     public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType){
-        if(this.action != null){
-            this.action.performAction(item, clicker, clickedBlock, clickType);
-        }
+        if(action == null) return;
+
+        action.performAction(item, clicker, clickedBlock, clickType);
     }
 
     public void performAction(MenuItem item, Player clicker, ClickType clickType){
         performAction(item, clicker, null, clickType);
     }
 
-    public boolean updateButtons(Player clicker, ClickType clickType) {
-        return (action != null && action.updateButtons(clicker, clickType));
+    public boolean isRefreshable(Player clicker, ClickType clickType) {
+        return (action != null && action.isRefreshable(clicker, clickType));
     }
 
-    public void removeCompoundKey(String compoundKey) {
-        net.minecraft.server.v1_8_R3.ItemStack raw = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound tagCompound = raw.getTag();
-        tagCompound.remove(compoundKey);
-        raw.setTag(tagCompound);
-        itemStack = CraftItemStack.asBukkitCopy(raw);
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+        this.builder = new ItemBuilder(itemStack);
     }
 
-    public void setCompoundKey(List<String> keys, List<String> values) {
-        net.minecraft.server.v1_8_R3.ItemStack raw = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound tagCompound = raw.getTag();
-        int keyLength = keys.size();
-        if(keyLength != values.size()) throw new IllegalStateException("Keys size doesn't match the values size");
-        for(int i = 0; i < keyLength; i++) {
-            String key = keys.get(i);
-            String value = values.get(i);
-            tagCompound.setString(key, value);
-        }
 
-        raw.setTag(tagCompound);
-        itemStack = CraftItemStack.asBukkitCopy(raw);
-    }
-
-    public void setCompoundKeys(List<String> compoundKeys) {
-        setCompoundKey(compoundKeys, compoundKeys);
-    }
     public void setCompoundKey(String compoundKey) {
-        setCompoundKeys(Collections.singletonList(compoundKey));
+        net.minecraft.server.v1_8_R3.ItemStack raw = CraftItemStack.asNMSCopy(itemStack);
+        NBTTagCompound tagCompound = raw.getTag();
+        tagCompound.setString(compoundKey, compoundKey);
+        raw.setTag(tagCompound);
+        itemStack = CraftItemStack.asBukkitCopy(raw);
+    }
+
+    public void setCompoundKey(List<String> compoundKeys) {
+        compoundKeys.forEach(this::setCompoundKey);
+    }
+
+    public static String getMaterialName(Material material) {
+        return MATERIAL_NAME_MAP.get(material);
     }
 
     @Override

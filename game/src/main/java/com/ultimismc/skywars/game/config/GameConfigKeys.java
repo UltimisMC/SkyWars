@@ -16,6 +16,7 @@ import java.util.Map;
 @Getter
 public enum GameConfigKeys implements ConfigEntry {
 
+    MAP_NAME("map-name", "map"),
     SERVER_ID("server-id", "SW01"),
     GAME_TYPE("game-type", "NORMAL"),
     GAME_TEAM_TYPE("game-team-type", "SOLO"),

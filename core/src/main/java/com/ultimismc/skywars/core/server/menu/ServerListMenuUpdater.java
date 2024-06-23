@@ -14,6 +14,6 @@ public class ServerListMenuUpdater implements Runnable {
 
     @Override
     public void run() {
-        listMenu.updateButtons(player);
+        listMenu.refresh(player);
     }
 }

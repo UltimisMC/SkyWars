@@ -1,5 +1,6 @@
 package xyz.directplan.directlib;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -128,6 +129,12 @@ public class StringUtil {
             if (colorIndex == rainbowColors.length) colorIndex = 0;
         }
         return builder.toString();
+    }
+
+    public static String fixName(String name) {
+        name = name.replace("_", " ");
+        name = WordUtils.capitalize(name);
+        return name;
     }
 
     public static <T> boolean isInBound(List<T> list, int index) {

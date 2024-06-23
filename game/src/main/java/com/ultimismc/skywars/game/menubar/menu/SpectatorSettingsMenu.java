@@ -82,7 +82,7 @@ public class SpectatorSettingsMenu extends InventoryUI {
 
         MenuItem menuItem = new MenuItem(material, displayName, (item, clicker, clickedBlock, clickType) -> {
             userSettingHandler.setSetting(settingKey, !enabled);
-            updateButtons(user.getPlayer());
+            refresh(user.getPlayer());
             consumer.accept(!enabled);
         });
         menuItem.setLore("&7Click to " + (enabled ? disableAction.toLowerCase(Locale.ROOT) : enableAction.toLowerCase(Locale.ROOT)) + " " + name.toLowerCase(Locale.ROOT) + "!");

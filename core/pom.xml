@@ -16,20 +16,6 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>enginehub-maven</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-        <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/groups/aikar/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>co.aikar</groupId>
@@ -52,7 +38,6 @@
             <artifactId>serversync</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
@@ -64,7 +49,7 @@
             <artifactId>worldedit-bukkit</artifactId>
             <version>6.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>E:/0Downloads/worldedit-bukkit-6.1.jar</systemPath>
+            <systemPath>${project.basedir}/libs/worldedit-bukkit-6.1.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

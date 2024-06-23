@@ -7,7 +7,6 @@ import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.Cage;
 import com.ultimismc.skywars.core.game.features.cosmetics.cages.CageHandler;
-import com.ultimismc.skywars.core.game.features.cosmetics.cages.schematic.CageSchematic;
 import com.ultimismc.skywars.core.user.User;
 import org.bukkit.Material;
 
@@ -39,8 +38,7 @@ public class CageCommand extends BaseCommand {
         user.sendMessage("&aShowing cages:");
         for(Cage cage : cageHandler) {
             CosmeticRarity rarity = cage.getCosmeticRarity();
-            CageSchematic schematic = cage.getSoloSchematic();
-            user.sendMessage(" * " + cage.getName() + ", " + rarity.getDisplayName() + "&a, " + schematic.getSchematicFile().getName());
+            user.sendMessage(" &7* &a" + cage.getName() + " " + rarity.getDisplayName() + "&a. ");
         }
     }
 

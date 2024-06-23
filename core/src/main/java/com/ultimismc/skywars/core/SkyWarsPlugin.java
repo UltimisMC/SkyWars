@@ -4,14 +4,12 @@ import com.ultimismc.skywars.core.commands.CageCommand;
 import com.ultimismc.skywars.core.commands.PlayCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsDebugCommand;
 import com.ultimismc.skywars.core.commands.SkyWarsPlayCommand;
-import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.events.SkyWarsEvent;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameListener;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
-import com.ultimismc.skywars.core.placeholders.PlaceholderExpansionHandler;
 import com.ultimismc.skywars.core.placeholders.SkyWarsPlaceholderExpansion;
 import com.ultimismc.skywars.core.rank.RankManager;
 import com.ultimismc.skywars.core.server.SkyWarsServerManager;
@@ -47,7 +45,6 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     protected CommandHandler commandHandler;
     protected UserListener userListener;
     protected FeatureHandler featureHandler;
-    protected PlaceholderExpansionHandler placeholderExpansionHandler;
     protected GameConfig gameConfig;
     protected GameMenuHandler gameMenuHandler;
 
@@ -68,7 +65,6 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
 
         configHandler = new BukkitConfigHandler(this);
         configHandler.loadConfiguration("config.yml", ConfigKeys.class);
-        configHandler.loadConfiguration("cages.yml", CageConfigKeys.class);
 
         storage = new UserStorage(this);
         storage.connect();
@@ -84,16 +80,17 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         gameMenuHandler = new GameMenuHandler(this);
         commandHandler = new CommandHandler(this);
 
-        placeholderExpansionHandler = new PlaceholderExpansionHandler();
 
         featureHandler.initializeFeatures();
 
-        placeholderExpansionHandler.registerPlaceholderExpansion(new SkyWarsPlaceholderExpansion(this));
-        registerListeners(new MenuListener(menuManager),
+        new SkyWarsPlaceholderExpansion(this).register();
+
+        registerListeners(new MenuListener(menuManager, player -> userManager.getCachedUser(player)),
                 new GameListener(userManager),
                 userListener = new UserListener(userManager));
 
         commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand(), new PlayCommand(), new SkyWarsPlayCommand());
+
         enable();
     }
 

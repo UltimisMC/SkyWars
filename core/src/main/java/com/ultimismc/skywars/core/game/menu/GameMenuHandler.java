@@ -34,6 +34,6 @@ public class GameMenuHandler {
     }
 
     public void openConnectedServersMenu(Player player) {
-        menuManager.openInventory(player, new ServerListMenu(plugin, player));
+        menuManager.openInventory(player, new ServerListMenu(plugin));
     }
 }

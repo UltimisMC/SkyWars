@@ -18,13 +18,13 @@ import java.util.List;
  */
 public class PerkSlot extends UserTypedProduct<UserAsset> {
 
-    private final PurchasedPerksCategory perksCategory;
+    private final OwnedPerksCategory ownedPerksCategory;
     private final int perkSlot;
     private final GameType gameType;
 
-    public PerkSlot(PurchasedPerksCategory perksCategory, GameType gameType, int perkSlot, int itemSlot) {
+    public PerkSlot(OwnedPerksCategory ownedPerksCategory, GameType gameType, int perkSlot, int itemSlot) {
         super("Perk Slot", itemSlot, UserAsset.class);
-        this.perksCategory = perksCategory;
+        this.ownedPerksCategory = ownedPerksCategory;
         this.gameType = gameType;
         this.perkSlot = perkSlot;
     }
@@ -36,8 +36,7 @@ public class PerkSlot extends UserTypedProduct<UserAsset> {
         if(userAssets.size() > assetIndex) {
             UserAsset userAsset = userAssets.get(assetIndex);
             Perk perk = (Perk) userAsset.getPurchasable();
-            PerkProduct perkProduct = new PerkProduct(perk);
-            ProductItemDesign productItemDesign = perkProduct.designProduct(user);
+            ProductItemDesign productItemDesign = PerkProductDesigner.designProduct(perk, user);
             productItemDesign.addLore("&eRight-Click to toggle &cOFF");
             productItemDesign.setData(userAsset);
             setProductPath(null);
@@ -53,7 +52,7 @@ public class PerkSlot extends UserTypedProduct<UserAsset> {
         ProductItemDesign productItemDesign = new ProductItemDesign(Material.STAINED_GLASS_PANE, (short) 14, ChatColor.RED, lore, true);
         productItemDesign.setDisplayName(displayName);
 
-        setProductPath(perksCategory);
+        setProductPath(ownedPerksCategory);
         return productItemDesign;
     }
 
@@ -61,7 +60,7 @@ public class PerkSlot extends UserTypedProduct<UserAsset> {
     public void executeAction(User user, UserAsset asset, ClickType clickType) {
         if(clickType != ClickType.RIGHT) return;
 
-        perksCategory.togglePerk(user, asset);
+        ownedPerksCategory.togglePerk(user, asset);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
             }
             islandHandler.removeIsland(island);
 
-            updateButtons(player);
+            refresh(player);
         });
         return menuItem;
     }
@@ -68,6 +68,6 @@ public class GameIslandsMenu extends PaginatedMenu<Island> {
 
     @Override
     public Collection<Island> getList() {
-        return islandHandler.getIslands().values();
+        return islandHandler.getIslands();
     }
 }

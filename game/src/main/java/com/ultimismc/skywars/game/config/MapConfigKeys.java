@@ -18,7 +18,7 @@ import java.util.Map;
 public enum MapConfigKeys implements ConfigEntry {
 
     MAP_NAME("name", "Ehh"),
-    SPECTATOR_SPAWN_LOCATION("spactator-spawn-location", "0, 0, 0"),
+    SPECTATOR_SPAWN_LOCATION("spectator-spawn-location", "0, 0, 0"),
     MAP_SERIALIZED_ISLANDS("serialized-islands", Arrays.asList("")),
     MAP_SERIALIZED_CHESTS("serialized-chests", Arrays.asList("")),
     ;

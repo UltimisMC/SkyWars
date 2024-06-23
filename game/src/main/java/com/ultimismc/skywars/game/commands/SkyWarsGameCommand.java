@@ -4,8 +4,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.core.game.GameConfig;
-import com.ultimismc.skywars.core.game.features.FeatureHandler;
-import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.chest.ChestHandler;
@@ -25,9 +23,6 @@ public class SkyWarsGameCommand extends BaseCommand {
 
     @Dependency
     private GameHandler gameHandler;
-
-    @Dependency
-    private FeatureHandler featureHandler;
 
     @HelpCommand
     @Syntax("")
@@ -64,20 +59,6 @@ public class SkyWarsGameCommand extends BaseCommand {
         ChestHandler chestHandler = gameHandler.getChestHandler();
         chestHandler.refillAllChests();
         user.sendMessage("&aAll chests have been refilled!");
-    }
-
-    @Subcommand("setsetting")
-    @Syntax("<key> <value>")
-    public void onSetSetting(User user, @Flags("other") User target, String key, String value) {
-        Object objValue = value;
-        Purchasable purchasable = featureHandler.getPurchasable(value);
-        if(purchasable != null) {
-            objValue = purchasable;
-            user.sendMessage("&aFound a purchasable with this value: &e" + purchasable.getNameWithCategory());
-
-        }
-        target.setSetting(key, objValue);
-        user.sendMessage("&aYou have set &e" + target.getDisplayName() + "&a's setting &e" + key + "&a to &e" + value + "&a.");
     }
 
     @CommandAlias("whereami")

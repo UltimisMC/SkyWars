@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.game.chest;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.game.config.MapConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
@@ -48,6 +47,7 @@ public class ChestHandler implements FeatureInitializer {
         List<String> serializedChests = MapConfigKeys.MAP_SERIALIZED_CHESTS.getStringList();
         World gameWorld = gameHandler.getGameWorld();
 
+        // Short-term solution for serializing objects. Will be improved in the future.
         for(String serializedChest : serializedChests) {
             if(serializedChest.isEmpty()) continue;
             String[] args = serializedChest.split("/");
@@ -89,11 +89,7 @@ public class ChestHandler implements FeatureInitializer {
         chest.setOpened(false);
         PluginUtility.playChestAction(chest.getBlockChest(), false);
 
-        ChestHologram chestHologram = chest.getChestHologram();
-        if(chestHologram != null) chestHologram.destroy();
-
-        SkyWarsEventUpdater updater = chest.getUpdater();
-        skyWarsEventHandler.removeUpdater(updater);
+        resetChest(chest);
     }
 
     public void refillAllChests(RefillPhase refillPhase) {
@@ -119,12 +115,13 @@ public class ChestHandler implements FeatureInitializer {
         ChestHologramUpdater updater = new ChestHologramUpdater(chest);
         skyWarsEventHandler.addUpdater(updater);
     }
-    public void addChest(Chest chest) {
+    public Chest addChest(Chest chest) {
         chests.put(chest.getLocation(), chest);
+        return chest;
     }
 
-    public void addChest(Block block, boolean midChest) {
-        addChest(new Chest(block, midChest));
+    public Chest addChest(Block block, boolean midChest) {
+        return addChest(new Chest(block, midChest));
     }
 
     public Chest getChest(Location location) {
@@ -137,7 +134,15 @@ public class ChestHandler implements FeatureInitializer {
     }
 
     public void removeChest(Location location) {
-        chests.remove(location);
+        Chest chest = chests.remove(location);
+        resetChest(chest);
+    }
+
+    public void resetChest(Chest chest) {
+        SkyWarsEventUpdater updater = chest.getUpdater();
+        skyWarsEventHandler.removeUpdater(updater);
+
+        chest.destroyHologram();
     }
 
     public void removeChest(Block block) {

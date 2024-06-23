@@ -27,7 +27,6 @@ public class GameSetupHandler {
     private final ChestHandler chestHandler;
     private final IslandHandler islandHandler;
 
-
     public GameSetupHandler(GameHandler gameHandler) {
         this.gameHandler = gameHandler;
 
@@ -49,7 +48,7 @@ public class GameSetupHandler {
         if(!setupMode) {
             MessageConfigKeys.SETUP_MODE_ENTERED.sendMessage(player, new Replacement("name", serverName));
             userSession.setSetupMode(true);
-            menuManager.applyDesign(new GameSetupMenuInterface(this, user), true, true);
+            menuManager.applyInventoryLayout(user, new GameSetupMenuLayout(this, user), true, true);
             return;
         }
 
@@ -58,23 +57,33 @@ public class GameSetupHandler {
         menuManager.revertInventory(user);
     }
 
-    public void addRemoveIsland(User user) {
+    public void addIsland(User user, Island island) {
+
+        islandHandler.addIsland(island);
+    }
+
+    public void addRemoveCage(User user, Island island) {
+        if(island == null) return;
+
         Player player = user.getPlayer();
         Location location = player.getLocation();
 
-        Island island = islandHandler.getIsland(location);
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
-        user.sendMessage("&aYou've " + (island != null ? "&cremoved" : "added")+ "&a a cage at &e" + x + "&a, &e" + y + "&a, &e" + z + "&a.");
-        if(island == null) {
-            islandHandler.addIsland(new Island(location));
+
+        Location cageLocation = island.getCageLocation();
+
+        user.sendMessage("&aYou've " + (cageLocation != null ? "&cremoved" : "added")+ "&a a cage at &e" + x + "&a, &e" + y + "&a, &e" + z + "&a.");
+
+        if(cageLocation == null) {
+            island.setCageLocation(location);
             return;
         }
-        islandHandler.removeIsland(location);
+        island.setCageLocation(null);
     }
 
-    public void addRemoveChest(User user, Block block, boolean midChest) {
+    public void addRemoveChest(User user, Island island, Block block, boolean midChest) {
         if(block == null) return;
 
         if(block.getType() != Material.CHEST) {
@@ -90,9 +99,11 @@ public class GameSetupHandler {
         if(chest != null) midChest = chest.isMidChest();
         user.sendMessage("&aYou've " + (chest != null ? "&cremoved" : "added")+ "&a a " + (midChest ? "&emiddle " : "") + "&achest at &e" + x + "&a, &e" + y + "&a, &e" + z + (midChest ? " &7(Middle Chest)" : "") + "&a.");
         if(chest == null) {
-            chestHandler.addChest(block, midChest);
+            chest = chestHandler.addChest(block, midChest);
+            island.addChest(block, chest);
             return;
         }
         chestHandler.removeChest(block);
+        island.removeChest(block);
     }
 }

@@ -28,6 +28,5 @@ public class ProjectileTrailHandler extends PurchasableRegistry<ProjectileTrail>
 
     public void playProjectileTrail(ProjectileTrail projectileTrail, User user, Projectile projectile) {
 
-
     }
 }

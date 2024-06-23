@@ -16,7 +16,8 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.PluginUtility;
-import xyz.directplan.directlib.inventory.InventoryUser;
+import xyz.directplan.directlib.inventory.PlayerInventoryLayout;
+import xyz.directplan.directlib.inventory.UserInventory;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.stream.Stream;
 @Data
 @Getter
 @Setter
-public class User implements InventoryUser<UserPlayerInventoryUi> {
+public class User implements UserInventory {
 
     private final UUID uuid;
 
@@ -46,7 +47,7 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
     private UserAssetsHandler userAssetsHandler = new UserAssetsHandler();
     private UserSettingHandler userSettingHandler = new UserSettingHandler();
 
-    private UserPlayerInventoryUi currentInventoryUi;
+    private PlayerInventoryLayout inventoryLayout;
 
 
     public String getName() {
@@ -71,6 +72,10 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
 
     public Collection<UserAsset> getAssets() {
         return userAssetsHandler.getAssets();
+    }
+
+    public boolean hasAsset(Purchasable purchasable, GameType gameType) {
+        return getAsset(purchasable, gameType) != null;
     }
 
     public UserAsset getAsset(Purchasable purchasable, GameType gameType) {
@@ -197,10 +202,5 @@ public class User implements InventoryUser<UserPlayerInventoryUi> {
 
     public void removeFavouriteMap(String map) {
         userSettingHandler.removeSetting("favouritemaps", map);
-    }
-
-    @Override
-    public UserPlayerInventoryUi getInventoryUi() {
-        return currentInventoryUi;
     }
 }

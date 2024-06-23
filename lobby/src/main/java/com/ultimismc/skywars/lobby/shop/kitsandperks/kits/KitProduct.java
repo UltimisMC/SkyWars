@@ -6,7 +6,6 @@ import com.ultimismc.skywars.core.game.features.PurchasableRarity;
 import com.ultimismc.skywars.core.game.features.kits.Kit;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.lobby.shop.UserPurchasableProduct;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 

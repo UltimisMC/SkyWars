@@ -5,8 +5,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import xyz.directplan.directlib.inventory.ActionableItem;
-import xyz.directplan.directlib.inventory.ConfirmableActionMenu;
 import xyz.directplan.directlib.inventory.InventoryUI;
+import xyz.directplan.directlib.inventory.ItemConfirmableActionMenu;
 import xyz.directplan.directlib.inventory.MenuItem;
 import xyz.directplan.directlib.shop.*;
 
@@ -46,7 +46,7 @@ public class ProductCategoryAction<U> implements ActionableItem {
         }
 
         if(!ignoreConfirmation && product instanceof ConfirmableProduct) {
-            shopHandler.openInventory(clicker, new ConfirmableActionMenu(item, () -> product.executeAction(user, clickType)));
+            shopHandler.openInventory(clicker, new ItemConfirmableActionMenu(item, () -> product.executeAction(user, clickType)));
             return;
         }
         Object data = itemDesign.getData();
@@ -59,7 +59,7 @@ public class ProductCategoryAction<U> implements ActionableItem {
     }
 
     @Override
-    public boolean updateButtons(Player clicker, ClickType clickType) {
+    public boolean isRefreshable(Player clicker, ClickType clickType) {
         return product.isRefreshInventoryEnabled();
     }
 }

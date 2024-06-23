@@ -14,14 +14,12 @@ public class ShopPerkProduct extends UserPurchasableProduct {
 
     private final Perk perk;
     private final GameType gameType;
-    private final PerkProduct perkProduct;
 
     public ShopPerkProduct(int itemSlot, Perk perk, GameType gameType) {
         super(itemSlot, perk, gameType);
 
         this.perk = perk;
         this.gameType = gameType;
-        perkProduct = new PerkProduct(perk);
     }
 
     public ShopPerkProduct(Perk perk, GameType gameType) {
@@ -34,8 +32,13 @@ public class ShopPerkProduct extends UserPurchasableProduct {
 
     @Override
     public ProductItemDesign designPurchasableProduct(User user) {
-        if(!perk.isSoulWellPerk() && user.getAsset(perk, gameType) != null) return null;
-        return perkProduct.designProduct(user);
+//        if(!perk.isSoulWellPerk() && user.getAsset(perk, gameType) != null) return null;
+        return PerkProductDesigner.designProduct(perk, user);
+    }
+
+    @Override
+    public boolean isProductVisible(User user) {
+        return !user.hasAsset(perk, gameType);
     }
 
     @Override

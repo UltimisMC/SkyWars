@@ -64,6 +64,11 @@ public class ProductItemDesign {
         this(material, null, lore, true);
     }
 
+    public ProductItemDesign(Material material, String displayName, List<String> lore) {
+        this(material, lore);
+        this.displayName = displayName;
+    }
+
     public ProductItemDesign(Material material) {
         this(material, null, new ArrayList<>(), true);
     }

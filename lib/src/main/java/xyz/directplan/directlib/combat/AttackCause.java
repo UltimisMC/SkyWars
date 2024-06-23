@@ -50,8 +50,8 @@ public enum AttackCause {
     public boolean isBow() {
         return this == BOW;
     }
+
     public boolean isProjectile() {
         return isBow() || this == PROJECTILE;
     }
-
 }

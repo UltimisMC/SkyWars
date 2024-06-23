@@ -27,14 +27,14 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
 
     private final SkyWarsServerManager serverManager;
 
-    private final BukkitTask bukkitTask;
+    private final SkyWarsPlugin plugin;
+    private BukkitTask bukkitTask;
 
-    public ServerListMenu(SkyWarsPlugin plugin, Player player) {
+    public ServerListMenu(SkyWarsPlugin plugin) {
         super("SkyWars Servers", 6, PaginatedModel.HYPIXEL_MODEL);
 
+        this.plugin = plugin;
         this.serverManager = plugin.getServerManager();
-
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, new ServerListMenuUpdater(player, this), 20, 20);
     }
 
     @Override
@@ -42,6 +42,14 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
         return serverManager.getServers().stream()
                 .sorted((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void build(Player player) {
+        super.build(player);
+
+        bukkitTask = Bukkit.getScheduler()
+                .runTaskTimer(plugin, new ServerListMenuUpdater(player, this), 20, 20);
     }
 
     @Override
@@ -86,7 +94,7 @@ public class ServerListMenu extends PaginatedMenu<SkyWarsServer> {
     }
 
     @Override
-    public void onClose(Inventory inventory) {
+    public void onClose(Player player, Inventory inventory) {
         bukkitTask.cancel();
     }
 }

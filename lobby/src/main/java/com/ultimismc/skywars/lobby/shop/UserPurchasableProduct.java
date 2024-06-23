@@ -14,6 +14,7 @@ import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.shop.ProductItemDesign;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,11 +22,11 @@ import java.util.List;
  */
 public abstract class UserPurchasableProduct extends UserConfirmableProduct {
 
-    private Purchasable purchasable;
+    protected Purchasable purchasable;
 
     protected final Currency currency;
-    private final int cost;
-    private final GameType gameType;
+    protected final int cost;
+    protected final GameType gameType;
 
     public UserPurchasableProduct(String name, int itemSlot, int cost, Currency currency, GameType gameType) {
         super(name, itemSlot);
@@ -73,10 +74,12 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
 
     @Override
     public ProductItemDesign designProduct(User user) {
-        if(purchasable != null && (ignoreDefaults() && purchasable.isDefault())) return null;
+        ProductItemDesign unknownDesign = new ProductItemDesign(Material.BARRIER, "&cComing soon", Collections.emptyList());
+
+//        if(purchasable != null && (ignoreDefaults() && purchasable.isDefault())) return unknownDesign; // This line is removed since Product#isProductVisible took over
 
         ProductItemDesign shopProductItemDesign = designPurchasableProduct(user);
-        if(shopProductItemDesign == null) return null;
+        if(shopProductItemDesign == null) return unknownDesign;
 
         String displayName = shopProductItemDesign.getDisplayName();
         if(displayName == null) {
@@ -152,6 +155,11 @@ public abstract class UserPurchasableProduct extends UserConfirmableProduct {
 
     protected String getDisplayCost() {
         return currency.getDisplayAmount(cost);
+    }
+
+    @Override
+    public boolean isProductVisible(User user) {
+        return (purchasable == null || (!ignoreDefaults() || !purchasable.isDefault()));
     }
 
     public boolean ignoreDefaults() {

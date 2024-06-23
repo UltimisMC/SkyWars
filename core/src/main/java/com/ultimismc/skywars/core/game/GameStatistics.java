@@ -11,6 +11,7 @@ import lombok.Setter;
 public class GameStatistics {
 
     private int wins, losses;
+    private int winstreak, bestWinstreak;
 
     private int kills, deaths, assists;
     private int bowKills, voidKills;

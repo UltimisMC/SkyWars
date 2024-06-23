@@ -21,8 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
-import xyz.directplan.directlib.misc.title.Title;
-import xyz.directplan.directlib.misc.title.TitleSlot;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -153,7 +151,7 @@ public class PluginUtility {
     }
 
     public static void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String titleText, String subTitle) {
-        Title title = new Title(TitleSlot.TITLE);
+        Title title = new Title(Title.TitleSlot.TITLE);
         title.setTitle(translateMessage(titleText));
         title.setSubTitle(translateMessage(subTitle));
         title.setFadeIn(fadeIn);
@@ -171,7 +169,7 @@ public class PluginUtility {
     }
 
     public static void sendActionBar(Player player, String actionBar) {
-        Title title = new Title(TitleSlot.ACTIONBAR);
+        Title title = new Title(Title.TitleSlot.ACTIONBAR);
         title.setTitle(translateMessage(actionBar));
         title.send(player);
     }

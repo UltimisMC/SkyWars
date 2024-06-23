@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.directplan.directlib.inventory.ActionableItem;
 import xyz.directplan.directlib.inventory.MenuItem;
@@ -24,6 +23,7 @@ import xyz.directplan.directlib.inventory.PaginatedMenu;
 import xyz.directplan.directlib.inventory.PaginatedModel;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * @author DirectPlan
@@ -107,7 +107,7 @@ public class MapSelectorMenu extends PaginatedMenu<ServerMap> {
         setSlot(39, randomMapItem);
 
         MenuItem randomFavoriteItem = new MenuItem(Material.DIAMOND, ChatColor.GREEN + "Random Favourite");
-        randomFavoriteItem.setAction(new RandomMapItemAction(serverManager, user, teamType, gameType));
+        randomFavoriteItem.setAction(new FavouriteMapItemAction(serverManager, user, teamType, gameType));
         randomFavoriteItem.setLore(ChatColor.DARK_GRAY + modeDisplayName);
         randomFavoriteItem.setLore(" ");
         randomFavoriteItem.setLore("&7Map Selections: &aUnlimited");
@@ -155,16 +155,26 @@ class FavouriteMapItemAction implements ActionableItem {
 
     @Override
     public void performAction(MenuItem item, Player clicker, Block clickedBlock, ClickType clickType) {
+        // Fix a bug where the randomFavouriteMap picked might not be in the list of available servers.
+        // Make sure we only shuffle from favourite servers that are available
+        // This can be done by filtering servers that are contained in favouriteMaps
         Collection<String> favouriteMaps = user.getFavouriteMaps();
         if(favouriteMaps.isEmpty()) {
-            user.sendMessage("&cNo favourite servers available!");
+            user.sendMessage("&cYou don't have any favourite map.");
             return;
         }
-        List<String> favouriteMapsList = new ArrayList<>(favouriteMaps);
-        Collections.shuffle(favouriteMapsList);
-        String randomFavouriteMap = favouriteMapsList.get(0);
 
-        serverManager.sendToAvailableServer(user, teamType, gameType, randomFavouriteMap);
+        Stream<SkyWarsServer> availableServers = serverManager.getAvailableServers(teamType, gameType, null);
+        availableServers = availableServers.filter(skyWarsServer -> favouriteMaps.contains(skyWarsServer.getMapName()));
+
+        Optional<SkyWarsServer> favouriteMapOptional = availableServers.findAny();
+        SkyWarsServer favouriteServer = favouriteMapOptional.orElse(null);
+        if(favouriteServer == null) {
+            user.sendMessage("&cThere are currently no favourite servers available.");
+            return;
+        }
+
+        serverManager.sendToServer(user, favouriteServer);
     }
 }
 
@@ -193,7 +203,7 @@ class ServerMapItemAction implements ActionableItem {
     }
 
     @Override
-    public boolean updateButtons(Player clicker, ClickType clickType) {
+    public boolean isRefreshable(Player clicker, ClickType clickType) {
         return true;
     }
 }

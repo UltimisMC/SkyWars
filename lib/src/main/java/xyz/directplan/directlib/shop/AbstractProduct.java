@@ -47,4 +47,9 @@ public abstract class AbstractProduct<U> implements Product<U> {
     public boolean isDisplay() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

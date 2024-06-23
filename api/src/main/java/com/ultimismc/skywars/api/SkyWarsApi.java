@@ -3,6 +3,7 @@ package com.ultimismc.skywars.api;
 /**
  * @author DirectPlan
  */
+@Deprecated
 public class SkyWarsApi {
 
     private static SkyWars api;

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.MenuItem;
 import xyz.directplan.directlib.shop.Product;
@@ -74,7 +73,7 @@ public class ProductMenuBuilder<U> {
         MenuItem backButton = new MenuItem(Material.ARROW, "&aGo Back");
         backButton.setLore("&7To " + previousMenu.getTitle());
         backButton.setAction((item, clicker, clickedBlock, clickType) -> shopHandler.openInventory(player, previousMenu));
-        int lastSlot = currentMenu.getLastSlotIndex();
+        int lastSlot = currentMenu.getSize();
         currentMenu.setSlot((lastSlot - 4), backButton);
     }
 }

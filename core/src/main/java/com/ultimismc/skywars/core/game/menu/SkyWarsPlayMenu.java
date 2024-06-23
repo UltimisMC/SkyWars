@@ -52,6 +52,7 @@ public class SkyWarsPlayMenu extends InventoryUI {
         playItem.setLore("&7Play " + gameDisplayName + " SkyWars!");
         playItem.setLore(" ");
         playItem.setLore("&7" + onlinePlayers + " currently playing");
+        playItem.setLore(" ");
         playItem.setLore("&eClick to play!");
 
         setSlot(slot, playItem);

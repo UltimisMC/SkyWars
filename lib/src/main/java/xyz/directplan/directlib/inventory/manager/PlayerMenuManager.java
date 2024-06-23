@@ -1,11 +1,11 @@
 package xyz.directplan.directlib.inventory.manager;
 
-import lombok.Getter;
+import lombok.Data;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import xyz.directplan.directlib.inventory.InventoryUser;
-import xyz.directplan.directlib.inventory.PlayerInventoryUI;
+import xyz.directplan.directlib.inventory.PlayerInventoryLayout;
+import xyz.directplan.directlib.inventory.UserInventory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,101 +16,54 @@ import java.util.UUID;
  */
 public class PlayerMenuManager {
 
-    private final Map<UUID, InventoryUser> activePlayerInventories = new HashMap<>();
-    private final Map<UUID, CachedInventoryUser> previousInventories = new HashMap<>();
+    private final Map<UUID, CachedUserInventory> previousInventories = new HashMap<>();
 
-    public void applyDesign(PlayerInventoryUI design) {
-        InventoryUser inventoryUser = design.getUser();
-        inventoryUser.setCurrentInventoryUi(design);
-        Player player = inventoryUser.getPlayer();
+    public void applyInventoryLayout(UserInventory userInventory, PlayerInventoryLayout inventoryLayout) {
+        inventoryLayout.applyLayout(userInventory);
 
-        activePlayerInventories.put(player.getUniqueId(), inventoryUser);
-        design.apply();
+        userInventory.setInventoryLayout(inventoryLayout);
     }
 
-    public void applyDesign(PlayerInventoryUI design, boolean cacheForLater) {
-        InventoryUser inventoryUser = design.getUser();
-        Player player = inventoryUser.getPlayer();
-        if(cacheForLater) {
-            PlayerInventory playerInventory = player.getInventory();
-
-            PlayerInventoryUI playerInventoryUI = inventoryUser.getInventoryUi();
-            previousInventories.put(player.getUniqueId(), new CachedInventoryUser(playerInventory.getContents(), playerInventory.getArmorContents(), playerInventoryUI));
-        }
-        // Applying after the cache to not cause inventory conflicts
-        applyDesign(design);
-    }
-
-    public void applyDesign(PlayerInventoryUI design, boolean clearInventory, boolean cacheForLater) {
-        InventoryUser inventoryUser = design.getUser();
-        Player player = inventoryUser.getPlayer();
+    public void applyInventoryLayout(UserInventory userInventory, PlayerInventoryLayout inventoryLayout, boolean clearInventory, boolean cacheForLater) {
+        Player player = userInventory.getPlayer();
         PlayerInventory playerInventory = player.getInventory();
         if(cacheForLater) {
-            PlayerInventoryUI playerInventoryUI = inventoryUser.getInventoryUi();
-
-            previousInventories.put(player.getUniqueId(), new CachedInventoryUser(playerInventory.getContents(), playerInventory.getArmorContents(), playerInventoryUI));
+            previousInventories.put(player.getUniqueId(),
+                    new CachedUserInventory(
+                            playerInventory.getContents(),
+                            playerInventory.getArmorContents(),
+                            userInventory.getInventoryLayout()));
         }
         if(clearInventory) {
-            playerInventory.setHelmet(null);
-            playerInventory.setChestplate(null);
-            playerInventory.setLeggings(null);
-            playerInventory.setBoots(null);
             playerInventory.clear();
         }
-        // Applying after the cache to not cause inventory conflicts
-        applyDesign(design);
+        applyInventoryLayout(userInventory, inventoryLayout);
     }
 
-    public void revertInventory(InventoryUser inventoryUser) {
-
-        Player player = inventoryUser.getPlayer();
-
+    public void revertInventory(UserInventory user) {
+        Player player = user.getPlayer();
         UUID uuid = player.getUniqueId();
-        CachedInventoryUser cachedInventoryUser = previousInventories.get(uuid);
-        if(cachedInventoryUser == null) return;
-
+        CachedUserInventory cachedUserInventory = previousInventories.get(uuid);
+        if(cachedUserInventory == null) return;
 
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
 
-        inventory.setContents(cachedInventoryUser.getContents());
-        inventory.setArmorContents(cachedInventoryUser.getArmorContents());
-        PlayerInventoryUI inventoryUI = cachedInventoryUser.getPlayerInventoryUI();
+        inventory.setContents(cachedUserInventory.getContents());
+        inventory.setArmorContents(cachedUserInventory.getArmorContents());
+        PlayerInventoryLayout inventoryLayout = cachedUserInventory.getInventoryLayout();
 
-        inventoryUser.setCurrentInventoryUi(inventoryUI);
+        user.setInventoryLayout(inventoryLayout);
 
         player.updateInventory();
         previousInventories.remove(uuid);
+        player.saveData();
     }
-
-    public void clearInventory(InventoryUser inventoryUser) {
-        Player player = inventoryUser.getPlayer();
-        UUID uuid = player.getUniqueId();
-        activePlayerInventories.remove(uuid);
-        previousInventories.remove(uuid);
-
-        player.getInventory().clear();;
-    }
-
-    public InventoryUser getInventoryUser(UUID uuid) {
-        return activePlayerInventories.get(uuid);
-    }
-
-    public InventoryUser getInventoryUser(Player player) {
-        return getInventoryUser(player.getUniqueId());
-    }
-
 }
 
-@Getter
-class CachedInventoryUser {
+@Data
+class CachedUserInventory {
 
     private final ItemStack[] contents, armorContents;
-    private final PlayerInventoryUI playerInventoryUI;
-
-    public CachedInventoryUser(ItemStack[] contents, ItemStack[] armorContents, PlayerInventoryUI playerInventoryUI) {
-        this.contents = contents;
-        this.armorContents = armorContents;
-        this.playerInventoryUI = playerInventoryUI;
-    }
+    private final PlayerInventoryLayout inventoryLayout;
 }

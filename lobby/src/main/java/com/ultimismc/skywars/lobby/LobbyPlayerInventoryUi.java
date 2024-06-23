@@ -1,26 +1,27 @@
 package com.ultimismc.skywars.lobby;
 
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
 import com.ultimismc.skywars.core.user.UserStatistics;
 import com.ultimismc.skywars.lobby.config.MessageConfigKeys;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import xyz.directplan.directlib.config.replacement.Replacement;
 import xyz.directplan.directlib.inventory.MenuItem;
+import xyz.directplan.directlib.inventory.PlayerInventoryLayout;
 
 import java.util.List;
 
 /**
  * @author DirectPlan
  */
-public class LobbyPlayerInventoryUi extends UserPlayerInventoryUi {
+public class LobbyPlayerInventoryUi extends PlayerInventoryLayout {
 
     private final LobbyManager lobbyManager;
-    public LobbyPlayerInventoryUi(LobbyManager lobbyManager, User user) {
-        super(user);
+    private final User user;
 
+    public LobbyPlayerInventoryUi(LobbyManager lobbyManager, User user) {
         this.lobbyManager = lobbyManager;
+        this.user = user;
     }
 
     @Override

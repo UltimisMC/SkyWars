@@ -101,7 +101,7 @@ public class KitSelectorMenu extends InventoryUI {
         }
 
         @Override
-        public boolean updateButtons(Player clicker, ClickType clickType) {
+        public boolean isRefreshable(Player clicker, ClickType clickType) {
             return true;
         }
     }

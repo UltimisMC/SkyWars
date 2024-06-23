@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 /**
  * @author DirectPlan
  */
+@Deprecated
 public interface SkyWars {
 
     void increaseCoins(Player user, int coins);

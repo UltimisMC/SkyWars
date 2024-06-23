@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.game;
 
-import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.game.handler.GameHandler;
 import com.ultimismc.skywars.game.user.UserGameSession;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +34,19 @@ public class SkyWarsGameListener implements Listener {
         event.setKickMessage(PluginUtility.translateMessage("&cGame is full or has already started!"));
     }
 
+    /**
+     * Spectator chat event:
+     *  - When a player is a spectator, a prefix of "[SPECTATOR]" with a gray color will be added to the player
+     *  - A spectator message should not reach the recipients of this message unless they're also spectators
+     *
+     * @param event
+     */
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
         UserGameSession userGameSession = gameHandler.getSession(player);
-        if(userGameSession.isSpectator()) return;
+        if(!userGameSession.isSpectator()) return;
 
         event.setFormat("&7[SPECTATOR] &r" + event.getFormat());
         event.getRecipients().removeIf(recipient -> {
@@ -51,26 +57,28 @@ public class SkyWarsGameListener implements Listener {
     }
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
+
+        if(userGameSession.isSetupMode()) return;
         if(!gameHandler.hasStarted()) {
             event.setCancelled(true);
             return;
         }
-        Player player = event.getPlayer();
-        UserGameSession userGameSession = gameHandler.getSession(player);
-        if(userGameSession.isSetupMode()) return;
         if(!userGameSession.isSpectator()) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        UserGameSession userGameSession = gameHandler.getSession(player);
+        if(userGameSession.isSetupMode()) return;
+
         if(!gameHandler.hasStarted()) {
             event.setCancelled(true);
             return;
         }
-        Player player = event.getPlayer();
-        UserGameSession userGameSession = gameHandler.getSession(player);
-        if(userGameSession.isSetupMode()) return;
         if(!userGameSession.isSpectator()) return;
 
         event.setBuild(false);

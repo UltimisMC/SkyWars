@@ -25,7 +25,7 @@ public enum ConfigKeys implements ConfigEntry {
     STORAGE_DATABASE("mongodb.database", "database"),
 
     JEDIS_HOST("jedis.host", "localhost"),
-    JEDIS_PORT("jedis.port", 6739),
+    JEDIS_PORT("jedis.port", 6379),
     JEDIS_PASSWORD("jedis.password", null),
 //    STORAGE_MAXIMUM_POOL_SIZE("storage.maximum-pool-size", 10),
 

@@ -131,7 +131,7 @@ public class SoulWellRollMenu extends InventoryUI {
             animationTask.cancel();
             return;
         }
-        updateButtons(player);
+        refresh(player);
         player.playSound(player.getLocation(), Sound.CLICK, 1f, 1f);
     }
 
@@ -166,7 +166,7 @@ public class SoulWellRollMenu extends InventoryUI {
         }
         if(currentReward.hasPurchased(user)) {
             int rarityCoins = currentReward.getRarityCoins();
-            user.sendMessage("&7&lSince you already have it, you receive &e&l " + rarityCoins + " coins&7&l.");
+            user.sendMessage("&7&lSince you already have it, you receive &e&l" + rarityCoins + " coins&7&l.");
             Currency.COIN_CURRENCY.increaseCurrency(user, rarityCoins);
             return;
         }

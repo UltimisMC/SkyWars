@@ -32,7 +32,7 @@ public class GameConfig {
     }
 
     public String getName() {
-        if(lobby) return "Lobby";
+        if(lobby) return "SkyWars Lobby";
         return teamType.getName() + " " + gameType.getName();
     }
 

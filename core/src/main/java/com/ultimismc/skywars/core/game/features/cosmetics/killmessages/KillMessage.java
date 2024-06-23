@@ -5,7 +5,6 @@ import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticRarity;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.event.entity.EntityDamageEvent;
 import xyz.directplan.directlib.PluginUtility;
 import xyz.directplan.directlib.combat.AttackCause;
 

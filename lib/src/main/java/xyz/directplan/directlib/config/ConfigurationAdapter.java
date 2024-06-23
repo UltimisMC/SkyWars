@@ -1,9 +1,7 @@
 package xyz.directplan.directlib.config;
 
-import lombok.Getter;
 import xyz.directplan.directlib.config.replacement.ReplacementBoundary;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +10,8 @@ import java.util.Map;
  */
 public abstract class ConfigurationAdapter implements ConfigurationMemory<String> {
 
-    @Getter private final File file;
     private final Class<? extends ConfigEntry> configEnumClass;
-    public ConfigurationAdapter(File file, Class<? extends ConfigEntry> configEnumClass) {
-        this.file = file;
+    public ConfigurationAdapter(Class<? extends ConfigEntry> configEnumClass) {
         this.configEnumClass = configEnumClass;
     }
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author DirectPlan
@@ -93,81 +94,57 @@ public class UserStatistics {
     }
 
     public int getTotalWins() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getWins();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getWins);
     }
 
     public int getTotalLosses() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getLosses();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getLosses);
     }
 
     public int getTotalKills() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getKills();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getKills);
     }
 
     public int getTotalAssists() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getAssists();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getAssists);
     }
 
     public int getTotalDeaths() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getDeaths();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getDeaths);
     }
 
     public int getTotalBowKills() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getBowKills();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getBowKills);
     }
 
     public int getTotalVoidKills() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getVoidKills();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getVoidKills);
     }
 
     public int getTotalArrowShot() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getArrowsShot();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getArrowsShot);
     }
 
     public int getTotalArrowHits() {
-        int value = 0;
-        for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getArrowsHit();
-        }
-        return value;
+        return getTotalStat(GameStatistics::getArrowsHit);
     }
 
     public int getTotalChestsOpened() {
+        return getTotalStat(GameStatistics::getChestsOpened);
+    }
+
+    public int getTotalWinstreak() {
+        return getTotalStat(GameStatistics::getWinstreak);
+    }
+
+    public int getTotalBestWinstreak() {
+        return getTotalStat(GameStatistics::getBestWinstreak);
+    }
+
+    private int getTotalStat(Function<GameStatistics, Integer> statFunction) {
         int value = 0;
         for(GameStatistics gameStatistics : gameStats.values()) {
-            value += gameStatistics.getChestsOpened();
+            value += statFunction.apply(gameStatistics);
         }
         return value;
     }

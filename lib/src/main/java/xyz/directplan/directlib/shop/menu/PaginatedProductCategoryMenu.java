@@ -9,7 +9,9 @@ import xyz.directplan.directlib.shop.Product;
 import xyz.directplan.directlib.shop.ProductCategory;
 import xyz.directplan.directlib.shop.ShopHandler;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author DirectPlan
@@ -37,6 +39,7 @@ public class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Product<U>> {
     public PaginatedProductCategoryMenu(ShopHandler<U> shopHandler, U user, ProductCategory<U> productCategory) {
         this(shopHandler, user, null, productCategory, PaginatedModel.DEFAULT_MODEL);
     }
+
     @Override
     public Collection<Product<U>> getList() {
         return productCategory.getProducts();
@@ -50,9 +53,14 @@ public class PaginatedProductCategoryMenu<U> extends PaginatedMenu<Product<U>> {
     @Override
     public void build(Player player) {
         super.build(player);
-        if(previousMenu == null) return;
 
+        if(previousMenu == null) return;
         productMenuBuilder.addGoBackButton(player, this, previousMenu);
+    }
+
+    @Override
+    public boolean accept(Product<U> product) {
+        return product.isProductVisible(user);
     }
 
     @Override

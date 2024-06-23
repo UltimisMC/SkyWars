@@ -6,8 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Set;
 
@@ -27,29 +26,35 @@ public class BukkitConfigHandler extends ConfigHandler {
 
 class BukkitConfigurationAdapter extends ConfigurationAdapter {
 
+    private final ConfigIdentifier identifier;
     private FileConfiguration configuration;
     private final JavaPlugin plugin;
 
     public BukkitConfigurationAdapter(JavaPlugin plugin, ConfigIdentifier identifier) {
-        super(new File(plugin.getDataFolder(), identifier.getFileName()), identifier.getEntryClass());
+        super(identifier.getEntryClass());
         this.plugin = plugin;
+        this.identifier = identifier;
+
         loadKeys();
     }
 
     @Override
     public void loadConfiguration() {
-        File file = getFile();
-        if(!file.exists()){
-            plugin.saveResource(file.getName(), false);
+        String fileName = identifier.getFileName();
+        File pluginFile = new File(plugin.getDataFolder(), fileName);
+
+        if(!pluginFile.exists()) {
+            plugin.saveResource(fileName, true);
         }
-        configuration = YamlConfiguration.loadConfiguration(file);
+        configuration = YamlConfiguration.loadConfiguration(pluginFile);
     }
 
     @Override
     public void saveConfiguration() {
-        File file = getFile();
-        try {
+        String fileName = identifier.getFileName();
+        File file = new File(plugin.getDataFolder(), fileName);
 
+        try {
             configuration.save(file);
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,6 +5,8 @@ import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.Map;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author DirectPlan
  */

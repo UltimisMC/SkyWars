@@ -33,4 +33,8 @@ public class Chest {
     public boolean isEmpty() {
         return PluginUtility.isEmpty(inventory);
     }
+
+    public void destroyHologram() {
+        chestHologram.destroy();
+    }
 }

@@ -6,10 +6,9 @@ import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.Map;
 import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
+import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
-import com.ultimismc.skywars.core.user.UserPlayerInventoryUi;
 import com.ultimismc.skywars.game.handler.GameHandler;
-import com.ultimismc.skywars.game.user.UserSessionHandler;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,9 +16,6 @@ import xyz.directplan.directlib.CustomLocation;
 import xyz.directplan.directlib.config.ConfigEntry;
 import xyz.directplan.directlib.inventory.InventoryUI;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
-import xyz.directplan.directlib.scoreboard.ScoreboardManager;
-
-import java.util.UUID;
 
 /**
  * @author DirectPlan
@@ -29,12 +25,10 @@ public class GameManager implements FeatureInitializer {
 
     private final SkyWarsPlugin plugin;
     private final MenuManager menuManager;
+    private final SkyWarsServerManager serverManager;
+    private final GameHandler gameHandler;
 
-    private GameHandler gameHandler;
     private GameConfig gameConfig;
-    private final ScoreboardManager scoreboardManager;
-
-    private final UserSessionHandler userSessionHandler;
 
     private Location spawnLocation;
 
@@ -42,9 +36,9 @@ public class GameManager implements FeatureInitializer {
         this.plugin = plugin;
 
         menuManager = plugin.getMenuManager();
+        serverManager = plugin.getServerManager();
 
-        scoreboardManager = new ScoreboardManager(plugin, "Ultimis SkyWars Scoreboard");
-        userSessionHandler = new UserSessionHandler(gameConfig);
+        gameHandler = new GameHandler(plugin);
     }
 
     @Override
@@ -52,7 +46,6 @@ public class GameManager implements FeatureInitializer {
         FeatureHandler featureHandler = plugin.getFeatureHandler();
         spawnLocation = CustomLocation.stringToLocation(ConfigKeys.SPAWN_LOCATION.getStringValue()).toBukkitLocation();
 
-        gameHandler = new GameHandler(plugin, this);
         featureHandler.initializeFeature(gameHandler);
 
         gameConfig = gameHandler.getGameConfig();
@@ -70,8 +63,6 @@ public class GameManager implements FeatureInitializer {
     }
 
     public void handleQuit(User user) {
-
-
         gameHandler.quitUser(user);
     }
 
@@ -91,16 +82,8 @@ public class GameManager implements FeatureInitializer {
         configEntry.setValue(serializedSpawn);
     }
 
-    public void removeScoreboard(UUID uuid) {
-        scoreboardManager.removeScoreboard(uuid);
-    }
-
     public void openMenu(Player player, InventoryUI inventoryUI) {
         menuManager.openInventory(player, inventoryUI);
-    }
-
-    public void applyPlayerMenu(UserPlayerInventoryUi playerInventoryUi) {
-        menuManager.applyDesign(playerInventoryUi);
     }
 
     public String getServerName() {

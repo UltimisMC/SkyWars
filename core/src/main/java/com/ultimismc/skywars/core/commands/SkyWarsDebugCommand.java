@@ -5,6 +5,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.currency.Currency;
+import com.ultimismc.skywars.core.game.features.FeatureHandler;
 import com.ultimismc.skywars.core.game.features.Purchasable;
 import com.ultimismc.skywars.core.game.features.level.Level;
 import com.ultimismc.skywars.core.game.features.level.LevelManager;
@@ -49,6 +50,9 @@ public class SkyWarsDebugCommand extends BaseCommand {
 
     @Dependency
     private GameMenuHandler gameMenuHandler;
+
+    @Dependency
+    private FeatureHandler featureHandler;
 
     @HelpCommand
     @Syntax("")
@@ -141,6 +145,21 @@ public class SkyWarsDebugCommand extends BaseCommand {
             }
             user.sendMessage(" &a* Key: &e" + key + "&a. Value: &e" + value);
         }
+    }
+
+
+    @Subcommand("setsetting")
+    @Syntax("<player> <key> <value>")
+    public void onSetSetting(User user, @Flags("other") User target, String key, String value) {
+        Object objValue = value;
+        Purchasable purchasable = featureHandler.getPurchasable(value);
+        if(purchasable != null) {
+            objValue = purchasable;
+            user.sendMessage("&aFound a purchasable with this value: &e" + purchasable.getNameWithCategory());
+
+        }
+        target.setSetting(key, objValue);
+        user.sendMessage("&aYou have set &e" + target.getDisplayName() + "&a's setting &e" + key + "&a to &e" + value + "&a.");
     }
 
     private void increaseCurrency(User user, Currency currency, int amount) {

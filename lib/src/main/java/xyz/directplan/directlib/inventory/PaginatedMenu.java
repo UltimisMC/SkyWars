@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import xyz.directplan.directlib.PluginUtility;
+import xyz.directplan.directlib.inventory.decoration.InventoryDecoration;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +19,17 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
     private int page = 1;
     private final int pageSize;
     private final PaginatedModel paginatedModel;
+    private List<T> contents;
 
-    public PaginatedMenu(String title, int rows, PaginatedModel paginatedModel) {
-        super(title, (rows != -1 ? rows : PluginUtility.getRowsBasedOnSlots(paginatedModel.getPageSize())));
+    public PaginatedMenu(String title, int rows, PaginatedModel paginatedModel, InventoryDecoration decoration) {
+        super(title, (rows != -1 ? rows : computeRowsBasedOnSlots(paginatedModel.getPageSize())), decoration);
+
         this.pageSize = paginatedModel.getPageSize();
         this.paginatedModel = paginatedModel;
+    }
+
+    public PaginatedMenu(String title, int rows, PaginatedModel paginatedModel) {
+        this(title, rows, paginatedModel, null);
     }
 
     public PaginatedMenu(String title, int rows) {
@@ -49,20 +55,25 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
     }
 
     public int getTotalPages(){
-        int size = getList().size();
+        int size = contents.size();
         return (int) Math.ceil(((double)size / pageSize));
     }
 
-    // TODO: Remove all manual headers from what extends this class
-
     @Override
     public void build(Player player) {
+        if(contents == null) {
+            Collection<T> list = getList();
+
+            contents = list != null ? new ArrayList<>(list) : new ArrayList<>();
+            contents.removeIf(content -> !accept(content));
+        }
+
         int nextPageSlot = paginatedModel.getNextPageSlot();
         int previousPageSlot = paginatedModel.getPreviousPageSlot();
         int totalPages = this.getTotalPages();
 
         // Building the page here before
-        List<T> currentPageContents = this.getCurrentPageList();
+        List<T> currentPageContents = this.getCurrentPageList(totalPages);
 
         if(paginatedModel.isHeader()) buildHeader();
 
@@ -94,27 +105,37 @@ public abstract class PaginatedMenu<T> extends InventoryUI {
         }
     }
 
-    public List<T> getCurrentPageList(){
-        List<T> objects = new ArrayList<>(this.getList());
-
+    private List<T> getCurrentPageList(int totalPages) {
         List<T> paginatedObjects = new ArrayList<>();
 
         int page = (this.page - 1);
 
-        if(page < 0 || page >= getTotalPages()) return objects;
+        if(page < 0 || page >= totalPages) return contents;
 
         int min = page * pageSize;
         int max = (min + pageSize);
-        if(max > objects.size()) {
-            max = objects.size();
+        if(max > contents.size()) {
+            max = contents.size();
         }
         for(int i = min; i < max; i++){
-            paginatedObjects.add(objects.get(i));
+            paginatedObjects.add(contents.get(i));
         }
         return paginatedObjects;
     }
 
+    public static int computeRowsBasedOnSlots(int slots) {
+        double divided = 9.0;
+        double rows = (slots / divided);
+        if(slots % divided != 0.0) return (int) rows + 1;
+        return (int) rows;
+    }
+
+
     public abstract Collection<T> getList();
 
     public abstract MenuItem buildContent(Player player, T content);
+
+    public boolean accept(T content) {
+        return true;
+    }
 }

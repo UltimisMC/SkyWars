@@ -13,6 +13,8 @@ import lombok.Data;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import xyz.directplan.directlib.config.ConfigHandler;
 
 /**
  * @author DirectPlan
@@ -25,22 +27,22 @@ public class GameServerInitializer implements ServerInitializer  {
 
     @Override
     public GameConfig loadGameConfig(SkyWarsPlugin plugin) {
-        String worldName = ConfigKeys.WORLD_NAME.getStringValue();
-        gameWorld = Bukkit.getWorld(worldName);
+        String mapName = MapConfigKeys.MAP_NAME.getStringValue();
+        gameWorld = Bukkit.getWorld(mapName);
         if(gameWorld == null) {
-            plugin.disablePlugin("World '" + worldName + "' does not exist. Shutting down");
+            plugin.disablePlugin("World '" + mapName + "' does not exist. Shutting down");
             return null;
         }
 
-        GameInfo gameInfo = loadGameInfo();
+        GameInfo gameInfo = loadGameInfo(plugin);
         GameType gameType = gameInfo.getGameType();
         TeamType teamType = gameInfo.getTeamType();
 
         String serverId = gameInfo.getServerId();
 
-        String name = MapConfigKeys.MAP_NAME.getStringValue();
+        gameConfig = new GameConfig(serverId, gameType, teamType, gameWorld, new Map(mapName), false);
 
-        gameConfig = new GameConfig(serverId, gameType, teamType, gameWorld, new Map(name), false);
+        System.out.println("game mode: " + gameType);
 
         if(gameConfig.isSetupMode()) {
             plugin.log("Server is on Setup Mode. ");
@@ -55,13 +57,17 @@ public class GameServerInitializer implements ServerInitializer  {
         MapConfigKeys.MAP_NAME.setValue(map.getName());
     }
 
-    private GameInfo loadGameInfo() {
+    private GameInfo loadGameInfo(SkyWarsPlugin plugin) {
+        ConfigHandler configHandler = plugin.getConfigHandler();
+        configHandler.loadConfiguration("game.yml", GameConfigKeys.class);
+
         String serverId = GameConfigKeys.SERVER_ID.getStringValue();
         String gameTypeString = GameConfigKeys.GAME_TYPE.getStringValue();
         String teamTypeString = GameConfigKeys.GAME_TEAM_TYPE.getStringValue();
 
         GameType gameType = GameType.valueOf(gameTypeString);
         TeamType teamType = TeamType.valueOf(teamTypeString);
+
 
         return new GameInfo(serverId, gameType, teamType);
     }

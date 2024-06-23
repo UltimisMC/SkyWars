@@ -50,7 +50,7 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
         return new SkyWarsServer(plugin, gameConfig);
     }
 
-    public SkyWarsServer getPerfectAvailableServer(TeamType teamType, GameType gameType, String map) {
+    public Stream<SkyWarsServer> getAvailableServers(TeamType teamType, GameType gameType, String map) {
         Stream<SkyWarsServer> stream = getServers().stream().filter(server -> !server.isLobby()).filter(server -> !server.hasStarted() && !server.isFull());
         if(teamType != null) {
             stream = stream.filter(server -> server.getTeamType() == teamType);
@@ -61,10 +61,16 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
         if(map != null) {
             stream = stream.filter(server -> server.getMapName().equals(map));
         }
-        Optional<SkyWarsServer> perfectServer = stream.max((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()));
+        return stream;
+    }
+
+    public SkyWarsServer getPerfectAvailableServer(TeamType teamType, GameType gameType, String map) {
+        Stream<SkyWarsServer> availableServersStream = getAvailableServers(teamType, gameType, map);
+
+        Optional<SkyWarsServer> perfectServer = availableServersStream.max((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()));
         return perfectServer.orElse(null);
     }
-    
+
     public SkyWarsServer getPerfectLobby() {
         Stream<SkyWarsServer> stream = getServers().stream().filter(Server::isLobby).filter(server -> !server.isFull());
         Optional<SkyWarsServer> perfectLobby = stream.max((o1, o2) -> Integer.compare(o2.getOnlinePlayers(), o1.getMaximumPlayers()));
@@ -95,6 +101,10 @@ public class SkyWarsServerManager extends ClientServerManager<SkyWarsServer> {
     }
 
     public void sendToServer(User user, SkyWarsServer server) {
+        if(server == null) {
+            user.sendMessage("&cThis server is unavailable. Please try again later.");
+            return;
+        }
         user.sendMessage("&aSending you to " + server.getId() + "!");
 
         String serverId = server.getId();

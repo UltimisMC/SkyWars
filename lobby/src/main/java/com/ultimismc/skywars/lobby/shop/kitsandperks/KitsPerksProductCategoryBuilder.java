@@ -69,22 +69,22 @@ public class KitsPerksProductCategoryBuilder implements UserProductCategoryBuild
 
 
         PerkShopCategory perkShopCategory = new PerkShopCategory(50);
-        PurchasedPerksCategory purchasedPerksCategory = new PurchasedPerksCategory(51);
+        OwnedPerksCategory ownedPerksCategory = new OwnedPerksCategory(51);
         for(Perk perk : perkManager) {
             if(perk.isDefault() || perk.isSoulWellPerk()) continue;
             perkShopCategory.addProduct(new ShopPerkProduct(perk, gameType));
-            purchasedPerksCategory.addProduct(new PurchasedPerkProduct(purchasedPerksCategory, perk, gameType));
+            ownedPerksCategory.addProduct(new OwnedPerkProduct(ownedPerksCategory, perk, gameType));
         }
         productCategory.addProduct(perkShopCategory);
 
 
-        productCategory.addProduct(purchasedPerksCategory);
+        productCategory.addProduct(ownedPerksCategory);
 
         int[] perkItemSlots = {20, 21, 22, 23, 24, 25};
         for(int slotIndex = 0; slotIndex < perkItemSlots.length; slotIndex++) {
             int perkSlot = (slotIndex + 1);
             int itemSlot = perkItemSlots[slotIndex];
-            PerkSlot perkSlotProduct = new PerkSlot(purchasedPerksCategory, gameType, perkSlot, itemSlot);
+            PerkSlot perkSlotProduct = new PerkSlot(ownedPerksCategory, gameType, perkSlot, itemSlot);
             productCategory.addProduct(perkSlotProduct);
         }
     }

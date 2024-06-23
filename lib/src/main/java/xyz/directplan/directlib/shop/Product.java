@@ -32,4 +32,6 @@ public interface Product<U> {
     default boolean hasRightClickSupport() { return false; }
 
     default boolean isRefreshInventoryEnabled() { return false; }
+
+    default boolean isProductVisible(U user) { return false; }
 }

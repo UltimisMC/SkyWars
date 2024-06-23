@@ -11,16 +11,16 @@ import com.ultimismc.skywars.core.game.features.FeatureInitializer;
 import com.ultimismc.skywars.core.game.features.cosmetics.CosmeticManager;
 import com.ultimismc.skywars.core.game.features.kits.KitManager;
 import com.ultimismc.skywars.core.game.menu.GameMenuHandler;
+import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
-import com.ultimismc.skywars.game.GameManager;
 import com.ultimismc.skywars.game.chest.ChestHandler;
 import com.ultimismc.skywars.game.chest.GameChestRegistry;
 import com.ultimismc.skywars.game.combat.SkyWarsCombatAdapter;
 import com.ultimismc.skywars.game.combat.SkyWarsCombatManager;
 import com.ultimismc.skywars.game.config.MessageConfigKeys;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
-import com.ultimismc.skywars.game.handler.runnable.GameEndRunnable;
+import com.ultimismc.skywars.game.handler.end.GameEndRunnable;
 import com.ultimismc.skywars.game.handler.runnable.GamePreparer;
 import com.ultimismc.skywars.game.handler.runnable.GameRunnable;
 import com.ultimismc.skywars.game.handler.scoreboard.AccompaniedGameScoreboard;
@@ -30,8 +30,8 @@ import com.ultimismc.skywars.game.handler.setup.GameSetupHandler;
 import com.ultimismc.skywars.game.handler.team.GameTeam;
 import com.ultimismc.skywars.game.handler.team.GameTeamHandler;
 import com.ultimismc.skywars.game.island.IslandHandler;
-import com.ultimismc.skywars.game.menubar.GameSpectatorBarMenu;
-import com.ultimismc.skywars.game.menubar.UserWaitingBarMenu;
+import com.ultimismc.skywars.game.menubar.GameSpectatorBarLayout;
+import com.ultimismc.skywars.game.menubar.UserWaitingBarLayout;
 import com.ultimismc.skywars.game.mode.InsaneGame;
 import com.ultimismc.skywars.game.mode.NormalGame;
 import com.ultimismc.skywars.game.user.UserGameSession;
@@ -66,10 +66,11 @@ public class GameHandler implements FeatureInitializer {
 
     private final SkyWarsPlugin plugin;
     private final UserManager userManager;
-    private final GameManager gameManager;
+    private final ScoreboardManager scoreboardManager;
     private final MenuManager menuManager;
     private final GameConfig gameConfig;
     private final GameMenuHandler gameMenuHandler;
+    private final SkyWarsServerManager serverManager;
 
     private Game game;
     private GameScoreboard gameScoreboard;
@@ -89,14 +90,15 @@ public class GameHandler implements FeatureInitializer {
 
     private BukkitTask gamePreparer, gameTask;
 
-    public GameHandler(SkyWarsPlugin plugin, GameManager gameManager) {
+    public GameHandler(SkyWarsPlugin plugin) {
         this.plugin = plugin;
-        this.gameManager = gameManager;
+        scoreboardManager = new ScoreboardManager(plugin, "Ultimis SkyWars Scoreboard");
 
         gameConfig = plugin.getGameConfig();
         menuManager = plugin.getMenuManager();
         userManager = plugin.getUserManager();
         gameMenuHandler = plugin.getGameMenuHandler();
+        serverManager = plugin.getServerManager();
     }
 
     @Override
@@ -108,8 +110,8 @@ public class GameHandler implements FeatureInitializer {
         skyWarsEventHandler = new SkyWarsEventHandler(plugin, this);
         islandHandler = new IslandHandler(this);
         chestHandler = new ChestHandler(this);
-        featureHandler.initializeFeature(chestHandler);
-        featureHandler.initializeFeature(islandHandler);
+        featureHandler.initializeFeature(chestHandler, true);
+        featureHandler.initializeFeature(islandHandler, true);
 
         GameType gameType = gameConfig.getGameType();
         switch (gameType) {
@@ -128,9 +130,8 @@ public class GameHandler implements FeatureInitializer {
         chestRegistry.buildItems();
 
         log(plugin, "Loaded " + chestRegistry.getSize() + " chest items for " + gameType.getName() + " mode.");
-        userSessionHandler = new UserSessionHandler(gameConfig);
+        userSessionHandler = new UserSessionHandler();
 
-        ScoreboardManager scoreboardManager = gameManager.getScoreboardManager();
         gameScoreboard = new SoloGameScoreboard(scoreboardManager, this);
         if(!gameConfig.isSoloGame()) {
             gameScoreboard = new AccompaniedGameScoreboard(scoreboardManager, this);
@@ -161,11 +162,12 @@ public class GameHandler implements FeatureInitializer {
         PluginUtility.sendTitle(player, 20, 40, 20, "&eSkyWars", gameConfig.getGameDisplayName() + " mode");
 
         UserGameSession userGameSession = userSessionHandler.addUser(user);
-        teamHandler.handleTeamJoin(userGameSession);
         game.prepareUser(userGameSession);
-        islandHandler.handleCageJoin(userGameSession);
 
-        menuManager.applyDesign(new UserWaitingBarMenu(plugin, this, user), true, false);
+        teamHandler.handleTeamJoin(userGameSession);
+        islandHandler.handleIslandJoin(userGameSession);
+
+        menuManager.applyInventoryLayout(user, new UserWaitingBarLayout(plugin, this, user), true, false);
         if(hasMinimumPlayers()) {
             startPreparer();
         }
@@ -175,6 +177,9 @@ public class GameHandler implements FeatureInitializer {
     public void quitUser(User user) {
         String userDisplayName = user.getDisplayName();
 
+        // If the game started, we keep the user sessions cached, so they may be evaluated,
+        // and saved when the game ends, but if the game hasn't started, there's no point in keeping the user session
+        // cached.
         UserGameSession userGameSession;
         if(hasStarted()) {
             userGameSession = getSession(user);
@@ -186,11 +191,11 @@ public class GameHandler implements FeatureInitializer {
             MessageConfigKeys.QUIT_MESSAGE.broadcastMessage(new Replacement("player", userDisplayName));
         }
 
-        gameManager.removeScoreboard(user.getUuid());
+        scoreboardManager.removeScoreboard(user.getUuid());
         game.quitUser(userGameSession);
 
         if(!game.hasStarted()) {
-            islandHandler.handleCageQuit(userGameSession);
+            islandHandler.handleIslandQuit(userGameSession);
             teamHandler.handleTeamQuit(userGameSession);
         }
         if(game.isStarting() && !hasMinimumPlayers()) {
@@ -231,7 +236,8 @@ public class GameHandler implements FeatureInitializer {
             User user = userGameSession.getUser();
             Player player = user.getPlayer();
             player.closeInventory();
-            menuManager.clearInventory(user);
+            player.getInventory().clear();
+
             GameType gameType = getGameType();
             kitManager.giveKit(user, gameType);
             teamHandler.setupTeamTag(userGameSession);
@@ -259,7 +265,7 @@ public class GameHandler implements FeatureInitializer {
         game.endGame();
 
         GameTeam winnerTeam = teamHandler.getLastTeamAlive();
-        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(plugin, this, winnerTeam, teamHandler.getGameTeams()), 0, 20L);
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new GameEndRunnable(this, winnerTeam, teamHandler.getGameTeams()), 0, 20L);
     }
 
     public void terminateUser(UserGameSession userGameSession) {
@@ -294,7 +300,7 @@ public class GameHandler implements FeatureInitializer {
 
 
         // spectators too
-        menuManager.applyDesign(new GameSpectatorBarMenu(plugin, this, user), true, false);
+        menuManager.applyInventoryLayout(user, new GameSpectatorBarLayout(plugin, this, user), true, false);
 
         // Make player invisible and that he can see
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0));
@@ -323,6 +329,15 @@ public class GameHandler implements FeatureInitializer {
             if(!user.isOnline()) continue;
             consumer.accept(user);
         }
+    }
+
+    public void evacuateServer() {
+        broadcastFunction(userGameSession -> {
+            userGameSession.sendMessage("&aEvacuating to lobby...");
+
+            User user = userGameSession.getUser();
+            serverManager.sendToLobby(user);
+        });
     }
 
     public String getNextEventDisplayFormat() {

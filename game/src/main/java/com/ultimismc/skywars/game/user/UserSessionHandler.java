@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.game.user;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.user.User;
 import org.bukkit.entity.Player;
 
@@ -16,14 +15,9 @@ public class UserSessionHandler {
 
     private final Map<UUID, UserGameSession> userSessions = new HashMap<>();
 
-    private final GameConfig gameConfig;
-    public UserSessionHandler(GameConfig gameConfig) {
-        this.gameConfig = gameConfig;
-    }
-
     public UserGameSession addUser(User user) {
         UUID uuid = user.getUuid();
-        UserGameSession userGameSession = new UserGameSession(user, gameConfig);
+        UserGameSession userGameSession = new UserGameSession(user);
         userSessions.put(uuid, userGameSession);
         return userGameSession;
     }

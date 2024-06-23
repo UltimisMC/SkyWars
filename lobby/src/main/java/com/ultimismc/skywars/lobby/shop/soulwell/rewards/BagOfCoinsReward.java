@@ -30,18 +30,7 @@ public class BagOfCoinsReward implements SoulWellReward {
 
     @Override
     public PurchasableRarity getRarity() {
-        switch (bagType) {
-            case SMALL: {
-                return PurchasableRarity.COMMON;
-            }
-            case MEDIUM: {
-                return PurchasableRarity.RARE;
-            }
-            case LARGE: {
-                return PurchasableRarity.LEGENDARY;
-            }
-        }
-        return null;
+        return bagType.getRarity();
     }
 
     @Override
@@ -62,14 +51,16 @@ public class BagOfCoinsReward implements SoulWellReward {
     @Getter
     enum BagType {
 
-        SMALL("Small", 50),
-        MEDIUM("Medium", 500),
-        LARGE("Large", 2500);
+        SMALL(PurchasableRarity.COMMON, "Small", 50),
+        MEDIUM(PurchasableRarity.RARE, "Medium", 500),
+        LARGE(PurchasableRarity.LEGENDARY, "Large", 2500);
 
+        private final PurchasableRarity rarity;
         private final String name;
         private final int coins;
 
-        BagType(String name, int coins) {
+        BagType(PurchasableRarity rarity, String name, int coins) {
+            this.rarity = rarity;
             this.name = name;
             this.coins = coins;
         }

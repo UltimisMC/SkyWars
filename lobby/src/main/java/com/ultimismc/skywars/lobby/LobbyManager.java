@@ -60,7 +60,7 @@ public class LobbyManager {
         teleportSpawn(player);
         lobbyScoreboard.updateGameScoreboard(user);
 
-        menuManager.applyDesign(new LobbyPlayerInventoryUi(this, user));
+        menuManager.applyInventoryLayout(user, new LobbyPlayerInventoryUi(this, user));
     }
 
     public void handleQuit(User user) {

@@ -47,10 +47,10 @@ public class FeatureHandler {
         }
     }
 
-    public void shutdownFeatures() {
-        for(FeatureInitializer featureInitializer : featureInitializers) {
-            shutdownFeature(featureInitializer);
-        }
+    public void initializeFeature(FeatureInitializer featureInitializer, boolean add) {
+        if(add) addInitializers(featureInitializer);
+
+        initializeFeature(featureInitializer);
     }
 
     public void initializeFeature(FeatureInitializer featureInitializer) {
@@ -61,6 +61,12 @@ public class FeatureHandler {
         if(featureInitializer instanceof PurchasableRepository<?>) {
             PurchasableRepository<?> purchasableRepository = (PurchasableRepository<?>) featureInitializer;
             purchasableHandler.registerPurchasableRepository(purchasableRepository);
+        }
+    }
+
+    public void shutdownFeatures() {
+        for(FeatureInitializer featureInitializer : featureInitializers) {
+            shutdownFeature(featureInitializer);
         }
     }
 

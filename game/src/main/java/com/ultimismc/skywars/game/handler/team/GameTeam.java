@@ -29,12 +29,15 @@ public class GameTeam implements Iterable<UserGameSession> {
     public boolean isMember(UserGameSession userGameSession) {
         return players.containsKey(userGameSession.getUuid());
     }
+
     public boolean isFull() {
         return players.size() >= maximumTeam;
     }
 
     public boolean isAlive() {
-        return players.values().stream().anyMatch(userGameSession -> !userGameSession.isSpectator());
+        return players.values()
+                .stream()
+                .anyMatch(userGameSession -> !userGameSession.isSpectator());
     }
 
     public int getCombinedKills() {

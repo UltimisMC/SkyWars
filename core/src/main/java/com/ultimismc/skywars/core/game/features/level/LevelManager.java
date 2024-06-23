@@ -54,8 +54,8 @@ public class LevelManager implements FeatureInitializer {
 
         int constantExpRequirement = 10000;
         int constantCoinsReward = 15000;
-        int[] initiateExpRequirements = {0, 20, 50, 80, 100, 250, 500, 1000, 1500, 2500, 4000, 5000};
-        int[] initiateCoinsRewards = {250, 500, 750, 1000, 1500, 2000, 2500, 3500, 4500, 7500, 90000, 10000};
+        int[] initialExpRequirements = {0, 20, 50, 80, 100, 250, 500, 1000, 1500, 2500, 4000, 5000};
+        int[] initialCoinsRewards = {250, 500, 750, 1000, 1500, 2000, 2500, 3500, 4500, 7500, 90000, 10000};
         int maximumLevel = 60;
 
         Level lastLevel = null;
@@ -63,13 +63,13 @@ public class LevelManager implements FeatureInitializer {
         for(int levelOrder = 1; levelOrder <= maximumLevel; levelOrder++) {
             int expRequirement = constantExpRequirement;
             int levelOrderIndex = (levelOrder - 1);
-            if(levelOrder <= initiateExpRequirements.length) {
-                expRequirement = initiateExpRequirements[levelOrderIndex];
+            if(levelOrder <= initialExpRequirements.length) {
+                expRequirement = initialExpRequirements[levelOrderIndex];
             }
 
             int coinsReward = constantCoinsReward;
-            if(levelOrder <= initiateCoinsRewards.length) {
-                coinsReward = initiateCoinsRewards[levelOrderIndex];
+            if(levelOrder <= initialCoinsRewards.length) {
+                coinsReward = initialCoinsRewards[levelOrderIndex];
             }
 
             List<LevelReward> levelRewards = new ArrayList<>();
@@ -127,6 +127,7 @@ public class LevelManager implements FeatureInitializer {
 
         Level level = user.getLevel();
         calculateUserLevel(user);
+
         if(user.getLevel() == level) { // If it's the same, then we don't celebrate
             return;
         }

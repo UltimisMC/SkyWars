@@ -39,10 +39,10 @@ public class LobbyScoreboard {
 
         List<String> scoreboardLines = MessageConfigKeys.SKYWARS_LOBBY_SCOREBOARD_LINES
                 .getStringList(new Replacement("level", levelDisplayName),
-                        new Replacement("solo-kills", rNumber(soloKills)),
-                        new Replacement("solo-wins", rNumber(soloWins)),
-                        new Replacement("doubles-kills", rNumber(doublesKills)),
-                        new Replacement("doubles-wins", rNumber(doublesWins)),
+                        new Replacement("solo-kills", readNumber(soloKills)),
+                        new Replacement("solo-wins", readNumber(soloWins)),
+                        new Replacement("doubles-kills", readNumber(doublesKills)),
+                        new Replacement("doubles-wins", readNumber(doublesWins)),
                         new Replacement("coins", Currency.COIN_CURRENCY.getDisplayAmount(coins)),
                         new Replacement("souls", souls),
                         new Replacement("maximum-souls", maximumSouls));
@@ -55,7 +55,7 @@ public class LobbyScoreboard {
         scoreboardManager.removeScoreboard(uuid);
     }
 
-    private String rNumber(int num) {
+    private String readNumber(int num) {
         return StringUtil.getReadableNumber(num);
     }
 }

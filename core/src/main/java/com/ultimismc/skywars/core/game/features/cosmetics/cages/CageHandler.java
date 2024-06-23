@@ -1,7 +1,6 @@
 package com.ultimismc.skywars.core.game.features.cosmetics.cages;
 
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.config.CageConfigKeys;
 import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.game.features.PurchasableDesign;
@@ -18,11 +17,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import xyz.directplan.directlib.config.ConfigHandler;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author DirectPlan
@@ -55,6 +53,10 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             plugin.disablePlugin("WorldEdit is not detected.");
             return;
         }
+
+        ConfigHandler configHandler = plugin.getConfigHandler();
+        configHandler.loadConfiguration("cages.yml", CageConfigKeys.class);
+
         schematicAdapter = new WorldEditSchematicAdapter(gameWorld);
         log(plugin, "Using " + schematicAdapter.getName() + " as a schematic adapter!");
 
@@ -65,6 +67,8 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             log(plugin, "Schematics folder created!");
         }
         log(plugin, "Starting cage load sequence...");
+
+        // Short-term solution for serializing objects. Will be improved in the future.
         List<String> serializedCages = CageConfigKeys.SERIALIZED_CAGES_DATA.getStringList();
         for(String serializedCage : serializedCages) {
             if(serializedCage.isEmpty()) continue;
@@ -76,25 +80,13 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             Material material = Material.valueOf(cageArguments[1]);
             int durability = Integer.parseInt(cageArguments[2]);
             CosmeticRarity rarity = CosmeticRarity.valueOf(cageArguments[3]);
+            PurchasableDesign design = new PurchasableDesign(material, durability);
 
             String fileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
-            File soloSchematicFile = new File(plugin.getDataFolder(), "/cages/solo/" + fileName);
-            File teamSchematicFile = new File(plugin.getDataFolder(), "/cages/team/" + fileName);
 
-            if(!soloSchematicFile.exists()) {
-                log(plugin, "Cage '" + name + "' does not have a Solo schematic. (" + soloSchematicFile + ")");
-                continue;
-            }
-            if(!teamSchematicFile.exists()) {
-                log(plugin, "Cage '" + name + "' does not have a Team schematic. (" + teamSchematicFile + ")");
-                continue;
-            }
+            Map<TeamType, CageSchematic> cageSchematics = loadCageSchematics(fileName);
 
-            CageSchematic soloSchematic = schematicAdapter.loadSchematic(soloSchematicFile);
-            CageSchematic teamSchematic = schematicAdapter.loadSchematic(teamSchematicFile);
-
-            PurchasableDesign design = new PurchasableDesign(material, durability);
-            Cage cage = new Cage(soloSchematic, teamSchematic, design, name, rarity);
+            Cage cage = new Cage(cageSchematics, design, name, rarity);
             registerPurchasable(cage);
         }
         voidSchematic = schematicAdapter.loadSchematic(new File(plugin.getDataFolder(), "/cages/void.schematic"));
@@ -104,19 +96,22 @@ public class CageHandler extends PurchasableRegistry<Cage> {
         super.initializeFeature(plugin);
     }
 
-    @Override
-    public void shutdownFeature(SkyWarsPlugin plugin) {
-        log(plugin, "Starting cage save sequence...");
-        List<String> serializedCages = new ArrayList<>();
-        for(Cage cage : purchasables.values()) {
-            String name = cage.getName();
-            PurchasableDesign design = cage.getDesign();
-            Material material = design.getMaterial();
-            int durability = design.getDurability();
-            CosmeticRarity rarity = cage.getCosmeticRarity();
-            serializedCages.add(name + "/" + material.name() + "/" + durability + "/" + rarity.name());
+    private Map<TeamType, CageSchematic> loadCageSchematics(String cageFileName) {
+        Map<TeamType, CageSchematic> cageSchematicMap = new HashMap<>();
+
+        for(TeamType teamType : TeamType.values()) {
+            String teamName = teamType.getName();
+            File schematicFile = new File(plugin.getDataFolder(), "/cages/" + teamName.toLowerCase() + "/" + cageFileName);
+
+            if(!schematicFile.exists()) {
+                log(plugin, "Cage '" + name + "' does not have a " + teamName + " schematic. (" + schematicFile + ")");
+                continue;
+            }
+            CageSchematic cageSchematic = schematicAdapter.loadSchematic(schematicFile);
+
+            cageSchematicMap.put(teamType, cageSchematic);
         }
-        CageConfigKeys.SERIALIZED_CAGES_DATA.setValue(serializedCages);
+        return cageSchematicMap;
     }
 
     public void updateCageSchematic(User user, String name) {
@@ -127,24 +122,9 @@ public class CageHandler extends PurchasableRegistry<Cage> {
         }
         String schematicFileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
 
+        Map<TeamType, CageSchematic> updatedCageSchematics = loadCageSchematics(schematicFileName);
 
-        File soloSchematicFile = new File(plugin.getDataFolder(), "/cages/solo/" + schematicFileName);
-        File teamSchematicFile = new File(plugin.getDataFolder(), "/cages/team/" + schematicFileName);
-        if(!soloSchematicFile.exists()) {
-            user.sendMessage("&cCould not find a solo schematic named '" + soloSchematicFile.getName() + "'");
-            return;
-        }
-        boolean teamSchematicFileExists = teamSchematicFile.exists();
-        if(!teamSchematicFileExists) {
-            user.sendMessage("&cCould not find a team schematic named '" + teamSchematicFile.getName() + "'.");
-            return;
-        }
-        user.sendMessage("&aLoading solo schematic...");
-        CageSchematic soloSchematic = schematicAdapter.loadSchematic(soloSchematicFile);
-        cage.setSoloSchematic(soloSchematic);
-        user.sendMessage("&aLoading team schematic...");
-        CageSchematic teamSchematic = schematicAdapter.loadSchematic(teamSchematicFile);
-        cage.setTeamSchematic(teamSchematic);
+        cage.setSchematics(updatedCageSchematics);
         user.sendMessage("&aCage schematics for &e" + cage.getName() + " &ahas been updated!");
     }
 
@@ -153,28 +133,6 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             user.sendMessage("&cA cage by this name already exists!");
             return;
         }
-
-        String schematicFileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
-
-
-        File soloSchematicFile = new File(plugin.getDataFolder(), "/cages/solo/" + schematicFileName);
-        File teamSchematicFile = new File(plugin.getDataFolder(), "/cages/team/" + schematicFileName);
-        if(!soloSchematicFile.exists()) {
-            user.sendMessage("&cCould not find a solo schematic named '" + soloSchematicFile.getName() + "'");
-            return;
-        }
-        boolean teamSchematicFileExists = teamSchematicFile.exists();
-        if(!teamSchematicFileExists) {
-            user.sendMessage("&cCould not find a team schematic named '" + teamSchematicFile.getName() + "'.");
-            return;
-        }
-
-        name = name.replace("-", " ");
-        user.sendMessage("&aLoading solo schematic...");
-        CageSchematic soloSchematic = schematicAdapter.loadSchematic(soloSchematicFile);
-        user.sendMessage("&aLoading solo schematic...");
-        CageSchematic teamSchematic = schematicAdapter.loadSchematic(teamSchematicFile);
-
         CosmeticRarity rarity;
         try {
             rarity = CosmeticRarity.valueOf(rarityName.toUpperCase());
@@ -183,7 +141,13 @@ public class CageHandler extends PurchasableRegistry<Cage> {
             return;
         }
         PurchasableDesign design = new PurchasableDesign(material, durability);
-        Cage cage = new Cage(soloSchematic, teamSchematic, design, name, rarity);
+
+        String schematicFileName = name.toLowerCase(Locale.ROOT).replace(" ", "-") + "." + schematicAdapter.getFileType();
+
+        user.sendMessage("&7Loading schematics...");
+        Map<TeamType, CageSchematic> cageSchematics = loadCageSchematics(schematicFileName);
+
+        Cage cage = new Cage(cageSchematics, design, name, rarity);
         registerPurchasable(cage);
         user.sendMessage("&aCage &e" + name + "&a has been added! Type &e/cage placecage " + name + " &ato test!");
     }
@@ -192,11 +156,11 @@ public class CageHandler extends PurchasableRegistry<Cage> {
         log(plugin, "Placing schematic of " + cage.getName());
         cage.placeSchematic(teamType, location, ignoreAir);
     }
+
     public void placeCage(TeamType teamType, User user, Cage cage, boolean ignoreAir) {
         Player player = user.getPlayer();
         placeCage(teamType, cage, player.getLocation(), ignoreAir);
     }
-
     public void placeCage(TeamType teamType, User user, String cageName, boolean ignoreAir) {
         Cage cage = getPurchasable(cageName);
         if(cage == null) {
@@ -209,5 +173,22 @@ public class CageHandler extends PurchasableRegistry<Cage> {
 
     public void removeCage(Location location) {
         voidSchematic.placeSchematic(location, false);
+    }
+
+    @Override
+    public void shutdownFeature(SkyWarsPlugin plugin) {
+        log(plugin, "Starting cage save sequence...");
+
+        // Short-term solution for serializing objects. Will be improved in the future.
+        List<String> serializedCages = new ArrayList<>();
+        for(Cage cage : purchasables.values()) {
+            String name = cage.getName();
+            PurchasableDesign design = cage.getDesign();
+            Material material = design.getMaterial();
+            int durability = design.getDurability();
+            CosmeticRarity rarity = cage.getCosmeticRarity();
+            serializedCages.add(name + "/" + material.name() + "/" + durability + "/" + rarity.name());
+        }
+        CageConfigKeys.SERIALIZED_CAGES_DATA.setValue(serializedCages);
     }
 }

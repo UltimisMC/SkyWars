@@ -1,6 +1,5 @@
 package com.ultimismc.skywars.game.user;
 
-import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameStatistics;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.user.User;
@@ -22,7 +21,6 @@ import java.util.UUID;
 public class UserGameSession {
 
     private final User user;
-    private final GameConfig gameConfig;
 
     private boolean spectator;
     private boolean setupMode;
