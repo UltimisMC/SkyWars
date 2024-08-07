@@ -1,8 +1,7 @@
 package com.ultimismc.skywars.game;
 
-import com.ultimismc.skywars.core.ServerInitializer;
+import com.ultimismc.skywars.core.SkyWarsConfigManager;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
-import com.ultimismc.skywars.core.config.ConfigKeys;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.GameType;
 import com.ultimismc.skywars.core.game.Map;
@@ -13,13 +12,12 @@ import lombok.Data;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import xyz.directplan.directlib.config.ConfigHandler;
 
 /**
  * @author DirectPlan
  */
-public class GameServerInitializer implements ServerInitializer  {
+public class GameSkyWarsConfigManager implements SkyWarsConfigManager {
 
     @Getter private World gameWorld;
 
