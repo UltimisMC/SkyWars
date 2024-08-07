@@ -2,12 +2,17 @@ package com.ultimismc.skywars.core.placeholders.stats;
 
 import com.ultimismc.skywars.core.placeholders.UserPlaceholderProcessor;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.core.user.UserStatistics;
 
 /**
  * @author DirectPlan
  */
-public class WinstreakProcessor implements UserPlaceholderProcessor {
+public class WinstreakProcessor extends UserPlaceholderProcessor {
+
+    public WinstreakProcessor(UserManager userManager) {
+        super(userManager);
+    }
 
     @Override
     public String process(User user, String value) {

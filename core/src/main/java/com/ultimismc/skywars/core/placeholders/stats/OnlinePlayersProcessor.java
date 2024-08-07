@@ -5,16 +5,23 @@ import com.ultimismc.skywars.core.game.TeamType;
 import com.ultimismc.skywars.core.placeholders.UserPlaceholderProcessor;
 import com.ultimismc.skywars.core.server.SkyWarsServerManager;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserManager;
 import lombok.RequiredArgsConstructor;
 
 /**
  * @author DirectPlan
  */
-@RequiredArgsConstructor
-public class OnlinePlayersProcessor implements UserPlaceholderProcessor {
+public class OnlinePlayersProcessor extends UserPlaceholderProcessor {
 
     private final SkyWarsPlugin plugin;
     private final TeamType teamType;
+
+    public OnlinePlayersProcessor(UserManager userManager, SkyWarsPlugin plugin, TeamType teamType) {
+        super(userManager);
+
+        this.plugin = plugin;
+        this.teamType = teamType;
+    }
 
     @Override
     public String process(User user, String value) {

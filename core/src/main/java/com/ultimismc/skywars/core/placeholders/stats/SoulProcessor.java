@@ -2,12 +2,17 @@ package com.ultimismc.skywars.core.placeholders.stats;
 
 import com.ultimismc.skywars.core.placeholders.UserPlaceholderProcessor;
 import com.ultimismc.skywars.core.user.User;
+import com.ultimismc.skywars.core.user.UserManager;
 import com.ultimismc.skywars.core.user.UserStatistics;
 
 /**
  * @author DirectPlan
  */
-public class SoulProcessor implements UserPlaceholderProcessor {
+public class SoulProcessor extends UserPlaceholderProcessor {
+
+    public SoulProcessor(UserManager userManager) {
+        super(userManager);
+    }
 
     @Override
     public String process(User user, String value) {
