@@ -20,7 +20,7 @@ public class LobbySkyWarsPlugin extends SkyWarsPlugin {
     private LobbyManager lobbyManager;
 
     public LobbySkyWarsPlugin() {
-        super(new LobbyServerInitializer());
+        super(new LobbySkyWarsConfigManager());
     }
 
     @Override
