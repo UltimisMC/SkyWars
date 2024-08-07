@@ -1,16 +1,14 @@
 package com.ultimismc.skywars.lobby;
 
-import com.ultimismc.skywars.core.ServerInitializer;
+import com.ultimismc.skywars.core.SkyWarsConfigManager;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.GameConfig;
 import com.ultimismc.skywars.core.game.Map;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * @author DirectPlan
  */
-public class LobbyServerInitializer implements ServerInitializer {
+public class LobbySkyWarsConfigManager implements SkyWarsConfigManager {
 
     @Override
     public GameConfig loadGameConfig(SkyWarsPlugin plugin) {
