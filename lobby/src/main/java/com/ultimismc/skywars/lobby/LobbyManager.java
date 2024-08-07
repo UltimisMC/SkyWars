@@ -65,8 +65,6 @@ public class LobbyManager {
 
     public void handleQuit(User user) {
         lobbyScoreboard.removeScoreboard(user);
-
-
     }
 
     public void openShopMenu(User user) {
