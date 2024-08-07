@@ -5,7 +5,7 @@ import com.ultimismc.skywars.core.game.GameConfig;
 /**
  * @author DirectPlan
  */
-public interface ServerInitializer {
+public interface SkyWarsConfigManager {
 
     /**
      * Loads server configuration from the config file.
@@ -15,7 +15,7 @@ public interface ServerInitializer {
 
     /**
      * Save the game configuration to the config file.
-     * @param plugin the skywars plugin
+     * @param plugin the plugin
      */
     void saveGameConfig(SkyWarsPlugin plugin);
 }
