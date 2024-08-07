@@ -1,11 +1,8 @@
 package xyz.directplan.directlib.config.replacement;
 
-import xyz.directplan.directlib.config.ConfigEntry;
 import xyz.directplan.directlib.config.replacement.characters.PercentReplacementChar;
 
 import java.util.Collection;
-import java.util.Map;
-
 /**
  * @author DirectPlan
  */
@@ -32,28 +29,6 @@ public class Replacement {
 
     public Replacement(String key, Collection<String> collection) {
         this(key, String.join("\n", collection));
-    }
-
-     @Deprecated
-    public String replace(ConfigEntry entry, String message) {
-
-        Map<String, ReplacementBoundary> boundaries = entry.getReplacementBoundaries();
-
-        ReplacementBoundary replacementBoundary = boundaries.get(key);
-        if(replacementBoundary == null) {
-            return message;
-        }
-        int beginIndex = replacementBoundary.getBeginIndex();
-        int endIndex = replacementBoundary.getEndIndex();
-
-        int lastMessageIndex = (message.length() - 1);
-        System.out.println("key: " + key);
-        System.out.println("message length: " + message.length() + " (" + message + ")");
-        System.out.println("First text begin index: " + "0 => "+ beginIndex);
-        System.out.println("Last text index: " + endIndex + 1 + " => " + lastMessageIndex);
-        String firstText = message.substring(0, beginIndex);
-        String lastText = message.substring(endIndex + 1, lastMessageIndex);
-        return (firstText + replacement + lastText);
     }
 
     public String replace(String message) {
