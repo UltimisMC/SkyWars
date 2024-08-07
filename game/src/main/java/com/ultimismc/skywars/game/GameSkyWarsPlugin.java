@@ -20,7 +20,7 @@ public class GameSkyWarsPlugin extends SkyWarsPlugin {
     private GameManager gameManager;
 
     public GameSkyWarsPlugin() {
-        super(new GameServerInitializer());
+        super(new GameSkyWarsConfigManager());
     }
 
     @Override
