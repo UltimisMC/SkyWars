@@ -3,6 +3,7 @@ package com.ultimismc.skywars.core.game;
 import com.ultimismc.skywars.core.user.User;
 import com.ultimismc.skywars.core.user.UserManager;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,12 +29,8 @@ public class GameListener implements Listener {
         String levelPrefix = user.getLevelDisplayName(true);
 
         String format = event.getFormat();
-        String midSyntax = "&r";
-        if(user.getRank().isDefaultRank()) {
-            midSyntax = "&8┃ &r";
-        }
 
-        String displayPrefix = levelPrefix + " " + midSyntax;
+        String displayPrefix = levelPrefix + " " + ChatColor.RESET;
         event.setFormat(PluginUtility.translateMessage(displayPrefix) + format);
     }
 
