@@ -48,10 +48,10 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     protected GameConfig gameConfig;
     protected GameMenuHandler gameMenuHandler;
 
-    private final ServerInitializer serverInitializer;
+    private final SkyWarsConfigManager skyWarsConfigManager;
 
-    public SkyWarsPlugin(ServerInitializer serverInitializer) {
-        this.serverInitializer = serverInitializer;
+    public SkyWarsPlugin(SkyWarsConfigManager skyWarsConfigManager) {
+        this.skyWarsConfigManager = skyWarsConfigManager;
     }
 
     public abstract void enable();
@@ -69,7 +69,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
         storage = new UserStorage(this);
         storage.connect();
 
-        gameConfig = serverInitializer.loadGameConfig(this);
+        gameConfig = skyWarsConfigManager.loadGameConfig(this);
         serverManager = new SkyWarsServerManager(this, gameConfig);
         serverManager.connect();
 
@@ -89,7 +89,10 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
                 new GameListener(userManager),
                 userListener = new UserListener(userManager));
 
-        commandHandler.registerCommands(new SkyWarsDebugCommand(), new CageCommand(), new PlayCommand(), new SkyWarsPlayCommand());
+        commandHandler.registerCommands(new SkyWarsDebugCommand(),
+                new CageCommand(),
+                new PlayCommand(),
+                new SkyWarsPlayCommand());
 
         enable();
     }
@@ -97,7 +100,7 @@ public abstract class SkyWarsPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         disable();
-        serverInitializer.saveGameConfig(this);
+        skyWarsConfigManager.saveGameConfig(this);
 
         featureHandler.shutdownFeatures();
         configHandler.saveConfigurations();
