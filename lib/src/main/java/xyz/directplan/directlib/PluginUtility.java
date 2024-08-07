@@ -27,15 +27,18 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author DirectPlan
  */
 public class PluginUtility {
 
-    private final static ThreadLocalRandom random = ThreadLocalRandom.current();
+    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
+    private static final DecimalFormat decimalFormat = new DecimalFormat("##.#");
+    private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)" + '&' + "[0-9A-FK-OR]");
 
-    private final static DecimalFormat decimalFormat = new DecimalFormat("##.#");
 
     public static boolean hasChanceOccurred(int percentChance) {
         return getRandomInteger(1, 101) <= percentChance;
@@ -247,5 +250,14 @@ public class PluginUtility {
         byteArrayDataOutput.writeUTF(server);
 
         player.sendPluginMessage(plugin, "BungeeCord", byteArrayDataOutput.toByteArray());
+    }
+
+    public static String getColors(String input) {
+        StringBuilder builder = new StringBuilder();
+        Matcher matcher = COLOR_PATTERN.matcher(input);
+        while (matcher.find()) {
+            builder.append(matcher.group());
+        }
+        return builder.toString();
     }
 }
