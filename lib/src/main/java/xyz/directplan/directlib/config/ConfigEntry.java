@@ -24,11 +24,7 @@ public interface ConfigEntry {
 
     String getKey();
 
-    Map<String, ReplacementBoundary> getReplacementBoundaries();
-
     void setValue(Object value);
-
-    default boolean isForcedEntryDeclaration() { return true; }
 
     default List<String> getStringList(boolean colored, Replacement... replacements){
         Object value = getValue();
