@@ -15,10 +15,20 @@ public abstract class Rank {
     private final String color;
 
     @Setter private int priority;
-    private boolean defaultRank = false;
 
     public String getDisplayName() {
         return color + name;
     }
 
+    static Rank create(String name, String color, int priority) {
+        return new RankWrapper(name, color, priority);
+    }
+
+}
+class RankWrapper extends Rank {
+
+    public RankWrapper(String name, String color, int priority) {
+        super(name, color);
+        setPriority(priority);
+    }
 }
