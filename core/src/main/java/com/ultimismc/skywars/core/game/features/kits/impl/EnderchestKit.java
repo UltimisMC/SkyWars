@@ -32,7 +32,7 @@ public class EnderchestKit extends Kit {
         public void buildGameItems() {
 
             addItem(new KitItem(Material.GOLDEN_APPLE));
-            // Some bullshit code here for 4th chest!?
+            // Add some code here for 4th chest
         }
     }
 }
