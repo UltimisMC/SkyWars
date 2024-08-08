@@ -19,18 +19,16 @@ public abstract class GameChestRegistry {
 
     public abstract void buildItems();
 
-    // Don't mind the amazing english.
-    // I hope I don't fuck up the code, please... I am about to change this entire thing
     public void refillChest(RefillPhase refillPhase, Chest chest) {
 
         List<ChestItem> items = new ArrayList<>();
 
-        // Minimum chest items for the refill.
+        // Minimum and maximum chest items for the refill.
         int minimumChestItems = refillPhase.getMinimumChestItems();
         int maximumChestItems = refillPhase.getMaximumChestItems();
 
-        // Getting a random items length based on the minimum and maximum items size from the refill phase
-        int maximumItemsLength = PluginUtility.getRandomInteger(minimumChestItems, maximumChestItems);
+        // Get a random items size based on the minimum and maximum items size from the refill phase
+        int maximumItemsSize = PluginUtility.getRandomInteger(minimumChestItems, maximumChestItems);
 
         Map<ChestItemCategory, List<ChestItem>> chestMap = (chest.isMidChest() ? middleChestItems : chestItems);
 
@@ -58,7 +56,7 @@ public abstract class GameChestRegistry {
                 items.add(chestItem);
                 itemCount++;
             }
-            if(items.size() >= maximumItemsLength) break;
+            if(items.size() >= maximumItemsSize) break;
         }
 
 //        List<ChestItem> items = new ArrayList<>((chest.isMidChest() ? middleChestItems : chestItems));
@@ -73,23 +71,23 @@ public abstract class GameChestRegistry {
             items.add(new ChestItem(Material.ENDER_PEARL));
         }
         if(refillPhase.hasCompass()) {
-            // Some code here to get direction of a random player.
+            // Add code to set direction of a "random" player.
             items.add(new ChestItem(Material.COMPASS));
         }
 
-        // Clearing inventory
+        // Clear inventory
         Inventory chestInventory = chest.getInventory();
         chestInventory.clear();
 
         int inventorySize = chestInventory.getSize();
 
-        // Iterating through the items
+        // Iterate through the items
         for(ChestItem chestItem : items) {
             ItemStack itemStack = chestItem.getItemStack();
-            // Getting a random slot in the inventory
+            // Get a random slot in the inventory
             int randomSlot = PluginUtility.getRandomInteger(0, inventorySize);
 
-            // Checking if the declared random slot already has an item
+            // Check if the declared random slot already has an item
             // If there is an existing item at that slot, do a recursive loop until you find an empty slot.
             ItemStack previousItem = chestInventory.getItem(randomSlot);
             while (previousItem != null && previousItem.getType() != Material.AIR) {
@@ -98,12 +96,12 @@ public abstract class GameChestRegistry {
                 previousItem = chestInventory.getItem(randomSlot);
             }
             // The item wasn't null, and it wasn't air! ^^
-            // Adding the item to the chest inventory in the empty slot.
+            // Add the item to the chest inventory in the empty slot.
             chestInventory.setItem(randomSlot, itemStack);
         }
     }
 
-    // I left the percentage parameter just in case I might need it later.
+    // I left the percentage parameter unused just in case I might need it later.
     public void addChestItem(ChestItemCategory category, boolean middle, int percentage, Material material, int durability, int amount, ItemEnchantment... enchantments) {
         ChestItem chestItem = new ChestItem(material, amount);
         chestItem.setDurability(durability);
