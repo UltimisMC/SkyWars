@@ -1,10 +1,8 @@
 package xyz.directplan.directlib;
 
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,48 +14,25 @@ public class StringUtil {
     // Roman literals and values
     private static final int[] values = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
     private static final String[] romanLiterals = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
-    private static final DecimalFormat readableNumberPattern = new DecimalFormat("#,###");
 
-    private static final String NMS_VERSION;
-
-    static {
-        String v = Bukkit.getServer().getClass().getPackage().getName();
-        NMS_VERSION = v.substring(v.lastIndexOf('.') + 1);
-    }
-
-    public static String getNMSVersion(){
-        return NMS_VERSION;
-    }
-
-
-    public static void debug(String func, String msg) {
-        System.out.println("[" + func + "]: " + msg);
-    }
-    // You can use %f for a new line
-    /* DirectPlan, All rights reserved. */
     public static List<String> getCorrectDescription(ChatColor color, String description, int charsPerSpace) {
         char[] chars = description.toCharArray();
         List<String> correctDescription = new ArrayList<>();
         int count = 0;
         StringBuilder lineBuilder = new StringBuilder();
-//        System.out.println("size: " + description.length());
         for (char c : chars) {
             char aChar = c;
             int lastIndex = description.lastIndexOf(aChar);
             if(lastIndex >= description.length() - 1) {
                 lineBuilder.append(aChar);
                 correctDescription.add((color == null ? "" : color) + lineBuilder.toString());
-//                debug("DONE DESC LIMIT REACHED", "ADDED LINE BUILDER TO LIST: " + lineBuilder);
-                // END
                 break;
             }
             if ((count >= charsPerSpace) && (aChar == ' ' || aChar == ',' || aChar == '.' || aChar == '!')) {
 
                 correctDescription.add((color == null ? "" : color) + lineBuilder.toString());
-//                debug("DONE DESC", "ADDED LINE BUILDER TO LIST: " + lineBuilder);
                 count = 0;
                 lineBuilder = new StringBuilder();
-//                debug("DONE DESC", "LINE BUILDER IS NOW NEW STRING BUILDER");
                 continue;
             }
             if (count == 0 && aChar == ' ') {
@@ -65,7 +40,6 @@ public class StringUtil {
             }
             count++;
             lineBuilder.append(aChar);
-//            debug("CORRECT DESC", "Line builder has appended char (" + aChar + ") (" + count + ")");
         }
         return correctDescription;
     }
@@ -76,6 +50,7 @@ public class StringUtil {
         return String.join(delimiter, correctDescription);
     }
 
+    // This can be designed better
     public static String getProgressBar(double current, int max, int bars, String symbol, String[] progressColors){
 
         float percent = (float) (current / max);
@@ -137,7 +112,7 @@ public class StringUtil {
         return name;
     }
 
-    public static <T> boolean isInBound(List<T> list, int index) {
+    public static <T> boolean isWithinRange(List<T> list, int index) {
         return list.size() >= index;
     }
 
