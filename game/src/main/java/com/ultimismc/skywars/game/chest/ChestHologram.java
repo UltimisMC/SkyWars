@@ -4,7 +4,7 @@ import com.ultimismc.skywars.game.events.SkyWarsEvent;
 import com.ultimismc.skywars.game.events.SkyWarsEventHandler;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
-import xyz.directplan.directlib.misc.hologram.Hologram;
+import xyz.directplan.directlib.Hologram;
 
 /**
  * @author DirectPlan

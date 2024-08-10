@@ -1,4 +1,4 @@
-package xyz.directplan.directlib.misc.hologram;
+package xyz.directplan.directlib;
 
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Location;
