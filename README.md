@@ -3,7 +3,7 @@
 
 The SkyWars project was discontinued in April 2023 during its final phase of development. This decision came after we noticed a significant drop in player activity in SkyWars over the past few years. Given the reduced interest from players, we decided that continuing the project would not be a good use of our time and resources.
 
-On June 23, 2024, we decided to open source the SkyWars project to at least give the community the chance to access, modify, and possibly continue its development. This way, the hard work already put into the project can still benefit the community, and new ideas and improvements can come from collaborative efforts.
+On June 23, 2024, we decided to open source the SkyWars project to at least give the community the chance to access, modify, and possibly continue its development. This way, the hard work already put into the project can still benefit the community.
 
 ## Project Layout
 - **API** - Allows other plugins to access SkyWars data using the API. (Not implemented)
