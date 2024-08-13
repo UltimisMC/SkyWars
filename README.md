@@ -1,5 +1,5 @@
 # UltimisMC SkyWars
-**This project is currently not functional and is available for reference only.**
+**This project is currently not functional and is available only for reference.**
 
 The SkyWars project was discontinued in April 2023 during its final phase of development. This decision came after we noticed a significant drop in player activity in SkyWars over the past few years. Given the reduced interest from players, we decided that continuing the project would not be a good use of our time and resources.
 
