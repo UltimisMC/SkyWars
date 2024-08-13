@@ -32,7 +32,7 @@ public class SkyWarsPlaceholderExpansion extends AbstractPlaceholderExpansion {
         processorRegistry.register("player-winstreak", new WinstreakProcessor(userManager));
         processorRegistry.register("player-bestwinstreak", new BestWinstreakProcessor(userManager));
         processorRegistry.register("player-prog", new CurrentProgressProcessor(userManager));
-        processorRegistry.register("player-progress", new CurrentProgressProcessor(userManager)); // Make 'name' varargs to avoid duplicated code
+        processorRegistry.register("player-progress", new CurrentProgressProcessor(userManager));
         processorRegistry.register("player-maxprogress", new RequiredProgressProcessor(userManager));
         processorRegistry.register("player-level", new LevelProcessor(userManager, true));
         processorRegistry.register("player-level-value", new LevelProcessor(userManager, false));
