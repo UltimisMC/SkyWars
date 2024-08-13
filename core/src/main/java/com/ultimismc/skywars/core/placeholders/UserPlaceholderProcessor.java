@@ -18,6 +18,6 @@ public abstract class UserPlaceholderProcessor implements PlaceholderProcessor {
 
     @Override
     public Object process(Player player, String value) {
-        return userManager.getCachedUser(player);
+        return process(userManager.getCachedUser(player), value);
     }
 }
