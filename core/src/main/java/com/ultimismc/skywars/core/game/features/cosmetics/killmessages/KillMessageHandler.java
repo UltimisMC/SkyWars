@@ -5,7 +5,7 @@ import com.ultimismc.skywars.core.game.features.PurchasableRegistry;
 import com.ultimismc.skywars.core.game.features.cosmetics.killmessages.impl.*;
 import com.ultimismc.skywars.core.user.User;
 import lombok.Getter;
-import org.bukkit.event.entity.EntityDamageEvent;
+
 import xyz.directplan.directlib.combat.AttackCause;
 
 /**
@@ -50,7 +50,7 @@ public class KillMessageHandler extends PurchasableRegistry<KillMessage> {
         registerPurchasable(new ToTheMoonKillMessage()); // Done
         registerPurchasable(new RoarKillMessage()); // Done
 
-//        defaultPurchasable = new kill message that doesn't have a killer message for users that died without a killer!
+        // Fallback kill message for when a player dies without a killer
         noKillerKillMessage = new NoKillerKillMessage();
         super.initializeFeature(plugin);
     }
