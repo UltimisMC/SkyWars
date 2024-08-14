@@ -14,15 +14,6 @@ import java.util.Objects;
 public class Combat {
 
     private final Player player;
-    private final long attackedAt;
-
-    public Combat(Player player) {
-        this(player, System.currentTimeMillis() + 10000L);
-    }
-
-    public boolean hasExpired() {
-        return (System.currentTimeMillis() - attackedAt) > 0;
-    }
 
     @Override
     public boolean equals(Object o) {
