@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.directplan.directlib.config.ConfigEntry;
-import xyz.directplan.directlib.config.replacement.ReplacementBoundary;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,10 +69,4 @@ public enum MessageConfigKeys implements ConfigEntry {
     private final String key;
     @Setter
     private Object value;
-    private boolean forceEntryDeclaration;
-    private final Map<String, ReplacementBoundary> replacementBoundaries = new HashMap<>();
-
-    MessageConfigKeys(String key, Object value) {
-        this(key, value, true);
-    }
 }

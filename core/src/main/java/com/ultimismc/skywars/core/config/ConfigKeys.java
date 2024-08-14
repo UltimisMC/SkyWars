@@ -1,17 +1,15 @@
 package com.ultimismc.skywars.core.config;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.directplan.directlib.config.ConfigEntry;
-import xyz.directplan.directlib.config.replacement.ReplacementBoundary;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author DirectPlan
  */
 @Getter
+@AllArgsConstructor
 public enum ConfigKeys implements ConfigEntry {
 
     /* config.yml keys */
@@ -41,10 +39,4 @@ public enum ConfigKeys implements ConfigEntry {
     private final String key;
     @Setter
     private Object value;
-    private final Map<String, ReplacementBoundary> replacementBoundaries = new HashMap<>();
-
-    ConfigKeys(String key, Object defaultValue) {
-        this.key = key;
-        this.value = defaultValue;
-    }
 }
