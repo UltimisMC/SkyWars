@@ -74,7 +74,7 @@ public abstract class CombatManager<U> {
         if(attackCause.isVoid()) finalDamage = 40.0;
 
         if(player.getHealth() - finalDamage > 0) {
-            // Player is attacked but not enough to kill him.
+            // Insufficient damage for death
             return;
         }
 
@@ -101,7 +101,6 @@ public abstract class CombatManager<U> {
         player.setFoodLevel(20);
         player.setFireTicks(0);
 
-        // Execute assists
         LinkedList<Combat> assists = combatMap.remove(playerUuid);
         if(assists == null) return;
         for(Combat combat : assists) {
