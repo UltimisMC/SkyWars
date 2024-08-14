@@ -1,4 +1,4 @@
-package xyz.directplan.directlib.config.replacement.characters;
+package xyz.directplan.directlib.config.replacement;
 
 import xyz.directplan.directlib.config.replacement.ReplacementChar;
 

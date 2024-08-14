@@ -1,6 +1,4 @@
-package xyz.directplan.directlib.config.replacement.characters;
-
-import xyz.directplan.directlib.config.replacement.ReplacementChar;
+package xyz.directplan.directlib.config.replacement;
 
 /**
  * @author DirectPlan
