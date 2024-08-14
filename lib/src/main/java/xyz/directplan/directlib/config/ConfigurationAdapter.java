@@ -22,6 +22,7 @@ public abstract class ConfigurationAdapter implements ConfigurationMemory<String
                 set(entry.getKey(), value);
             }
         }
+        saveConfiguration();
     }
 
     public void loadKeys() {
@@ -37,8 +38,7 @@ public abstract class ConfigurationAdapter implements ConfigurationMemory<String
             Object value = get(key);
             entry.setValue(value);
         }
-        // For any new key that has been added to the config file.
-        // This save method will make sure it is added to config, and prevent them from restarting the server again.
+        // Save default entries if not already.
         saveConfiguration();
     }
 
