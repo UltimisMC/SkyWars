@@ -1,6 +1,6 @@
 package xyz.directplan.directlib.config.replacement;
 
-import xyz.directplan.directlib.config.replacement.characters.PercentReplacementChar;
+import com.google.common.base.Preconditions;
 
 import java.util.Collection;
 /**
@@ -13,7 +13,8 @@ public class Replacement {
     private final ReplacementChar replacementChar;
 
     public Replacement(String key, String replacement, ReplacementChar replacementChar) {
-        if(key == null || replacement == null) throw new IllegalStateException("Key or the replacement message cannot be null");
+        Preconditions.checkArgument(key != null, "Key cannot be null");
+        Preconditions.checkArgument(replacement != null, "Replacement cannot be null");
         this.key = key;
         this.replacement = replacement;
         this.replacementChar = replacementChar;
