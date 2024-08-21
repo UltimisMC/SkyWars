@@ -42,6 +42,7 @@ public class Title {
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(subtitle);
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(length);
             } catch (Exception exception) {
+                exception.printStackTrace();
             }
         } else if(titleSlot == TitleSlot.ACTIONBAR) {
             PacketPlayOutChat packet = new PacketPlayOutChat(new ChatComponentText(title), (byte)2);
