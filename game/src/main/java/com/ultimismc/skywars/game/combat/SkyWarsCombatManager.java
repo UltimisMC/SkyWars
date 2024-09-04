@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import xyz.directplan.directlib.combat.CombatAdapter;
 import xyz.directplan.directlib.combat.CombatManager;
 
+import java.time.Duration;
+
 /**
  * @author DirectPlan
  */
@@ -15,7 +17,7 @@ public class SkyWarsCombatManager extends CombatManager<UserGameSession> {
     private final GameHandler gameHandler;
 
     public SkyWarsCombatManager(SkyWarsPlugin plugin, GameHandler gameHandler, CombatAdapter<UserGameSession> combatAdapter) {
-        super(plugin, combatAdapter);
+        super(plugin, combatAdapter, Duration.ofSeconds(10));
         this.gameHandler = gameHandler;
     }
 

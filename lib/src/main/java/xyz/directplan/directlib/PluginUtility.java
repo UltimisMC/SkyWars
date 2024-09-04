@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,18 +140,6 @@ public class PluginUtility {
         }
     }
 
-    /**
-     *  Checks cooldown
-     *
-     * @param lastTime
-     * @param cooldownDelay
-     * @return Seconds Left
-     */
-    public static int isOnCooldown(long lastTime, long cooldownDelay) {
-        long timeLeft = ((lastTime + cooldownDelay) - System.currentTimeMillis());
-        return (int) (timeLeft / 1000);
-    }
-
     public static void sendTitle(Player player, int fadeIn, int stay, int fadeOut, String titleText, String subTitle) {
         Title title = new Title(Title.TitleSlot.TITLE);
         title.setTitle(translateMessage(titleText));
@@ -243,13 +230,12 @@ public class PluginUtility {
         Messenger messenger = plugin.getServer().getMessenger();
         if(!messenger.isOutgoingChannelRegistered(plugin, platform)) {
             messenger.registerOutgoingPluginChannel(plugin, platform);
-            plugin.getLogger().log(Level.INFO, "Outgoing Plugin Channel '" + platform + "' registered!");
         }
         ByteArrayDataOutput byteArrayDataOutput = ByteStreams.newDataOutput();
         byteArrayDataOutput.writeUTF("Connect");
         byteArrayDataOutput.writeUTF(server);
 
-        player.sendPluginMessage(plugin, "BungeeCord", byteArrayDataOutput.toByteArray());
+        player.sendPluginMessage(plugin, platform, byteArrayDataOutput.toByteArray());
     }
 
     public static String getColors(String input) {

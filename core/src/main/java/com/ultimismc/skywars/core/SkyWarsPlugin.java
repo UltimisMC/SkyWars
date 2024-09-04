@@ -24,7 +24,7 @@ import xyz.directplan.directlib.config.BukkitConfigHandler;
 import xyz.directplan.directlib.config.ConfigHandler;
 import xyz.directplan.directlib.inventory.MenuListener;
 import xyz.directplan.directlib.inventory.manager.MenuManager;
-import xyz.directplan.directlib.library.LibraryLoader;
+import xyz.directplan.directlib.libraryloader.LibraryLoader;
 
 import java.util.logging.Level;
 

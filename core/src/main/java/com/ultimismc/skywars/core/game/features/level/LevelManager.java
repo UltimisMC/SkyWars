@@ -1,5 +1,6 @@
 package com.ultimismc.skywars.core.game.features.level;
 
+import com.google.common.base.Preconditions;
 import com.ultimismc.skywars.core.SkyWarsPlugin;
 import com.ultimismc.skywars.core.game.currency.Currency;
 import com.ultimismc.skywars.core.game.features.FeatureInitializer;
@@ -16,6 +17,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Edit September 09, 2024:
+ * I'm not proud on how this feature is coded.
+ * There's room for improvement.
+ *
  * @author DirectPlan
  */
 @Getter
@@ -149,9 +154,8 @@ public class LevelManager implements FeatureInitializer {
             }
             break;
         }
-        if(foundLevel == null) {
-            throw new RuntimeException("An estimated level was not found for " + user.getName() + ".");
-        }
+
+        Preconditions.checkArgument(foundLevel != null, "An estimated level was not found for " + user.getName() + ".");
         user.setLevel(foundLevel);
         int nextLevelProgress = -1;
         Level nextLevel = foundLevel.next;

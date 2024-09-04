@@ -1,5 +1,7 @@
 package xyz.directplan.directlib.combat;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,8 +14,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -23,22 +25,21 @@ import java.util.*;
 public abstract class CombatManager<U> {
 
     private final JavaPlugin plugin;
-
     private final CombatAdapter<U> combatAdapter;
+    private final LoadingCache<UUID, Combat> combatCache;
 
-    private final Map<UUID, LinkedList<Combat>> combatMap = new HashMap<>();
-
-    public CombatManager(JavaPlugin plugin, CombatAdapter<U> combatAdapter) {
+    public CombatManager(JavaPlugin plugin, CombatAdapter<U> combatAdapter, Duration combatDuration) {
         this.plugin = plugin;
         this.combatAdapter = combatAdapter;
+
+        combatCache = Caffeine.newBuilder()
+                .expireAfterWrite(combatDuration)
+                .build(key -> null);
     }
 
     public void startCombatManager() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         pluginManager.registerEvents(new CombatListener(this), plugin);
-
-        BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        scheduler.runTaskTimer(plugin, new CombatRunnable(this), 20L, 20L);
     }
 
     public void onDamage(EntityDamageEvent event) {
@@ -68,7 +69,7 @@ public abstract class CombatManager<U> {
 
         UUID playerUuid = player.getUniqueId();
 
-        if(attacker != null) addAttacker(playerUuid, attacker);
+        if(attacker != null) addCombat(playerUuid, attacker);
 
         double finalDamage = event.getFinalDamage();
         if(attackCause.isVoid()) finalDamage = 40.0;
@@ -80,10 +81,8 @@ public abstract class CombatManager<U> {
 
         // Player is dead
         if(attackerUser == null) {
-            attacker = pollLastAttacker(playerUuid);
-            if(attacker != null) {
-                attackerUser = getUser(attacker);
-            }
+            attacker = getLastAttacker(playerUuid);
+            if(attacker != null) attackerUser = getUser(attacker);
         }
         List<ItemStack> drops = new ArrayList<>();
         for(ItemStack content : player.getInventory()) {
@@ -100,28 +99,18 @@ public abstract class CombatManager<U> {
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setFireTicks(0);
-
-        LinkedList<Combat> assists = combatMap.remove(playerUuid);
-        if(assists == null) return;
-        for(Combat combat : assists) {
-            Player assistant = combat.getPlayer();
-            if(assistant == attacker) continue;
-            U assistUser = getUser(combat.getPlayer());
-            combatAdapter.onAssist(user, assistUser, attackCause);
-        }
     }
 
-    public void addAttacker(UUID attacked, Player attacker) {
-        LinkedList<Combat> assists = combatMap.computeIfAbsent(attacked, uuid -> new LinkedList<>());
-        Combat combat = new Combat(attacker);
-        if(assists.contains(combat)) return;
-        assists.addLast(combat);
+    public void addCombat(UUID uuid, Player attacker) {
+        combatCache.put(uuid, new Combat(attacker));
     }
 
-    public Player pollLastAttacker(UUID attacked) {
-        LinkedList<Combat> assists = combatMap.get(attacked);
-        if(assists == null || assists.isEmpty()) return null;
-        return assists.pollLast().getPlayer();
+    public Player getLastAttacker(UUID victimUuid) {
+        Combat combat = combatCache.get(victimUuid);
+
+        return Optional.ofNullable(combat)
+                .map(Combat::getPlayer)
+                .orElse(null);
     }
 
     public abstract U getUser(Player player);
