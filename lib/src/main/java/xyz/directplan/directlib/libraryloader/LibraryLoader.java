@@ -1,4 +1,4 @@
-package xyz.directplan.directlib.library;
+package xyz.directplan.directlib.libraryloader;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -7,7 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;

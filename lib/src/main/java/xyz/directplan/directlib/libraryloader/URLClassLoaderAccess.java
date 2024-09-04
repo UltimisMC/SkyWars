@@ -1,4 +1,4 @@
-package xyz.directplan.directlib.library;
+package xyz.directplan.directlib.libraryloader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

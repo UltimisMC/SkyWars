@@ -1,4 +1,4 @@
-package xyz.directplan.directlib.library;
+package xyz.directplan.directlib.libraryloader;
 
 import lombok.NonNull;
 
