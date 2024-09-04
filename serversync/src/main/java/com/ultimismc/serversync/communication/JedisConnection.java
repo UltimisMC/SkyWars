@@ -19,7 +19,7 @@ public class JedisConnection {
     private final ServerSoftware software;
     private JedisPool jedisPool;
 
-    private final ExecutorService service = Executors.newFixedThreadPool(10);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     public synchronized boolean establishConnection(ConnectionData connectionData) {
         String host = connectionData.getHost();
@@ -32,17 +32,14 @@ public class JedisConnection {
         }
     }
 
-    public synchronized void subscribe(String channel, JedisPubSub pubSub) {
-
-        synchronized (this) {
-            CompletableFuture.runAsync(() -> {
-                try (Jedis jedis = jedisPool.getResource()) {
-                    jedis.subscribe(pubSub, channel);
-                }catch (Exception e) {
-                    software.log("An error has occurred whilst subscribing to " + channel + ": " + e.getMessage());
-                }
-            }, service);
-        }
+    public void subscribe(String channel, JedisPubSub pubSub) {
+        CompletableFuture.runAsync(() -> {
+            try (Jedis jedis = jedisPool.getResource()) {
+                jedis.subscribe(pubSub, channel);
+            }catch (Exception e) {
+                software.log("An error has occurred whilst subscribing to " + channel + ": " + e.getMessage());
+            }
+        }, executorService);
     }
 
     public void subscribe(ServerChannel channel, JedisPubSub pubSub) {
@@ -54,7 +51,7 @@ public class JedisConnection {
             try (Jedis jedis = jedisPool.getResource()) {
                 jedis.set(key, value);
             }
-        });
+        }, executorService);
     }
 
     public CompletableFuture<String> get(String key) {
@@ -62,7 +59,7 @@ public class JedisConnection {
             try (Jedis jedis = jedisPool.getResource()) {
                 return jedis.get(key);
             }
-        });
+        }, executorService);
     }
 
 
@@ -71,8 +68,9 @@ public class JedisConnection {
             try (Jedis jedis = jedisPool.getResource()) {
                 jedis.publish(channelName, message);
             }
-        });
+        }, executorService);
     }
+
     public void sendRequest(ServerChannel channel, String message) {
         sendRequest(channel.getName(), message);
     }
