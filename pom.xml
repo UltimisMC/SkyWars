@@ -20,8 +20,9 @@
     <name>SkyWars</name>
 
     <description>A SkyWars plugin developed for UltimisMC Network.</description>
+
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>18</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -88,8 +89,8 @@
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
-        <!-- This repo is not really necessary as building this project on a fresh maven setup will fail without Spigot compiled, -->
-        <!-- but it's still good practice to keep it. -->
+        <!-- This repo is not really necessary as building this project on a fresh maven setup will fail without Spigot compiled. -->
+        <!-- However, it's still considered good practice to keep it. -->
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
