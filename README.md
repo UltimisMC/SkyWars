@@ -13,5 +13,8 @@ On June 23, 2024, we decided to open-source the SkyWars project. This way, the h
 - **Lobby** - Handles SkyWars Shop such as Cosmetics, Kits, etc...
 - **Server Sync** - Allows the synchronization of data and states between multiple servers. Also used for load balancing.
 
+## Credit
+This project was inspired by [Hypixel's SkyWars](https://hypixel.net/skywars/).
+
 # License
 This repository is licensed under the permissive MIT license.
